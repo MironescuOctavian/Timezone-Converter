@@ -27,7 +27,7 @@ export default function AppRouteLayout(props: RouteSectionProps) {
             <AppHeader />
             <RLMain>{props.children}</RLMain>
             <AppFooter />
-            <RLScrollToTop />
+            <RLScrollToTop class="[&_.i-lucide-arrow-up]:!text-primary-500" />
             <RLShortcuts />
             <RLToaster />
             <RLRouteAnnouncer />

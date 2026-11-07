@@ -1,20 +1,32 @@
 type Point = { x: number; y: number };
 
-// Pointer capture keeps both fingers tracked even when they leave the globe.
+/**
+ * Multi-touch and pointer gesture tracker for the 3D interactive globe.
+ *
+ * Responsibilities:
+ * - Single-pointer drag: computes delta movement (`dx`, `dy`) for globe rotation and tilt.
+ * - Multi-pointer pinch: calculates Euclidean distance between pointers to compute continuous zoom ratio (1x to 4x).
+ * - Distinguishes taps from drags/pinches: returns `true` on pointer release only if total travel was minimal (< 6px)
+ *   and no pinch occurred, preventing accidental country selection during navigation gestures.
+ */
 export function globeGesture() {
   const pointers = new Map<number, Point>();
   let distance = 0;
   let pinchZoom = 1;
   let travel = 0;
   let pinched = false;
+
+  // Euclidean distance between the first two active touch pointers
   const separation = () => {
     const [a, b] = [...pointers.values()];
     return a && b ? Math.hypot(b.x - a.x, b.y - a.y) : 0;
   };
+
   return {
     get active() {
       return pointers.size > 0;
     },
+    // Register a new pointer down event
     start(id: number, x: number, y: number, zoom: number) {
       if (!pointers.size) {
         travel = 0;
@@ -28,6 +40,7 @@ export function globeGesture() {
       }
       return pinched;
     },
+    // Handle pointer move: computes drag delta or pinch zoom factor
     move(id: number, x: number, y: number) {
       const previous = pointers.get(id);
       if (!previous) return;
@@ -47,6 +60,7 @@ export function globeGesture() {
       travel += Math.hypot(dx, dy);
       return { dx, dy };
     },
+    // Deregister pointer on up/cancel; returns true if gesture qualifies as a clean click/tap
     end(id: number, cancelled = false) {
       const tracked = pointers.delete(id);
       // A pinch must never turn into a country tap when the last finger lifts.
@@ -54,3 +68,4 @@ export function globeGesture() {
     },
   };
 }
+

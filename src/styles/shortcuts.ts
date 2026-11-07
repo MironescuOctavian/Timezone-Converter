@@ -14,7 +14,7 @@ export const siteShortcuts: Record<string, string> = {
   "converter-search":
     "relative mx-auto w-full max-w-sm [@media(min-width:768px)]:absolute [@media(min-width:768px)]:[left:50%] [@media(min-width:768px)]:[transform:translateX(-50%)]",
   "site-footer-layout":
-    "mx-auto flex flex-row flex-nowrap items-start justify-between gap-8 overflow-x-auto max-w-6xl px-5 py-8 text-center [&>div]:shrink-0 [&>div]:min-w-0",
+    "mx-auto grid grid-cols-2 items-start justify-items-center gap-8 max-w-6xl px-5 py-8 text-center [&>div]:min-w-0 [&>div]:max-w-full [&>div:first-child]:[grid-column:1/-1] [&>div:nth-child(4)]:[grid-column:1/-1] [&>div:last-child]:[grid-column:1/-1] [&_a]:[overflow-wrap:anywhere] [@media_(min-width:_1000px)]:flex [@media_(min-width:_1000px)]:flex-row [@media_(min-width:_1000px)]:flex-nowrap [@media_(min-width:_1000px)]:justify-between [@media_(min-width:_1000px)]:[gap:1rem] [@media_(min-width:_1000px)]:[&>div]:shrink-0 [@media_(min-width:_1280px)]:[gap:2rem] [@media_(max-width:_1279px)]:[padding-bottom:7rem]",
   "city-photo":
     "relative block w-full overflow-hidden rounded-xl [aspect-ratio:4/3] [&:not(:disabled)]:[min-height:18rem] [@media_(min-width:_640px)]:[aspect-ratio:auto]",
   "timezone-page":
@@ -68,7 +68,8 @@ export const siteShortcuts: Record<string, string> = {
     "[flex:none] [height:1.5rem] overflow-hidden [&_.city-info_>_div_>_p]:[min-width:0] [&_.city-info_>_div_>_p]:overflow-hidden [&_.city-info_>_div_>_p]:[white-space:nowrap] [&_.city-info_>_div_>_p_>_span:last-child]:overflow-hidden [&_.city-info_>_div_>_p_>_span:last-child]:[text-overflow:ellipsis] [&_.city-info_>_div]:justify-center",
   "country-card-actions": "[margin-top:auto]",
   "globe-hover-slot":
-    "[&_.country-card]:text-center [&_>_div]:[min-height:14.5rem] [@media_(min-width:_640px)]:[grid-column:2] [@media_(min-width:_640px)]:[grid-row:2] [@media_(min-width:_640px)]:[align-self:start] [@media_(min-width:_640px)]:[padding-top:1rem]",
+    "[&_.country-card]:text-center [&_>_div]:[min-height:14.5rem] [@media_(max-width:_639px)]:[margin-top:1.25rem] [@media_(min-width:_640px)]:[grid-column:2] [@media_(min-width:_640px)]:[grid-row:2] [@media_(min-width:_640px)]:[align-self:start] [@media_(min-width:_640px)]:[padding-top:1rem]",
+  "globe-exploring": "[@media_(max-width:_639px)]:hidden",
   "globe-panel":
     "[&_.globe-details]:text-center [@media_(min-width:_640px)]:grid [@media_(min-width:_640px)]:[grid-template-columns:minmax(0,_1.5fr)_minmax(230px,_0.8fr)] [@media_(min-width:_640px)]:[grid-template-rows:auto_auto_auto] [@media_(min-width:_640px)]:[gap:0.5rem_1.5rem] [@media_(min-width:_640px)]:items-start",
   "globe-guide": "text-center [&_.flex]:justify-center",
@@ -82,7 +83,7 @@ export const siteShortcuts: Record<string, string> = {
   "timezone-option-group":
     "[color:var(--rl-primary-500)] [border-top:1px_solid_var(--rl-primary-500)] font-bold [&_option]:[color:var(--rl-neutral-950)] [&_option]:[background:var(--rl-neutral-50)] [&_option]:[font-weight:400]",
   "globe-details":
-    "[@media_(min-width:_640px)]:[grid-column:2] [@media_(min-width:_640px)]:[grid-row:3] [@media_(min-width:_640px)]:text-left",
+    "[@media_(max-width:_639px)]:[margin-top:1.25rem] [@media_(min-width:_640px)]:[grid-column:2] [@media_(min-width:_640px)]:[grid-row:3] [@media_(min-width:_640px)]:text-left",
   "hero-dial-ring": "[@media_(prefers-reduced-motion:_reduce)]:[animation:none]",
   "hero-dial-inner": "[@media_(prefers-reduced-motion:_reduce)]:[animation:none]",
   "hero-dial-card": "[@media_(prefers-reduced-motion:_reduce)]:[animation:none]",

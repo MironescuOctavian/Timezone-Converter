@@ -65,7 +65,11 @@ const marqueeRows = [
   cities.filter((city) => !city[2]?.startsWith("America/") && !city[2]?.startsWith("Europe/")),
 ];
 
-// Compare calendar fields at the same instant, preserving date boundaries and DST.
+// Compare calendar fields at the exact same UTC instant, preserving date boundaries and DST.
+/**
+ * Calculate the difference in wall-clock minutes between two timezones at a given instant.
+ * Positive return value indicates that `destination` is ahead of `origin`.
+ */
 function differenceMinutes(date: Date, destination: string, origin: string) {
   const wallTime = (zone: string) => {
     const p = zoneParts(date, zone);
@@ -74,6 +78,9 @@ function differenceMinutes(date: Date, destination: string, origin: string) {
   return (wallTime(destination) - wallTime(origin)) / 60_000;
 }
 
+/**
+ * Format minutes difference into a friendly localized string, e.g. "3h ahead of you" or "Same time as you".
+ */
 function differenceLabel(minutes: number) {
   if (minutes === 0) return t.raw("timezone.sameTime", "Same time as you");
   const absolute = Math.abs(minutes);
@@ -85,6 +92,9 @@ function differenceLabel(minutes: number) {
   return `${amount} ${minutes > 0 ? t.raw("timezone.ahead", "ahead of you") : t.raw("timezone.behind", "behind you")}`;
 }
 
+/**
+ * Format a Date object into Intl parts (digits, separators, zone name) for rendering digital clocks.
+ */
 function clockParts(date: Date | undefined, zone: string | undefined, full = false) {
   if (!date || !zone) return [{ type: "literal", value: "—" }];
   const locale = getLocaleInfo().tag;
@@ -96,6 +106,7 @@ function clockParts(date: Date | undefined, zone: string | undefined, full = fal
   );
   return formatter.formatToParts(date);
 }
+
 
 // Country outlines come from Natural Earth via world-atlas. IDs link countries to the clocks above.
 const countryCities: Record<string, number> = {
@@ -161,7 +172,11 @@ function displayCountry(index: number) {
   return code ? (names.of(code) ?? countryName(index)) : countryName(index);
 }
 
-// Read the calendar fields of an instant as they appear in a particular timezone.
+/**
+ * Extract calendar fields (year, month, day, hour, minute, second) of a UTC Date
+ * as they appear in a specific target IANA timezone.
+ * Uses the Canadian English ('en-CA') locale which provides ISO-like YYYY-MM-DD components.
+ */
 function zoneParts(date: Date, zone: string) {
   const formatter = dateFormatter("en-CA", {
     timeZone: zone,
@@ -185,7 +200,10 @@ function zoneParts(date: Date, zone: string) {
   };
 }
 
-// Format the same instant in each selected zone without depending on browser locale.
+/**
+ * Format a Date object into a standardized clipboard text representation (DD/MM/YY → HH/MM/SS)
+ * in the specified timezone, independent of the visitor's local system locale.
+ */
 function formatClipboardTime(date: Date, zone: string) {
   const parts = dateFormatter("en-GB", {
     timeZone: zone,
@@ -202,7 +220,20 @@ function formatClipboardTime(date: Date, zone: string) {
   return `${field("day")}/${field("month")}/${field("year")} → ${field("hour")}/${field("minute")}/${field("second")}`;
 }
 
-// A datetime-local input has no timezone. Find an instant matching its clock fields.
+/**
+ * Parse an ISO-like local datetime string (e.g. from an `<input type="datetime-local">`)
+ * and resolve the exact UTC instant corresponding to those clock fields in a target IANA timezone.
+ *
+ * Algorithm:
+ * 1. Parse the year, month, day, hour, minute, second from the input string.
+ * 2. Start with an initial guess treating those numbers as UTC.
+ * 3. Use an iterative fixed-point relaxation (up to 4 iterations):
+ *    - Determine what calendar fields the current guess produces in `zone`.
+ *    - Compute the offset discrepancy between the wanted fields and the produced fields.
+ *    - Add the discrepancy to the guess until convergence (discrepancy === 0).
+ * 4. If convergence fails (e.g., the time falls in a Daylight Saving spring-forward gap),
+ *    return `undefined` because that clock time does not exist in that zone.
+ */
 function toInstant(value: string, zone: string) {
   const match = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::(\d\d))?$/.exec(value);
   if (!match) return undefined;
@@ -214,16 +245,17 @@ function toInstant(value: string, zone: string) {
     second = Number(match[6] ?? 0);
   const wanted = Date.UTC(year, month - 1, day, hour, minute, second);
   let guess = wanted;
-  // Adjust the guess by the difference between the requested and displayed clock times.
+  // Adjust the guess iteratively by the difference between the requested and displayed clock times.
   for (let i = 0; i < 4; i++) {
     const p = zoneParts(new Date(guess), zone);
     const difference = wanted - Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second);
     if (!difference) return new Date(guess);
     guess += difference;
   }
-  // A clock time skipped by daylight saving has no matching instant.
+  // A clock time skipped by daylight saving (spring-forward gap) has no matching instant.
   return undefined;
 }
+
 
 export {
   cities,

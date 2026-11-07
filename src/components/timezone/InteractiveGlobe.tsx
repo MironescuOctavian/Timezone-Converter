@@ -9,6 +9,18 @@ import { PresenceMarkers } from "./PresenceMarkers";
 import { geographicLabels } from "./geographic-labels";
 import { globeGesture } from "./globe-gesture";
 
+/**
+ * InteractiveGlobe Component.
+ *
+ * Renders an interactive 3D orthographic globe featuring:
+ * - WebGL shader acceleration with Canvas fallback for country textures and borders.
+ * - Inertial touch and pointer drag rotation and tilt.
+ * - Continuous pinch-to-zoom (1x - 4x) and mouse-wheel zoom.
+ * - Raycasting hit-testing (`hitCountry`) to select countries by tapping/clicking.
+ * - Dynamic SVG overlay displaying responsive country and region labels with collision culling.
+ * - Real-time aggregated visitor presence markers.
+ * - 60fps optimization: automatically pauses heavy background animations during user interaction.
+ */
 export default function InteractiveGlobe(props: {
   selection: number | undefined;
   hoverCity: number;
@@ -30,6 +42,8 @@ export default function InteractiveGlobe(props: {
   const [globeWidth, setGlobeWidth] = createSignal(520);
   const [globeAspect, setGlobeAspect] = createSignal(1);
   const labelScale = createMemo(() => Math.max(1, 520 / globeWidth()));
+
+  // Dynamically measure SVG element dimensions using ResizeObserver
   function measureGlobe(element: SVGSVGElement) {
     onSettled(() => {
       const observer = new ResizeObserver(([entry]) => {
@@ -42,6 +56,7 @@ export default function InteractiveGlobe(props: {
       return () => observer.disconnect();
     });
   }
+
   const [adjusting, setAdjusting] = createSignal(false);
   let interactionTimer: ReturnType<typeof setTimeout> | undefined;
   function markInteraction() {
@@ -49,6 +64,14 @@ export default function InteractiveGlobe(props: {
     clearTimeout(interactionTimer);
     interactionTimer = setTimeout(() => setAdjusting(false), 180);
   }
+
+  /**
+   * Raycast screen coordinates (x, y) to find which country polygon was clicked/tapped:
+   * 1. Invert SVG coordinate transformation matrix (CTM) to map viewport pixels into SVG coordinate space.
+   * 2. Verify that the click lies inside the sphere radius (hypot <= 245 units).
+   * 3. Invert the orthographic projection to obtain geographic [longitude, latitude].
+   * 4. Query country GeoJSON geometries with `geoContains` to identify the clicked country.
+   */
   function hitCountry(svg: SVGSVGElement, x: number, y: number) {
     const matrix = svg.getScreenCTM();
     if (!matrix) return;
@@ -59,6 +82,8 @@ export default function InteractiveGlobe(props: {
     const country = countries.find((shape) => geoContains(shape, coordinates));
     return country ? countryCities[String(country.id ?? country.properties.name)] : undefined;
   }
+
+  // Performance optimization: pause ambient CSS and SVG marquee animations while user drags/rotates
   createEffect(
     () => dragging() || adjusting(),
     (active) => {
@@ -78,10 +103,13 @@ export default function InteractiveGlobe(props: {
       };
     },
   );
+
   let rotationFrame = 0;
   let pendingLongitude = 0;
   let pendingLatitude = 0;
   let pendingZoom: number | undefined;
+
+  // Flush accumulated rotation delta to Solid signals inside animation frames for fluid 60fps rendering
   function flushRotation() {
     if (rotationFrame) cancelAnimationFrame(rotationFrame);
     rotationFrame = 0;
@@ -93,6 +121,8 @@ export default function InteractiveGlobe(props: {
     if (pendingZoom !== undefined) setZoom(pendingZoom);
     pendingZoom = undefined;
   }
+
+  // Finalize drag or tap gesture on pointer up/cancel
   function endGesture(event: PointerEvent & { currentTarget: SVGSVGElement }, cancelled = false) {
     flushRotation();
     const tap = gesture.end(event.pointerId, cancelled);
@@ -105,9 +135,12 @@ export default function InteractiveGlobe(props: {
     if (event.currentTarget.hasPointerCapture(event.pointerId))
       event.currentTarget.releasePointerCapture(event.pointerId);
   }
+
+  // D3 orthographic projection centered on [260, 260] with 90° clipping (front-facing hemisphere only)
   const projection = createMemo(() =>
     geoOrthographic().translate([260, 260]).scale(245).rotate([rotation(), tilt()]).clipAngle(90),
   );
+
   // Tenths of a viewBox unit preserve the map outline while shortening DOM updates.
   const path = createMemo(() => geoPath(projection()).digits(1));
   const regionLabels = createMemo(() => geographicLabels(projection(), zoom()));
@@ -117,6 +150,12 @@ export default function InteractiveGlobe(props: {
       return index === undefined ? [] : [{ ...item, name: displayCountry(index) }];
     }),
   );
+  /**
+   * Compute dynamic country name labels for display on the globe:
+   * - Filters out countries on the backside of the sphere (`geoDistance > PI/2 - 0.08`).
+   * - Hides tiny countries when zoomed out based on cubic scaling threshold (`minimumArea`).
+   * - Performs bounding-box 2D collision detection to prevent overlapping text labels.
+   */
   const countryLabels = createMemo(() => {
     const project = projection();
     const center = project.invert?.([260, 260]);
@@ -151,6 +190,8 @@ export default function InteractiveGlobe(props: {
     }
     return labels;
   });
+
+  // When a country is selected from search/cards, smoothly rotate the camera to its centroid
   createEffect(
     () => props.selection,
     (index) => {
@@ -169,6 +210,7 @@ export default function InteractiveGlobe(props: {
       }
     },
   );
+
   onSettled(() => {
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey || event.metaKey || event.deltaY === 0) return;

@@ -141,6 +141,8 @@ export default function HomePage() {
   function selectCity(index: number) {
     setHoverCity(index);
     setMapSelection(index);
+    // Mobile has one country card; explicit selection must update that card too.
+    if (window.matchMedia("(max-width: 639px)").matches) setPin({ city: index });
   }
 
   function searchCity(value: string) {
@@ -396,12 +398,14 @@ export default function HomePage() {
                 />
               )}
             </Show>
-            <CountryCard
-              index={hoverCity()}
-              now={now()}
-              difference={differences()[hoverCity()] ?? t("timezone.detectingTimezone")}
-              onConvert={() => convertSelectedCity(hoverCity())}
-            />
+            <div class="globe-exploring">
+              <CountryCard
+                index={hoverCity()}
+                now={now()}
+                difference={differences()[hoverCity()] ?? t("timezone.detectingTimezone")}
+                onConvert={() => convertSelectedCity(hoverCity())}
+              />
+            </div>
           </div>
           <div class="globe-details min-w-0 rounded-2xl border border-primary-700/40 bg-default p-4 sm:p-5">
             {/* A compact legend explains the globe without covering the map. */}

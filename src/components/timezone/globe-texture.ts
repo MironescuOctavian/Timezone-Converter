@@ -1,8 +1,14 @@
 import { geoRotation, geoEquirectangular, geoPath, type GeoProjection } from "d3-geo";
 import { countries } from "./geography";
 
-// Render the visible square directly instead of magnifying a cropped canvas.
+/**
+ * Calculate the bounding box and scaling of the visible globe area on screen.
+ * Accommodates both zoom level and aspect ratio variances so that off-square SVG viewports
+ * (e.g. mobile vs wide desktop) have complete WebGL canvas coverage without letterboxing.
+ */
 export function globeViewport(zoom: number, aspectRatio = 1) {
+
+
   const size = 520 / Math.max(1, Math.min(4, zoom));
   const aspect = Number.isFinite(aspectRatio) && aspectRatio > 0 ? aspectRatio : 1;
   // SVG's xMidYMid meet exposes extra user-space above/below (or beside) the
@@ -19,7 +25,16 @@ export function globeViewport(zoom: number, aspectRatio = 1) {
   };
 }
 
-// Columns map camera-facing, right and up axes back to geographic coordinates.
+/**
+ * Compute the 3x3 rotation matrix for the WebGL vertex/fragment shader.
+ *
+ * Converts camera-space axes [forward, right, up] into geographic Cartesian vectors:
+ * - (0, 0) -> camera-facing center of sphere
+ * - (90, 0) -> rightward horizon
+ * - (0, 90) -> top horizon
+ * Allows the GPU fragment shader to reconstruct 3D surface points and map them to UV coordinates
+ * with pure matrix-vector multiplication, bypassing CPU re-projection.
+ */
 export function inverseGlobeRotation(rotation: [number, number, number]) {
   const transform = geoRotation(rotation);
   return new Float32Array(
@@ -40,8 +55,17 @@ export function inverseGlobeRotation(rotation: [number, number, number]) {
   );
 }
 
-// No labels are baked in: text stays sharp and follows the active UI language.
+/**
+ * Pre-render equirectangular textures onto offscreen canvases:
+ * 1. `ids`: Encodes each country's unique integer index into the red channel `rgb(index + 1, 0, 0)`.
+ *    The fragment shader reads this to look up dynamic colors or highlight the selected country.
+ * 2. `borders`: Pre-strokes clean white borders between all country polygons.
+ *
+ * This texture baking happens once at high resolution (2048x1024), providing crisp 60fps rendering
+ * during rotation without running D3 geometry path generation on every frame.
+ */
 export function bakeGlobeTextures(width = 2048) {
+
   const ids = document.createElement("canvas"),
     borders = document.createElement("canvas");
   ids.width = borders.width = width;

@@ -14,11 +14,30 @@ type Props = {
   active: (index: number | undefined) => boolean;
   onReady: () => void;
 };
+// Pass-through quad vertex shader
 const vertexSource = `attribute vec2 position;
 varying vec2 point;
 void main(){point=position;gl_Position=vec4(position,0.,1.);}`;
-// Analytic orthographic sphere: reconstruct a surface normal per pixel, rotate
-// to longitude/latitude, then sample reusable textures. No CPU mesh projection.
+
+/**
+ * Analytic Orthographic Raymarching Fragment Shader:
+ *
+ * 1. Ray-sphere intersection:
+ *    Computes squared 2D radius `r = dot(p, p)`. If `r > 1.0`, the pixel misses the globe sphere and is discarded.
+ * 2. 3D Surface Normal Reconstruction:
+ *    Reconstructs the front-facing sphere normal: `(sqrt(1.0 - r), p.x, p.y)`.
+ * 3. Camera-to-World Rotation:
+ *    Multiplies the reconstructed surface point by the 3x3 rotation matrix: `world = rotation * normal`.
+ * 4. Inverse Equirectangular UV Mapping:
+ *    Converts Cartesian 3D coordinates (x, y, z) into spherical UV coordinates:
+ *    - `u = atan2(y, x) / (2 * PI) + 0.5` (Longitude)
+ *    - `v = 0.5 - asin(clamp(z, -1, 1)) / PI` (Latitude)
+ * 5. Multi-Texture Sampling:
+ *    - `ids` texture: red channel encodes country ID.
+ *    - `palette` texture: 1D lookup table mapping country ID to active theme color.
+ *    - `borders` texture: alpha channel contains pre-baked country boundary lines.
+ *    - Highlights the currently hovered/selected country with `outlineColor`.
+ */
 const fragmentSource = `precision highp float;
 varying vec2 point;
 uniform mat3 rotation;
@@ -41,6 +60,7 @@ void main(){
   vec4 ink=abs(index-selected)<.5?outlineColor:borderColor;
   gl_FragColor=mix(color,ink,edge*.85);
 }`;
+
 
 export function TexturedCountries(props: Props) {
   let canvas: HTMLCanvasElement | undefined;

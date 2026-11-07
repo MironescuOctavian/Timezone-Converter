@@ -8,7 +8,19 @@ type Presence = ReturnType<typeof createPresence>;
 const PresenceContext = createContext<Presence>();
 export const usePresence = () => useContext(PresenceContext);
 
+/**
+ * Real-time Presence Client Hook / Context.
+ *
+ * Manages the WebSocket lifecycle connecting to `/api/presence`:
+ * - Opens a WebSocket when the interactive globe is activated.
+ * - Sends regular 30s ping heartbeats to maintain the connection.
+ * - Handles exponential backoff reconnection on network loss.
+ * - Reads user privacy preference (`regionSharingEnabled`) to determine whether
+ *   the visitor's coarse region should be shared or hidden.
+ * - Receives batched snapshots containing active viewer count and continental clusters.
+ */
 function createPresence(enabled: () => boolean) {
+
   const [regions, setRegions] = createSignal<ViewerRegion[]>([]);
   const [ready, setReady] = createSignal(false);
   const [total, setTotal] = createSignal(0);

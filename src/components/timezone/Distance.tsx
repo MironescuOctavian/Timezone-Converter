@@ -8,7 +8,17 @@ import { fetchPublicJson } from "./fetch-json";
 type Origin = Coordinates & { city: string; inferred?: boolean };
 const DistanceContext = createContext<ReturnType<typeof createDistance>>();
 
+/**
+ * Distance Provider & State Manager.
+ *
+ * Resolves the visitor's approximate origin location:
+ * 1. Primary: Queries edge endpoint `/api/location` (derived from Cloudflare CF geo headers).
+ * 2. Fallback: If edge location is unavailable or localhost, resolves visitor's browser timezone
+ *    (`Intl.DateTimeFormat().resolvedOptions().timeZone`) and queries Open-Meteo geocoding.
+ * Provides distance calculations (km/miles) to target cities across the application.
+ */
 function createDistance() {
+
   const [origin, setOrigin] = createSignal<Origin>();
   const [unit, setUnit] = createSignal<"km" | "mi">("km");
   const [loading, setLoading] = createSignal(true);

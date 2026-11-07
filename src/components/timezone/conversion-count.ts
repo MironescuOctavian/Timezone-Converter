@@ -1,3 +1,5 @@
+/** @file Reads the shared conversion total and records settled user edits without counting duplicate renders. */
+
 import { createEffect, createSignal, onSettled } from "solid-js";
 
 export function createConversionCount(conversion: () => string | undefined) {

@@ -1,3 +1,5 @@
+/** @file Derives coarse location estimates for the private distance endpoint, separate from public presence. */
+
 // Private distance estimates only: these details never enter the presence protocol.
 export type ViewerLocation = {
   city: string;

@@ -1,3 +1,5 @@
+/** @file Implements a searchable, keyboard-accessible timezone picker backed by a native select. */
+
 import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import type { JSX } from "@solidjs/web";
 import { t } from "@rimelight/i18n";

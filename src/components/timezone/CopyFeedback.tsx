@@ -1,3 +1,5 @@
+/** @file Displays an animated clipboard confirmation inside the result area for ten seconds. */
+
 import { createEffect, createSignal, Show } from "solid-js";
 
 export function CopyFeedback(props: { message: string }) {

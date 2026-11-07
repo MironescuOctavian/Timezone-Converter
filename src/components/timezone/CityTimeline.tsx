@@ -1,3 +1,5 @@
+/** @file Renders synchronized city time sliders and the day, evening, and night legend. */
+
 import { dateFormatter } from "./date-format";
 import { createMemo, For } from "solid-js";
 import { getLocaleInfo, t } from "@rimelight/i18n";

@@ -1,3 +1,5 @@
+/** @file Tests counter API routing, cache headers, origin checks, rate limits, and storage failures. */
+
 import { describe, expect, it, vi } from "vite-plus/test";
 import { conversionApi } from "./api";
 import { Hono } from "hono";

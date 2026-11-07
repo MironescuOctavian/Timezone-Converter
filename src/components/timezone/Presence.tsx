@@ -1,3 +1,5 @@
+/** @file Manages the activation-gated presence connection, consent, reconnects, and shared regional state. */
+
 import { createContext, createEffect, createSignal, useContext } from "solid-js";
 import type { JSX } from "@solidjs/web";
 import type { PresenceMessage, ViewerRegion } from "#presence/regions";
@@ -20,7 +22,6 @@ export const usePresence = () => useContext(PresenceContext);
  * - Receives batched snapshots containing active viewer count and continental clusters.
  */
 function createPresence(enabled: () => boolean) {
-
   const [regions, setRegions] = createSignal<ViewerRegion[]>([]);
   const [ready, setReady] = createSignal(false);
   const [total, setTotal] = createSignal(0);

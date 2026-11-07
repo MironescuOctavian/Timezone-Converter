@@ -1,3 +1,5 @@
+/** @file Renders responsive navigation, theme and language controls, and reading progress. */
+
 import { getLocaleUrl, t } from "@rimelight/i18n";
 import { RLHeader } from "@rimelight/ui";
 import { useParams } from "@solidjs/router";

@@ -1,4 +1,4 @@
-/* Theme tokens and keyframes only; component styles use UnoCSS shortcuts. */
+/* Defines clock, weather, clipboard, presence, and page-entry animation keyframes. */
 @keyframes timezone-orbit {
   to {
     transform: rotate(360deg);

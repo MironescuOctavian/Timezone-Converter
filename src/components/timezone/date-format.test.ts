@@ -1,3 +1,5 @@
+/** @file Tests formatter reuse and the bounded date-format cache. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { dateFormatter } from "./date-format";
 

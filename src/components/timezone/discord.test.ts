@@ -1,3 +1,5 @@
+/** @file Tests Discord timestamp encoding and localized format previews. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { discordPreview, discordTimestamp } from "./discord";
 

@@ -1,3 +1,5 @@
+/** @file Tests shared requests, independent cancellation, cached responses, and retries after failure. */
+
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { fetchPublicJson } from "./fetch-json";
 

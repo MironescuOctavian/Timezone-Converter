@@ -1,3 +1,5 @@
+/** @file Provides lightweight country and city metadata, timezone calculations, and clock and clipboard formatting. */
+
 import { t, getLocaleInfo } from "@rimelight/i18n";
 import countryProfiles from "#data/country-timezones.json";
 import mapCountries from "#data/map-countries.json";
@@ -106,7 +108,6 @@ function clockParts(date: Date | undefined, zone: string | undefined, full = fal
   );
   return formatter.formatToParts(date);
 }
-
 
 // Country outlines come from Natural Earth via world-atlas. IDs link countries to the clocks above.
 const countryCities: Record<string, number> = {
@@ -255,7 +256,6 @@ function toInstant(value: string, zone: string) {
   // A clock time skipped by daylight saving (spring-forward gap) has no matching instant.
   return undefined;
 }
-
 
 export {
   cities,

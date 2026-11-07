@@ -1,3 +1,5 @@
+/** @file Configures the Vite+ builds, Solid rendering, Cloudflare integration, UnoCSS, and Rimelight plugins. */
+
 import { defineConfig } from "vite-plus";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import solid from "@solidjs/vite-plugin";

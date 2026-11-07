@@ -1,3 +1,5 @@
+/** @file Tests presence consent boundaries, metadata minimization, protocol checks, and request limits. */
+
 import { describe, expect, it, vi } from "vite-plus/test";
 import { presenceApi } from "./api";
 import { REGION_SHARING_KEY, regionSharingEnabled } from "./consent";

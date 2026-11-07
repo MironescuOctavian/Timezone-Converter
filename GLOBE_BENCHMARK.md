@@ -1,3 +1,5 @@
+<!-- Documents globe rendering benchmarks, implementation tradeoffs, and verification limits. -->
+
 # Globe rendering check
 
 ## Textured GPU renderer

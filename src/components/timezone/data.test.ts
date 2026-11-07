@@ -1,3 +1,5 @@
+/** @file Tests timezone conversion, daylight-saving edge cases, clock formatting, and map metadata alignment. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { geoContains, geoOrthographic, geoPath } from "d3-geo";
 import { countries, globeGrid } from "./geography";

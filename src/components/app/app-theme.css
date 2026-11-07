@@ -1,4 +1,4 @@
-/* Theme tokens and keyframes only; component styles use UnoCSS shortcuts. */
+/* Defines light and dark theme tokens and the shared settings-menu animation. */
 :root {
   --site-accent-ink: var(--rl-primary-500);
   --site-background-ink: var(--rl-primary-500);

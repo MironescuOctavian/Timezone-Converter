@@ -1,3 +1,5 @@
+/** @file Renders the decorative globe-inspired background and suspends its animation work when hidden. */
+
 import "./site-background.css";
 import { For, onSettled } from "solid-js";
 

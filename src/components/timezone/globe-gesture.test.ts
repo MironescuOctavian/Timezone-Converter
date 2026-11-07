@@ -1,3 +1,5 @@
+/** @file Tests tap and drag detection, pinch zoom limits, cancellation, and overlapping touches. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { globeGesture } from "./globe-gesture";
 

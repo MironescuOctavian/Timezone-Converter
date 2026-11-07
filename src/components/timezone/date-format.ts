@@ -1,3 +1,5 @@
+/** @file Caches Intl date formatters to avoid recreating them for frequently updated clocks. */
+
 // Reuse ICU formatters across ticking clocks. Bound the cache because visitors
 // can search arbitrary zones and switch languages without reloading the app.
 const formatters = new Map<string, Intl.DateTimeFormat>();

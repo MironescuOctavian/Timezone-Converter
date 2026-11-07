@@ -1,3 +1,5 @@
+/** @file Draws country fills and borders with Canvas 2D when the WebGL renderer is unavailable. */
+
 import { createEffect, createSignal, onSettled } from "solid-js";
 import { geoPath, type GeoProjection } from "d3-geo";
 import { countryCities } from "./data";

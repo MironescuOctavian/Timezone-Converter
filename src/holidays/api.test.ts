@@ -1,3 +1,5 @@
+/** @file Tests holiday API validation, normalization, cache headers, and provider failure responses. */
+
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { holidayApi } from "./api";
 

@@ -1,3 +1,5 @@
+/** @file Provides a calendar and time editor that validates draft fields before committing a value. */
+
 import { dateFormatter } from "./date-format";
 import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import { getLocaleInfo, t } from "@rimelight/i18n";

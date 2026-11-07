@@ -1,3 +1,5 @@
+/** @file Calculates approximate great-circle distances and converts kilometres to miles. */
+
 import { geoDistance } from "d3-geo";
 export type Coordinates = { latitude: number; longitude: number };
 

@@ -1,3 +1,5 @@
+/** @file Tests batched presence updates, immediate withdrawal, legacy-data cleanup, and alarm lifecycle. */
+
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { GlobePresence } from "./GlobePresence";
 import type { PresenceAttachment, PresenceMessage } from "./regions";

@@ -1,3 +1,5 @@
+/** @file Persists the site-wide conversion total with atomic increments and no individual conversion records. */
+
 import { DurableObject } from "cloudflare:workers";
 
 /**
@@ -26,4 +28,3 @@ export class ConversionCounter extends DurableObject {
     return Response.json({ total });
   }
 }
-

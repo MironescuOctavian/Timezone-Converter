@@ -1,3 +1,5 @@
+/** @file Connects file-based routing with application loading, error handling, and translation context. */
+
 import { pageRoutes } from "virtual:file-routes";
 import { fileRoutes } from "@solidjs/router/fs";
 import { createRouter } from "@solidjs/router";
@@ -32,4 +34,3 @@ export default function App() {
     </Router>
   );
 }
-

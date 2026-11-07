@@ -1,3 +1,5 @@
+/** @file Tests translation dictionaries for required keys and consistency with source usage. */
+
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";

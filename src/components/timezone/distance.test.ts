@@ -1,3 +1,5 @@
+/** @file Tests great-circle distance estimates and kilometre-to-mile conversion. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { convertDistance, distanceKm } from "./city-distance";
 

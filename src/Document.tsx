@@ -1,3 +1,5 @@
+/** @file Builds the server-rendered HTML shell, locale and theme attributes, metadata, styles, and hydration setup. */
+
 import type { ParentProps } from "solid-js";
 import { HydrationScript, useHead } from "@solidjs/web";
 import { createDocumentHead } from "@rimelight/seo/head";
@@ -32,4 +34,3 @@ export default function Document(props: ParentProps) {
     </html>
   );
 }
-

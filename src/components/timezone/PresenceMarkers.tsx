@@ -1,3 +1,5 @@
+/** @file Displays aggregated regional activity markers and the map's privacy and sharing controls. */
+
 import { createMemo, createSignal, For, Show } from "solid-js";
 import { geoDistance, type GeoProjection } from "d3-geo";
 import { t } from "@rimelight/i18n";

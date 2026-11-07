@@ -1,3 +1,5 @@
+/** @file Tests geometry simplification without losing small rings or mutating source coordinates. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { coarseRing } from "./CanvasCountries";
 

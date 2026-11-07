@@ -1,3 +1,5 @@
+/** @file Tests shared timeline instants, range limits, and timezone activity bands. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { TIMELINE_MINUTES, timelineBands, timelineInstant } from "./timeline";
 

@@ -1,3 +1,5 @@
+/** @file Shares document-scoped globe activation across routes without persisting it across fresh loads. */
+
 import { createContext, createSignal, onSettled, useContext } from "solid-js";
 import type { JSX } from "@solidjs/web";
 

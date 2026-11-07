@@ -1,3 +1,5 @@
+/** @file Renders the landing introduction, local time, and interactive grid of international clocks. */
+
 import { dateFormatter } from "./date-format";
 import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import { RLButton } from "@rimelight/ui";

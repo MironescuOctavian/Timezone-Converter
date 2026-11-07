@@ -1,3 +1,5 @@
+/** @file Maps the shared 48-hour slider range to instants and local activity color bands. */
+
 import { localActivity } from "./activity";
 
 /** Total span of the visual timeline in minutes (48 hours = 2 days) */
@@ -36,4 +38,3 @@ export function timelineBands(start: number, zone: string) {
     };
   });
 }
-

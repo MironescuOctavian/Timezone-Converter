@@ -1,3 +1,5 @@
+/** @file Checks UnoCSS generation, production selectors, and the pinned CSP hash for marquee styles. */
+
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";

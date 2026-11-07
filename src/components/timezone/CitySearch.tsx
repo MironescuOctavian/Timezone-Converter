@@ -1,3 +1,5 @@
+/** @file Provides city lookup and reusable search input controls with inline completion. */
+
 import { createEffect, createMemo, createSignal, Show } from "solid-js";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 

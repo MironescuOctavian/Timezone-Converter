@@ -1,3 +1,5 @@
+/** @file Normalizes holiday data, builds date keys, and selects relevant calendar entries. */
+
 export type PublicHoliday = {
   date: string;
   name: string;

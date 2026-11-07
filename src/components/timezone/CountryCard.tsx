@@ -1,3 +1,5 @@
+/** @file Displays a selected or explored country's clock, weather, article link, and conversion action. */
+
 import { t } from "@rimelight/i18n";
 import { cities, countryName, displayCountry, flagCodes } from "./data";
 import { displayCity } from "./city-names";

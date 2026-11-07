@@ -1,3 +1,5 @@
+/** @file Composes the shared page shell and providers for globe activation, regional presence, and distances. */
+
 import type { RouteSectionProps } from "@solidjs/router";
 import AppHeader from "#components/app/AppHeader";
 import AppFooter from "#components/app/AppFooter";

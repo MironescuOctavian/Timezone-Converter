@@ -1,3 +1,5 @@
+/** @file Loads map outlines and prepares country centroids, label priorities, and longitude grid geometry. */
+
 import { geoArea, geoCentroid, geoContains } from "d3-geo";
 import { feature } from "topojson-client";
 import world from "world-atlas/countries-110m.json";

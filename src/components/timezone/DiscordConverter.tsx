@@ -1,3 +1,5 @@
+/** @file Creates Discord timestamp snippets with localized previews and clipboard actions. */
+
 import { DateTimeField } from "./DateTimeField";
 import { CopyFeedback } from "./CopyFeedback";
 import { getLocaleInfo, t } from "@rimelight/i18n";

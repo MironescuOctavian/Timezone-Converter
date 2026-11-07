@@ -1,3 +1,5 @@
+/** @file Routes Cloudflare requests to APIs, security and localization middleware, or the Solid page renderer. */
+
 import { Hono } from "hono";
 import { security } from "@rimelight/security/middleware";
 import { i18n } from "@rimelight/i18n/middleware";
@@ -53,4 +55,3 @@ app.use(seo());
 app.all("*", (c) => handleRequest(c.req.raw));
 
 export default app;
-

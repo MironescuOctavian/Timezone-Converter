@@ -1,3 +1,5 @@
+/** @file Renders international clock marquees and suspends their updates and animations offscreen. */
+
 import { t } from "@rimelight/i18n";
 import { createEffect, createSignal, For, onSettled } from "solid-js";
 import { RLMarquee } from "@rimelight/ui";

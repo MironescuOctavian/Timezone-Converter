@@ -1,3 +1,5 @@
+/** @file Tests daylight-saving transition detection and zones without seasonal offset changes. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { transitions } from "./transitions";
 

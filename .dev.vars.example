@@ -1,3 +1,5 @@
+# Documents local Worker environment variables; copy to the ignored .dev.vars file when needed.
+
 # Construction Mode
 CONSTRUCTION_MODE=
 CONSTRUCTION_PASSPHRASE=

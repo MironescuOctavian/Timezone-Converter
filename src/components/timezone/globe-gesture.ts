@@ -1,3 +1,5 @@
+/** @file Tracks pointer gestures to distinguish taps, rotation drags, and bounded two-finger zoom. */
+
 type Point = { x: number; y: number };
 
 /**
@@ -68,4 +70,3 @@ export function globeGesture() {
     },
   };
 }
-

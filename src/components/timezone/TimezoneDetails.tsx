@@ -1,3 +1,5 @@
+/** @file Displays timezone offsets and daylight-saving transitions for the selected location. */
+
 import { createMemo, For, Show } from "solid-js";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 import { differenceLabel, differenceMinutes } from "./data";

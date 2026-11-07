@@ -1,3 +1,5 @@
+# Excludes dependencies, generated output, local configuration, and other non-source files from Git.
+
 # OS files
 .DS_Store
 Thumbs.db

@@ -1,3 +1,4 @@
+// Extends Rimelight's Solid TypeScript settings and includes source and generated Cloudflare types.
 {
   "extends": "@rimelight/config/tsconfig/solid",
   "include": ["**/*", ".cloudflare/types/**/*"]

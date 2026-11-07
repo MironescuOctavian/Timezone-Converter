@@ -1,3 +1,5 @@
+/** @file Checks localized pages for successful SSR responses, translated content, and streamed rendering errors. */
+
 // Run against an existing dev server. Streamed SSR failures can have status 200,
 // so inspect the response payload as well as the HTTP status.
 import { readFileSync } from "node:fs";

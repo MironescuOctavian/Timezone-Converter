@@ -1,3 +1,5 @@
+/** @file Builds grouped timezone options with country flags and the visitor's local choice. */
+
 import { For } from "solid-js";
 
 export type TimezoneGroup = {

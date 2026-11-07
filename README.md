@@ -1,3 +1,5 @@
+<!-- Introduces the application and documents setup, development, deployment, features, and data handling. -->
+
 # Timezone Converter
 
 A free, ad-free timezone converter and world clock by [Mironescu Octavian](https://octavianmironescu.com). Compare local times, explore an interactive globe, create Discord timestamps, and learn about cities around the world.

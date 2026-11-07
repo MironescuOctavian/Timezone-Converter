@@ -1,3 +1,5 @@
+/** @file Coordinates regional WebSocket presence with batched counts, immediate withdrawal, and temporary aggregates. */
+
 import { DurableObject } from "cloudflare:workers";
 import {
   isPresenceAttachment,

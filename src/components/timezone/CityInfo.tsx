@@ -1,3 +1,5 @@
+/** @file Loads and displays city weather, daylight, distance, Wikipedia details, and photos. */
+
 import { fetchPublicJson } from "./fetch-json";
 import { t } from "@rimelight/i18n";
 import { createEffect, createSignal, Show } from "solid-js";

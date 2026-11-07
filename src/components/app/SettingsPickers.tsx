@@ -1,3 +1,5 @@
+/** @file Implements accessible theme and language popovers with keyboard navigation and saved preferences. */
+
 import { createMemo, createSignal, createUniqueId, For, onSettled, Show } from "solid-js";
 import { getLocaleInfo, getLocaleUrl, t } from "@rimelight/i18n";
 import { useParams } from "@solidjs/router";

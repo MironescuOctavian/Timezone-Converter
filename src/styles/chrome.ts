@@ -1,3 +1,5 @@
+/** @file Safelists shell utilities so header and footer styling survives production template extraction. */
+
 // Solid can compile header/footer slots before UnoCSS scans them. Safelist the
 // shell utilities so responsive visibility and grid rules survive production.
 export const chromeUtilities = [

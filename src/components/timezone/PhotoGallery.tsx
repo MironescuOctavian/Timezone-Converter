@@ -1,3 +1,5 @@
+/** @file Loads additional city photos on demand and presents an accessible image lightbox. */
+
 import { createSignal, For, onSettled, Show } from "solid-js";
 import { t } from "@rimelight/i18n";
 

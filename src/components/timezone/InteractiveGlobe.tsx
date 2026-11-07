@@ -1,3 +1,5 @@
+/** @file Coordinates globe projection, labels, country picking, rotation, touch gestures, and zoom controls. */
+
 import { createEffect, createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import { RLButton } from "@rimelight/ui";
 import { t } from "@rimelight/i18n";

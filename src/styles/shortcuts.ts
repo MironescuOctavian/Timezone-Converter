@@ -1,3 +1,5 @@
+/** @file Defines reusable UnoCSS shortcuts for responsive page layouts, components, and interaction states. */
+
 // Shared semantic shortcuts keep complex responsive/state styling in UnoCSS.
 // Theme variables and animation keyframes remain in the small CSS token files.
 export const siteShortcuts: Record<string, string> = {

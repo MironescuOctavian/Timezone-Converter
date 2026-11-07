@@ -1,3 +1,5 @@
+/** @file Provides private approximate distance estimates and shared kilometre or mile preferences. */
+
 import { createContext, createMemo, createSignal, onSettled, useContext } from "solid-js";
 import type { JSX } from "@solidjs/web";
 import { getLocaleInfo, t } from "@rimelight/i18n";
@@ -18,7 +20,6 @@ const DistanceContext = createContext<ReturnType<typeof createDistance>>();
  * Provides distance calculations (km/miles) to target cities across the application.
  */
 function createDistance() {
-
   const [origin, setOrigin] = createSignal<Origin>();
   const [unit, setUnit] = createSignal<"km" | "mi">("km");
   const [loading, setLoading] = createSignal(true);

@@ -1,3 +1,5 @@
+/** @file Generates Discord timestamp markup and localized previews for the supported format options. */
+
 /**
  * Supported Discord timestamp style flags:
  * - 't': Short Time (e.g. 9:41 AM)
@@ -58,4 +60,3 @@ export function discordPreview(
   };
   return new Intl.DateTimeFormat(locale, { ...options[style], timeZone: zone }).format(instant);
 }
-

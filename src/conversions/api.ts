@@ -1,3 +1,5 @@
+/** @file Exposes shared conversion totals and same-origin, rate-limited increment requests. */
+
 import { Hono } from "hono";
 
 /**
@@ -42,4 +44,3 @@ export const conversionApi = new Hono<{ Bindings: Env }>()
       return c.json({ error: "Counter unavailable" }, 503);
     }
   });
-

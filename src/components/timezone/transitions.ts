@@ -1,3 +1,5 @@
+/** @file Finds timezone offset changes and classifies daylight-saving transitions for a given year. */
+
 /**
  * Detect Daylight Saving Time (DST) transition dates and types for a given IANA timezone and year.
  *
@@ -47,4 +49,3 @@ export function transitions(zone: string, year: number) {
   }
   return result;
 }
-

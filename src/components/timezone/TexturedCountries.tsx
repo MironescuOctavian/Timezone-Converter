@@ -1,3 +1,5 @@
+/** @file Renders country colors and borders on a WebGL sphere, with theme updates and a Canvas fallback. */
+
 import { createEffect, createSignal, onSettled, Show } from "solid-js";
 import type { GeoProjection } from "d3-geo";
 import { CanvasCountries } from "./CanvasCountries";
@@ -60,7 +62,6 @@ void main(){
   vec4 ink=abs(index-selected)<.5?outlineColor:borderColor;
   gl_FragColor=mix(color,ink,edge*.85);
 }`;
-
 
 export function TexturedCountries(props: Props) {
   let canvas: HTMLCanvasElement | undefined;

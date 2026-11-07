@@ -1,4 +1,4 @@
-/* Theme tokens and keyframes only; component styles use UnoCSS shortcuts. */
+/* Defines the decorative background's motion keyframes and scroll-linked parallax. */
 @keyframes atlas-aurora {
   from {
     transform: translate3d(-3%, 2%, 0) scale(1);

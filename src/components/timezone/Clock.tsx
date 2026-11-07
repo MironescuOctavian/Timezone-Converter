@@ -1,3 +1,5 @@
+/** @file Renders consistently formatted clock parts while retaining their DOM nodes across updates. */
+
 import { For } from "solid-js";
 import { clockParts } from "./data";
 

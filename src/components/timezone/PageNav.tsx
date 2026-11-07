@@ -1,3 +1,5 @@
+/** @file Renders section navigation and tracks the section currently visible while scrolling. */
+
 import { createSignal, For, onSettled } from "solid-js";
 import { t } from "@rimelight/i18n";
 

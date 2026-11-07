@@ -1,3 +1,5 @@
+/** @file Loads and displays national holidays for a selected country and year. */
+
 import { createEffect, createMemo, createSignal, For, Show } from "solid-js";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 import { holidayDateKey, selectHolidays, type PublicHoliday } from "./holidays";

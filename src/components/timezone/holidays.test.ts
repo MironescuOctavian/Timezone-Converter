@@ -1,3 +1,5 @@
+/** @file Tests public holiday normalization, date matching, and calendar selection. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { holidayDateKey, publicHolidays, selectHolidays } from "./holidays";
 

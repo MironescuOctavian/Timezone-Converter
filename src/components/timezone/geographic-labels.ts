@@ -1,3 +1,5 @@
+/** @file Positions continent and ocean labels according to globe rotation and zoom. */
+
 import { geoDistance, type GeoProjection } from "d3-geo";
 
 type Region = { name: string; ocean: boolean; anchors: [number, number][] };

@@ -1,3 +1,5 @@
+/** @file Coordinates the converter page, hero clocks, country selection, on-demand globe, and clock marquees. */
+
 import { t } from "@rimelight/i18n";
 import { createMemo, createSignal, For, lazy, Loading, onSettled, Show } from "solid-js";
 import timezoneCountries from "#data/timezone-countries.json";

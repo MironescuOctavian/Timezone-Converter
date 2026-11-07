@@ -1,3 +1,5 @@
+/** @file Shares public JSON requests and bounded cached responses while supporting independent cancellation. */
+
 type Pending = { controller: AbortController; promise: Promise<unknown>; users: number };
 const pending = new Map<string, Pending>();
 const resolved = new Map<string, { value: unknown; expires: number }>();

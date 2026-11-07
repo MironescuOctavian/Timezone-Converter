@@ -1,3 +1,5 @@
+/** @file Coordinates regular and Discord conversion modes, timezone selection, results, and destination details. */
+
 import { DateTimeField } from "./DateTimeField";
 import { CopyFeedback } from "./CopyFeedback";
 import { createConversionCount } from "./conversion-count";

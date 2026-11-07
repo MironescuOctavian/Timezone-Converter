@@ -1,3 +1,5 @@
+/** @file Tests globe texture alignment and complete coverage of square, tall, and wide viewports. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { geoOrthographic, geoRotation } from "d3-geo";
 import { globeViewport, inverseGlobeRotation } from "./globe-texture";

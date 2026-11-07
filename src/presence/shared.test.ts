@@ -1,3 +1,5 @@
+/** @file Tests private location coarsening and rejection of missing or invalid geolocation metadata. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { approximateLocation } from "./shared";
 

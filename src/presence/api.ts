@@ -1,3 +1,5 @@
+/** @file Accepts same-origin presence upgrades and forwards only an explicitly shared broad region. */
+
 import { Hono } from "hono";
 import { regionCode } from "./regions";
 

@@ -1,3 +1,5 @@
+<!-- Documents bundled country and timezone datasets, their sources, and maintenance requirements. -->
+
 # Country timezone data
 
 `country-timezones.json` is a derived subset of the [Countries States Cities Database](https://github.com/dr5hn/countries-states-cities-database), retrieved November 7, 2026, from `json/countries.json`.

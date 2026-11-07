@@ -1,3 +1,5 @@
+/** @file Validates country and year requests, then proxies and caches public holiday calendars. */
+
 import { Hono } from "hono";
 import { publicHolidays } from "../components/timezone/holidays";
 
@@ -53,4 +55,3 @@ export const holidayApi = new Hono().get("/:country/:year", async (c) => {
     return c.json({ error: "Holiday service unavailable" }, 503);
   }
 });
-

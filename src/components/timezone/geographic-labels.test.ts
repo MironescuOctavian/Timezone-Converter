@@ -1,3 +1,5 @@
+/** @file Tests continent and ocean label placement, visibility, and zoom behavior. */
+
 import { describe, expect, it } from "vite-plus/test";
 import { geoOrthographic } from "d3-geo";
 import { geographicLabels } from "./geographic-labels";

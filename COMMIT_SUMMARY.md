@@ -1,3 +1,5 @@
+<!-- Collects a human-readable summary of project changes for preparing a Git commit. -->
+
 # Suggested commit
 
 `refactor: release Timezone Converter 0.0.5`

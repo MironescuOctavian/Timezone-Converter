@@ -1,3 +1,5 @@
+/** @file Coordinates the world-clock city list, search, shared time slider, and expandable location details. */
+
 import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 import {

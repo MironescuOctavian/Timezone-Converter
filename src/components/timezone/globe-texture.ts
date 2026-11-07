@@ -1,3 +1,5 @@
+/** @file Builds reusable map textures and computes aspect-correct viewport and camera transforms. */
+
 import { geoRotation, geoEquirectangular, geoPath, type GeoProjection } from "d3-geo";
 import { countries } from "./geography";
 
@@ -7,8 +9,6 @@ import { countries } from "./geography";
  * (e.g. mobile vs wide desktop) have complete WebGL canvas coverage without letterboxing.
  */
 export function globeViewport(zoom: number, aspectRatio = 1) {
-
-
   const size = 520 / Math.max(1, Math.min(4, zoom));
   const aspect = Number.isFinite(aspectRatio) && aspectRatio > 0 ? aspectRatio : 1;
   // SVG's xMidYMid meet exposes extra user-space above/below (or beside) the
@@ -65,7 +65,6 @@ export function inverseGlobeRotation(rotation: [number, number, number]) {
  * during rotation without running D3 geometry path generation on every frame.
  */
 export function bakeGlobeTextures(width = 2048) {
-
   const ids = document.createElement("canvas"),
     borders = document.createElement("canvas");
   ids.width = borders.width = width;

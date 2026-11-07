@@ -1,3 +1,5 @@
+/** @file Tests region validation, minimum group sizes, grouped counts, and privacy-preserving withdrawal. */
+
 import { describe, expect, it } from "vite-plus/test";
 import {
   isPresenceAttachment,

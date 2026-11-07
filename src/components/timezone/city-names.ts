@@ -1,3 +1,5 @@
+/** @file Normalizes city names and resolves their optional interface translations. */
+
 import { t } from "@rimelight/i18n";
 
 // Keep UI translation separate from the shared geography/timezone data module.

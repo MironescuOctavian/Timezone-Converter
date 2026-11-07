@@ -1,3 +1,5 @@
+/** @file Renders localized explanations of data use, optional regional presence, and distance estimates. */
+
 import { t } from "@rimelight/i18n";
 
 export default function PrivacyPolicy() {

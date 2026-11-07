@@ -1,3 +1,5 @@
+/** @file Defines the Worker deployment, Durable Object exports, bindings, caching, and observability settings. */
+
 import { bindings, defineConfig, exports } from "cf/config";
 
 // Keep the deployed Worker and its local Durable Object binding in sync.

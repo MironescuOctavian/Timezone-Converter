@@ -1,3 +1,5 @@
+<!-- Records performance work, measurements, verification results, and remaining limitations. -->
+
 # Performance work — 7 November 2026
 
 ## Implemented

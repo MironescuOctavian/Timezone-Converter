@@ -1,3 +1,5 @@
+/** @file Displays the static globe preview and its enable or loading state. */
+
 import { t } from "@rimelight/i18n";
 import { RLButton } from "@rimelight/ui";
 

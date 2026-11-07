@@ -1,3 +1,5 @@
+/** @file Displays an illustrative work, free-time, or sleep status based on a city's local hour. */
+
 import { createMemo } from "solid-js";
 import { t } from "@rimelight/i18n";
 import { localActivity } from "./activity";

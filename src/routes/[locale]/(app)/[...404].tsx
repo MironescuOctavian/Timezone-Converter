@@ -1,3 +1,5 @@
+/** @file Renders the localized not-found page and its search-engine metadata. */
+
 import { useHead } from "@solidjs/web";
 import { createPageHead } from "@rimelight/seo/head";
 import { RLError } from "@rimelight/ui";

@@ -1,3 +1,5 @@
+/** @file Defines broad regional anchors, privacy thresholds, count bands, and safe public presence snapshots. */
+
 /**
  * Continent-level geographical anchors for visitor presence markers.
  * Centered coordinates are used rather than precise user locations to protect privacy.

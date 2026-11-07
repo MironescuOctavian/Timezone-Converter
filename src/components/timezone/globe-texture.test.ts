@@ -6,14 +6,33 @@ describe("textured sphere coordinates", () => {
   it("maps visible framebuffer pixels to the same geographic coordinates at every zoom", () => {
     for (const zoom of [1, 1.25, 2, 3, 4]) {
       const view = globeViewport(zoom);
-      expect(view.origin + view.size / 2).toBe(260);
+      expect(view.x + view.width / 2).toBe(260);
       for (const clipX of [-1, -0.5, 0, 0.5, 1]) {
-        const svgX = view.origin + ((clipX + 1) / 2) * view.size;
-        expect((svgX - 260) / 245).toBeCloseTo(clipX * (260 / 245) * view.scale, 10);
+        const svgX = view.x + ((clipX + 1) / 2) * view.width;
+        expect((svgX - 260) / 245).toBeCloseTo(clipX * (260 / 245) * view.scaleX, 10);
       }
     }
     expect(globeViewport(0)).toEqual(globeViewport(1));
     expect(globeViewport(10)).toEqual(globeViewport(4));
+  });
+  it("covers tall and wide SVG panels without clipping country strips", () => {
+    for (const [width, height] of [
+      [666, 1000],
+      [1000, 666],
+      [390, 280],
+    ]) {
+      for (const zoom of [1, 1.75, 4]) {
+        const view = globeViewport(zoom, width! / height!);
+        const pixelsPerUnit = Math.min(width!, height!) / (520 / zoom);
+        expect(view.width * pixelsPerUnit).toBeCloseTo(width!, 8);
+        expect(view.height * pixelsPerUnit).toBeCloseTo(height!, 8);
+        expect(view.x + view.width / 2).toBeCloseTo(260, 8);
+        expect(view.y + view.height / 2).toBeCloseTo(260, 8);
+        const svgTop = 260 - height! / (2 * pixelsPerUnit);
+        expect((svgTop - 260) / 245).toBeCloseTo(-(260 / 245) * view.scaleY, 8);
+      }
+    }
+    expect(globeViewport(2, 0)).toEqual(globeViewport(2));
   });
   it("aligns the texture with SVG labels and picking across rotations", () => {
     for (const rotation of [

@@ -8,6 +8,7 @@ import { countries } from "./geography";
 type Props = {
   projection: GeoProjection;
   zoom: number;
+  aspectRatio: number;
   dragging: boolean;
   hover: number;
   active: (index: number | undefined) => boolean;
@@ -27,7 +28,7 @@ uniform sampler2D palette;
 uniform vec4 borderColor;
 uniform vec4 outlineColor;
 uniform float selected;
-uniform float viewScale;
+uniform vec2 viewScale;
 void main(){
   vec2 p=point*(260./245.)*viewScale;
   float r=dot(p,p);if(r>1.)discard;
@@ -156,6 +157,7 @@ export function TexturedCountries(props: Props) {
       revision: revision(),
       projection: props.projection,
       zoom: props.zoom,
+      aspectRatio: props.aspectRatio,
       dragging: props.dragging,
       hover: props.hover,
       active: countries.map((country) =>
@@ -204,7 +206,8 @@ export function TexturedCountries(props: Props) {
         false,
         cameraMatrix(state.projection),
       );
-      gl.uniform1f(gl.getUniformLocation(program, "viewScale"), globeViewport(state.zoom).scale);
+      const viewport = globeViewport(state.zoom, state.aspectRatio);
+      gl.uniform2f(gl.getUniformLocation(program, "viewScale"), viewport.scaleX, viewport.scaleY);
       gl.uniform1f(
         gl.getUniformLocation(program, "selected"),
         countries.findIndex(
@@ -218,10 +221,10 @@ export function TexturedCountries(props: Props) {
   return (
     <Show when={!failed()} fallback={<CanvasCountries {...props} />}>
       <foreignObject
-        x={globeViewport(props.zoom).origin}
-        y={globeViewport(props.zoom).origin}
-        width={globeViewport(props.zoom).size}
-        height={globeViewport(props.zoom).size}
+        x={globeViewport(props.zoom, props.aspectRatio).x}
+        y={globeViewport(props.zoom, props.aspectRatio).y}
+        width={globeViewport(props.zoom, props.aspectRatio).width}
+        height={globeViewport(props.zoom, props.aspectRatio).height}
         pointer-events="none"
       >
         <canvas

@@ -28,11 +28,15 @@ export default function InteractiveGlobe(props: {
   const [dragging, setDragging] = createSignal(false);
   const [canvasReady, setCanvasReady] = createSignal(false);
   const [globeWidth, setGlobeWidth] = createSignal(520);
+  const [globeAspect, setGlobeAspect] = createSignal(1);
   const labelScale = createMemo(() => Math.max(1, 520 / globeWidth()));
   function measureGlobe(element: SVGSVGElement) {
     onSettled(() => {
       const observer = new ResizeObserver(([entry]) => {
-        if (entry && entry.contentRect.width > 0) setGlobeWidth(entry.contentRect.width);
+        if (entry && entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+          setGlobeWidth(Math.min(entry.contentRect.width, entry.contentRect.height));
+          setGlobeAspect(entry.contentRect.width / entry.contentRect.height);
+        }
       });
       observer.observe(element);
       return () => observer.disconnect();
@@ -232,6 +236,7 @@ export default function InteractiveGlobe(props: {
             stroke="var(--rl-primary-500)"
           />
           <TexturedCountries
+            aspectRatio={globeAspect()}
             projection={projection()}
             zoom={zoom()}
             dragging={dragging() || adjusting()}

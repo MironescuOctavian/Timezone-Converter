@@ -2,9 +2,21 @@ import { geoRotation, geoEquirectangular, geoPath, type GeoProjection } from "d3
 import { countries } from "./geography";
 
 // Render the visible square directly instead of magnifying a cropped canvas.
-export function globeViewport(zoom: number) {
-  const scale = 1 / Math.max(1, Math.min(4, zoom));
-  return { origin: 260 * (1 - scale), size: 520 * scale, scale };
+export function globeViewport(zoom: number, aspectRatio = 1) {
+  const size = 520 / Math.max(1, Math.min(4, zoom));
+  const aspect = Number.isFinite(aspectRatio) && aspectRatio > 0 ? aspectRatio : 1;
+  // SVG's xMidYMid meet exposes extra user-space above/below (or beside) the
+  // square viewBox in rectangular panels. The texture must cover that too.
+  const width = size * Math.max(1, aspect);
+  const height = size * Math.max(1, 1 / aspect);
+  return {
+    x: 260 - width / 2,
+    y: 260 - height / 2,
+    width,
+    height,
+    scaleX: width / 520,
+    scaleY: height / 520,
+  };
 }
 
 // Columns map camera-facing, right and up axes back to geographic coordinates.

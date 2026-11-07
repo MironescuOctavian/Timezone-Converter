@@ -464,6 +464,7 @@
     }
   },
   "timezone": {
+    "createdBy": "Created by",
     "localTime": "Your local time",
     "heroTitle": "Every time zone.",
     "heroTail": "Let’s find yours.",

@@ -1,21 +1,20 @@
+import { TexturedCountries } from "#components/timezone/TexturedCountries";
 import { t } from "@rimelight/i18n";
-import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
+import { createEffect, createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import { RLButton } from "@rimelight/ui";
-import { geoCentroid, geoDistance, geoOrthographic, geoPath } from "d3-geo";
+import { geoCentroid, geoContains, geoDistance, geoOrthographic, geoPath } from "d3-geo";
 import timezoneCountries from "#data/timezone-countries.json";
 import {
   cities,
   flagCodes,
-  countries,
   countryCities,
-  globeGrid,
-  labelCountries,
   displayCountry,
   differenceMinutes,
   differenceLabel,
   toInstant,
   formatClipboardTime,
 } from "#components/timezone/data";
+import { countries, globeGrid, labelCountries } from "#components/timezone/geography";
 import "#components/timezone/page.css";
 import { Hero } from "#components/timezone/Hero";
 import { WorldClocks } from "#components/timezone/WorldClocks";
@@ -82,11 +81,68 @@ export default function HomePage() {
   let dragY: number | undefined;
   let dragDistance = 0;
   let pressedCountry: number | undefined;
+  const [dragging, setDragging] = createSignal(false);
+  const [canvasReady, setCanvasReady] = createSignal(false);
+  const [adjusting, setAdjusting] = createSignal(false);
+  let interactionTimer: ReturnType<typeof setTimeout> | undefined;
+  function markInteraction() {
+    setAdjusting(true);
+    clearTimeout(interactionTimer);
+    interactionTimer = setTimeout(() => setAdjusting(false), 180);
+  }
+  function hitCountry(svg: SVGSVGElement, x: number, y: number) {
+    const matrix = svg.getScreenCTM();
+    if (!matrix) return;
+    const point = new DOMPoint(x, y).matrixTransform(matrix.inverse());
+    if (Math.hypot(point.x - 260, point.y - 260) > 245) return;
+    const coordinates = projection().invert?.([point.x, point.y]);
+    if (!coordinates) return;
+    const country = countries.find((shape) => geoContains(shape, coordinates));
+    return country ? countryCities[String(country.id ?? country.properties.name)] : undefined;
+  }
+  createEffect(
+    () => dragging() || adjusting(),
+    (active) => {
+      if (!active) return;
+      const roots = [...document.querySelectorAll(".site-graticule, .clock-marquee")];
+      const animations = roots
+        .flatMap((root) => root.getAnimations({ subtree: true }))
+        .filter((animation) => animation.playState === "running");
+      const svgs = [...document.querySelectorAll<SVGSVGElement>(".site-graticule svg")].filter(
+        (svg) => !svg.animationsPaused(),
+      );
+      animations.forEach((animation) => animation.pause());
+      svgs.forEach((svg) => svg.pauseAnimations());
+      return () => {
+        animations.forEach((animation) => animation.play());
+        svgs.forEach((svg) => svg.unpauseAnimations());
+      };
+    },
+  );
+  let rotationFrame = 0;
+  let pendingLongitude = 0;
+  let pendingLatitude = 0;
+  function flushRotation() {
+    if (rotationFrame) cancelAnimationFrame(rotationFrame);
+    rotationFrame = 0;
+    const longitude = pendingLongitude;
+    const latitude = pendingLatitude;
+    pendingLongitude = pendingLatitude = 0;
+    if (longitude) setRotation((angle) => angle + longitude);
+    if (latitude) setTilt((angle) => Math.max(-90, Math.min(90, angle + latitude)));
+  }
   const projection = createMemo(() =>
     geoOrthographic().translate([260, 260]).scale(245).rotate([rotation(), tilt()]).clipAngle(90),
   );
-  const path = createMemo(() => geoPath(projection()));
+  // Tenths of a viewBox unit preserve the map outline while shortening DOM updates.
+  const path = createMemo(() => geoPath(projection()).digits(1));
   const regionLabels = createMemo(() => geographicLabels(projection(), zoom()));
+  const namedCountries = createMemo(() =>
+    labelCountries.flatMap((item) => {
+      const index = countryCities[String(item.country.id ?? item.country.properties.name)];
+      return index === undefined ? [] : [{ ...item, name: displayCountry(index) }];
+    }),
+  );
   const countryLabels = createMemo(() => {
     const project = projection();
     const center = project.invert?.([260, 260]);
@@ -94,11 +150,10 @@ export default function HomePage() {
     const scale = zoom();
     const minimumArea = scale >= 4 ? 0 : 0.035 * Math.pow((4 - scale) / 3, 3);
     const labels: { x: number; y: number; name: string; width: number; key: string }[] = [];
-    for (const { country, centroid, area } of labelCountries) {
+    for (const { country, centroid, area, name } of namedCountries()) {
       if (area < minimumArea) continue;
       const index = countryCities[String(country.id ?? country.properties.name)];
       if (index === undefined) continue;
-      const name = displayCountry(index);
       if (geoDistance(center, centroid) > Math.PI / 2 - 0.08) continue;
       const point = project(centroid);
       const width = Math.max(20, name.length * 5.5) / scale;
@@ -248,7 +303,11 @@ export default function HomePage() {
       new Date(current.getTime() - current.getTimezoneOffset() * 60_000).toISOString().slice(0, 19),
     );
     setNow(current);
-    const timer = setInterval(() => setNow(new Date()), 1000);
+    const tick = () => {
+      if (!document.hidden) setNow(new Date());
+    };
+    const timer = setInterval(tick, 1000);
+    document.addEventListener("visibilitychange", tick);
     const panel = globePanel;
     const onWheel = (event: WheelEvent) => {
       if (
@@ -259,11 +318,15 @@ export default function HomePage() {
       )
         return;
       event.preventDefault();
+      markInteraction();
       setZoom((value) => Math.max(1, Math.min(4, value + (event.deltaY < 0 ? 0.25 : -0.25))));
     };
     panel?.addEventListener("wheel", onWheel, { passive: false });
     return () => {
       clearInterval(timer);
+      document.removeEventListener("visibilitychange", tick);
+      clearTimeout(interactionTimer);
+      if (rotationFrame) cancelAnimationFrame(rotationFrame);
       panel?.removeEventListener("wheel", onWheel);
     };
   });
@@ -272,6 +335,7 @@ export default function HomePage() {
   async function copyConverted() {
     const value = instant();
     if (!value) return;
+    setCopyStatus("");
     const initial = formatClipboardTime(value, from());
     const converted = formatClipboardTime(value, to());
     try {
@@ -443,23 +507,29 @@ export default function HomePage() {
                 dragX = event.clientX;
                 dragY = event.clientY;
                 dragDistance = 0;
-                const index = (event.target as Element)
-                  .closest("path")
-                  ?.getAttribute("data-city-index");
-                pressedCountry = index == null ? undefined : Number(index);
+                pressedCountry = hitCountry(event.currentTarget, event.clientX, event.clientY);
+                setDragging(true);
                 event.currentTarget.setPointerCapture(event.pointerId);
               }}
               onPointerMove={(event) => {
-                if (dragX === undefined || dragY === undefined) return;
+                if (dragX === undefined || dragY === undefined) {
+                  const index = hitCountry(event.currentTarget, event.clientX, event.clientY);
+                  if (countryIsActive(index)) setHoverCity(index!);
+                  return;
+                }
                 const distance = event.clientX - dragX;
                 const verticalDistance = event.clientY - dragY;
                 dragDistance += Math.hypot(distance, verticalDistance);
                 dragX = event.clientX;
                 dragY = event.clientY;
-                setRotation((angle) => angle + distance * 0.6);
-                setTilt((angle) => Math.max(-90, Math.min(90, angle - verticalDistance * 0.6)));
+                pendingLongitude += distance * 0.6;
+                pendingLatitude -= verticalDistance * 0.6;
+                // Pointer events can outpace refresh rate; project once per frame.
+                if (!rotationFrame) rotationFrame = requestAnimationFrame(flushRotation);
               }}
               onPointerUp={(event) => {
+                flushRotation();
+                setDragging(false);
                 if (dragDistance < 6 && countryIsActive(pressedCountry)) {
                   setHoverCity(pressedCountry!);
                   setPin({ city: pressedCountry! });
@@ -470,8 +540,16 @@ export default function HomePage() {
                 event.currentTarget.releasePointerCapture(event.pointerId);
               }}
               onPointerCancel={() => {
+                flushRotation();
+                setDragging(false);
                 dragX = undefined;
                 dragY = undefined;
+                pressedCountry = undefined;
+              }}
+              onLostPointerCapture={() => {
+                flushRotation();
+                setDragging(false);
+                dragX = dragY = undefined;
                 pressedCountry = undefined;
               }}
             >
@@ -482,54 +560,32 @@ export default function HomePage() {
                 fill="var(--rl-primary-950)"
                 stroke="var(--rl-primary-500)"
               />
-              <For each={countries}>
-                {(country) => (
-                  <path
-                    data-city-index={countryCities[String(country.id ?? country.properties.name)]}
-                    class="country-shape"
-                    d={path()(country) ?? ""}
-                    fill={
-                      countryIsActive(countryCities[String(country.id ?? country.properties.name)])
-                        ? "var(--rl-primary-500)"
-                        : "var(--rl-primary-700)"
-                    }
-                    fill-opacity={
-                      countryCities[String(country.id ?? country.properties.name)] === hoverCity()
-                        ? "1"
-                        : countryIsActive(
-                              countryCities[String(country.id ?? country.properties.name)],
-                            )
+              <TexturedCountries
+                projection={projection()}
+                dragging={dragging() || adjusting()}
+                hover={hoverCity()}
+                active={countryIsActive}
+                onReady={() => setCanvasReady(true)}
+              />
+              <Show when={!canvasReady()}>
+                <For each={countries}>
+                  {(country) => (
+                    <path
+                      d={path()(country) ?? ""}
+                      fill="var(--rl-primary-500)"
+                      fill-opacity={
+                        countryIsActive(
+                          countryCities[String(country.id ?? country.properties.name)],
+                        )
                           ? ".7"
                           : ".1"
-                    }
-                    stroke={
-                      countryCities[String(country.id ?? country.properties.name)] === hoverCity()
-                        ? "var(--site-map-selected-outline)"
-                        : "var(--rl-neutral-50)"
-                    }
-                    stroke-width={
-                      countryCities[String(country.id ?? country.properties.name)] === hoverCity()
-                        ? "3"
-                        : countryIsActive(
-                              countryCities[String(country.id ?? country.properties.name)],
-                            )
-                          ? ".7"
-                          : "0"
-                    }
-                    onMouseEnter={() => {
-                      const index = countryCities[String(country.id ?? country.properties.name)];
-                      if (countryIsActive(index) && dragX === undefined) {
-                        setHoverCity(index!);
                       }
-                    }}
-                  >
-                    <title>
-                      {cities[countryCities[String(country.id ?? country.properties.name)]!]?.[1] ??
-                        country.properties?.name}
-                    </title>
-                  </path>
-                )}
-              </For>
+                      stroke="var(--rl-neutral-50)"
+                      stroke-width=".7"
+                    />
+                  )}
+                </For>
+              </Show>
               <path
                 d={path()(globeGrid) ?? ""}
                 fill="none"
@@ -539,6 +595,7 @@ export default function HomePage() {
                 pointer-events="none"
               />
               <For
+                keyed={false}
                 each={
                   zoom() > 1
                     ? countryLabels().filter((label) => countryIsActive(countryCities[label.key]))
@@ -547,8 +604,8 @@ export default function HomePage() {
               >
                 {(label) => (
                   <text
-                    x={label.x}
-                    y={label.y}
+                    x={label().x}
+                    y={label().y}
                     text-anchor="middle"
                     dominant-baseline="central"
                     fill="var(--site-map-country-label)"
@@ -560,32 +617,32 @@ export default function HomePage() {
                     pointer-events="none"
                     aria-hidden="true"
                   >
-                    {displayCountry(countryCities[label.key]!)}
+                    {label().name}
                   </text>
                 )}
               </For>
-              <For each={regionLabels()}>
+              <For keyed={false} each={regionLabels()}>
                 {(label) => (
                   <text
                     class="globe-region-label"
-                    x={label.x}
-                    y={label.y}
+                    x={label().x}
+                    y={label().y}
                     text-anchor="middle"
                     dominant-baseline="central"
                     fill={
-                      label.ocean ? "var(--site-map-ocean-label)" : "var(--site-map-land-label)"
+                      label().ocean ? "var(--site-map-ocean-label)" : "var(--site-map-land-label)"
                     }
                     stroke="var(--site-map-label-outline)"
                     paint-order="stroke"
                     stroke-width={String(1.6 / zoom())}
-                    font-size={String((label.ocean ? 9 : 11) / zoom())}
-                    font-weight={label.ocean ? "500" : "600"}
-                    letter-spacing={String((label.ocean ? 1 : 0.9) / zoom())}
-                    opacity={label.ocean ? ".9" : "1"}
+                    font-size={String((label().ocean ? 9 : 11) / zoom())}
+                    font-weight={label().ocean ? "500" : "600"}
+                    letter-spacing={String((label().ocean ? 1 : 0.9) / zoom())}
+                    opacity={label().ocean ? ".9" : "1"}
                     pointer-events="none"
                     aria-hidden="true"
                   >
-                    {t.raw(`timezone.mapLabels.${label.name}`, label.name).toUpperCase()}
+                    {t.raw(`timezone.mapLabels.${label().name}`, label().name).toUpperCase()}
                   </text>
                 )}
               </For>
@@ -631,7 +688,10 @@ export default function HomePage() {
                 variant="outline"
                 size="lg"
                 class="min-h-12 min-w-12"
-                onClick={() => setRotation((angle) => angle - 20)}
+                onClick={() => {
+                  markInteraction();
+                  setRotation((angle) => angle - 20);
+                }}
                 aria-label={t("timezone.rotateLeft")}
               >
                 ←
@@ -641,7 +701,10 @@ export default function HomePage() {
                 class="globe-zoom-button rounded-xl border border-primary-700 text-xl font-bold disabled:opacity-40"
                 aria-label={t("timezone.zoomOut")}
                 disabled={zoom() <= 1}
-                onClick={() => setZoom((value) => Math.max(1, value - 0.25))}
+                onClick={() => {
+                  markInteraction();
+                  setZoom((value) => Math.max(1, value - 0.25));
+                }}
               >
                 −
               </button>
@@ -656,7 +719,10 @@ export default function HomePage() {
                 class="globe-zoom-button rounded-xl border border-primary-700 text-xl font-bold disabled:opacity-40"
                 aria-label={t("timezone.zoomIn")}
                 disabled={zoom() >= 4}
-                onClick={() => setZoom((value) => Math.min(4, value + 0.25))}
+                onClick={() => {
+                  markInteraction();
+                  setZoom((value) => Math.min(4, value + 0.25));
+                }}
               >
                 +
               </button>
@@ -665,7 +731,10 @@ export default function HomePage() {
                 variant="outline"
                 size="lg"
                 class="min-h-12 min-w-12"
-                onClick={() => setRotation((angle) => angle + 20)}
+                onClick={() => {
+                  markInteraction();
+                  setRotation((angle) => angle + 20);
+                }}
                 aria-label={t("timezone.rotateRight")}
               >
                 →

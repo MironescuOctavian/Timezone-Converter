@@ -26,6 +26,7 @@ export function CountryCard(props: {
         <img
           src={`https://flagcdn.com/w80/${flagCodes[props.index]}.png`}
           alt=""
+          decoding="async"
           class="h-7 w-10 rounded object-cover ring ring-default"
         />
         <div class="min-w-0">

@@ -544,6 +544,7 @@
     }
   },
   "timezone": {
+    "createdBy": "Criado por",
     "localTime": "Sua hora local",
     "heroTitle": "Cada fuso horário.",
     "heroTail": "Vamos encontrar o seu.",

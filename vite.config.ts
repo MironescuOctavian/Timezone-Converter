@@ -6,12 +6,17 @@ import { seo } from "@rimelight/seo/plugin";
 import { security } from "@rimelight/security/plugin";
 import { i18n } from "@rimelight/i18n/plugin";
 import { ui } from "@rimelight/ui/plugin";
+import { createLocalFontProcessor } from "@rimelight/ui/fonts";
 import { siteShortcuts } from "./src/styles/shortcuts";
+import { chromeUtilities } from "./src/styles/chrome";
 import type { VitePluginConfig } from "unocss/vite";
 
-const unoBuildMode = { mode: "per-module" } satisfies VitePluginConfig;
+const unoBuildMode = { mode: "dist-chunk" } satisfies VitePluginConfig;
+const localFonts = createLocalFontProcessor({ fontAssetsDir: "public/assets/fonts" });
 
 export default defineConfig({
+  // Client and Worker builds must share plugin state (manifest, theme and CSS).
+  builder: { sharedPlugins: true },
   // Development modules change independently of HTML; don't reuse stale module
   // responses across reloads after Vite re-optimizes dependencies.
   server: { headers: { "Cache-Control": "no-store" } },
@@ -27,7 +32,6 @@ export default defineConfig({
   },
   plugins: [
     cloudflare(),
-
     solid({
       exclude: ["src/fetch.ts"],
       start: true,
@@ -66,9 +70,25 @@ export default defineConfig({
 
     i18n({ defaultLocale: "en" }),
     ui({
+      // This app uses sans/mono; omit the unused serif download.
+      fonts: {
+        fonts: { serif: [] },
+        processors: [
+          {
+            ...localFonts,
+            async transformCSS(css: string) {
+              // Chunk CSS is emitted after Vite's URL pass; use public asset URLs.
+              return (await localFonts.transformCSS(css)).replace(
+                /[^\s"'()]*\/public\/assets\/fonts\//g,
+                "/assets/fonts/",
+              );
+            },
+          },
+        ],
+      },
       unocss: {
-        // Generate CSS during module transforms; Vite+'s Rolldown pipeline has
-        // no vite:css-post hook for UnoCSS's global placeholder replacement.
+        // Emit styles once per bundle chunk; per-module generation duplicated
+        // theme preflights, while global mode leaves placeholders in this build.
         ...unoBuildMode,
         layers: { site: 10 },
         shortcuts: Object.entries(siteShortcuts).map(
@@ -82,6 +102,7 @@ export default defineConfig({
           // Some component templates are compiled before extraction. Keep their
           // semantic shortcuts available in every route's production stylesheet.
           ...Object.keys(siteShortcuts),
+          ...chromeUtilities,
           "i-mdi-github",
           "i-mdi-linkedin",
           "i-mdi-instagram",

@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "Страница не найдена." } },
   "timezone": {
+    "createdBy": "Создано",
     "localTime": "Ваше местное время",
     "heroTitle": "Каждый часовой пояс.",
     "heroTail": "Давайте найдем ваш.",

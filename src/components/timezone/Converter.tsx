@@ -1,17 +1,21 @@
 import { DateTimeField } from "./DateTimeField";
+import { CopyFeedback } from "./CopyFeedback";
 import { SearchToolbar } from "./CitySearch";
 import { getLocaleInfo, t } from "@rimelight/i18n";
-import { createEffect, createMemo, createSignal, Show } from "solid-js";
-import { RLButton } from "@rimelight/ui";
+import { createEffect, createMemo, createSignal, lazy, Loading, Show } from "solid-js";
+import { RLButton, RLSpinner } from "@rimelight/ui";
 import { cities, flagCodes, formatClipboardTime } from "./data";
 import { displayCity } from "./city-names";
 import timezoneCountries from "#data/timezone-countries.json";
 import countryProfiles from "#data/country-timezones.json";
 import { AmberClock } from "./Clock";
 import { CityInfo } from "./CityInfo";
-import { DiscordConverter } from "./DiscordConverter";
 import { TimezoneOptions } from "./TimezoneOptions";
 import { TimezoneSelect } from "./TimezoneSelect";
+
+const DiscordConverter = lazy(() =>
+  import("./DiscordConverter").then((module) => ({ default: module.DiscordConverter })),
+);
 
 type Place = {
   zone: string;
@@ -358,16 +362,24 @@ export function Converter(props: {
         <Show
           when={mode() === "regular"}
           fallback={
-            <DiscordConverter
-              date={props.date}
-              from={props.from}
-              local={props.local}
-              instant={props.instant}
-              groups={groups()}
-              localLabel={localLabel()}
-              setDate={props.setDate}
-              setFrom={props.setFrom}
-            />
+            <Loading
+              fallback={
+                <div class="p-10" aria-busy="true" aria-label={t("timezone.discordHeading")}>
+                  <RLSpinner />
+                </div>
+              }
+            >
+              <DiscordConverter
+                date={props.date}
+                from={props.from}
+                local={props.local}
+                instant={props.instant}
+                groups={groups()}
+                localLabel={localLabel()}
+                setDate={props.setDate}
+                setFrom={props.setFrom}
+              />
+            </Loading>
           }
         >
           <div class="p-5 sm:p-8 lg:p-10">
@@ -381,7 +393,7 @@ export function Converter(props: {
               <div>
                 <p class="font-bold">{t("timezone.setTime")}</p>
               </div>
-              <div class="relative mx-auto w-full sm:max-w-sm md:absolute md:left-1/2 md:-translate-x-1/2">
+              <div class="converter-search">
                 <span class="sr-only">{t("timezone.searchTimezones")}</span>
                 <SearchToolbar
                   value={search()}
@@ -570,6 +582,7 @@ export function Converter(props: {
                   }}
                 </Show>
               </div>
+              <CopyFeedback message={props.copyStatus} />
             </div>
             <div class="mt-6 rounded-2xl border border-primary-700/50 bg-default p-5 sm:p-6">
               <p class="text-xs font-bold uppercase tracking-widest text-primary-500">
@@ -607,9 +620,6 @@ export function Converter(props: {
               </div>
               <p class="mt-4 text-xs opacity-60">{t("timezone.currentConditions")}</p>
             </div>
-            <p class="mt-2 text-sm text-default" role="status">
-              {props.copyStatus}
-            </p>
           </div>
         </Show>
       </div>

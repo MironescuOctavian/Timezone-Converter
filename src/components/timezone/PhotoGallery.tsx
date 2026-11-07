@@ -116,6 +116,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
           src={props.src}
           alt={props.title}
           loading="lazy"
+          decoding="async"
           class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         <span class="photo-overlay-control absolute bottom-3 right-3 grid size-9 place-items-center rounded-full border border-primary-500/50 bg-black/65 text-primary-500">

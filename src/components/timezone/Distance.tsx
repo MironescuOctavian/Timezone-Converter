@@ -3,6 +3,7 @@ import type { JSX } from "@solidjs/web";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 import timezoneCountries from "#data/timezone-countries.json";
 import { convertDistance, distanceKm, type Coordinates } from "./city-distance";
+import { fetchPublicJson } from "./fetch-json";
 
 type Origin = Coordinates & { city: string; inferred?: boolean };
 const DistanceContext = createContext<ReturnType<typeof createDistance>>();
@@ -42,11 +43,10 @@ function createDistance() {
           language: "en",
           format: "json",
         });
-        const result = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`, {
-          signal: controller.signal,
-        });
-        if (!result.ok) return;
-        const data = (await result.json()) as {
+        const data = (await fetchPublicJson(
+          `https://geocoding-api.open-meteo.com/v1/search?${params}`,
+          controller.signal,
+        )) as {
           results?: (Coordinates & { name: string; country_code: string; timezone?: string })[];
         };
         const match = data.results?.find(

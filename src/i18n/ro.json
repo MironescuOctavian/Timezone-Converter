@@ -544,6 +544,7 @@
     }
   },
   "timezone": {
+    "createdBy": "Creat de",
     "localTime": "Ora ta locală",
     "heroTitle": "Toate fusurile orare.",
     "heroTail": "Găsește ora potrivită.",

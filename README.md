@@ -123,7 +123,7 @@ scripts/check-locales.mjs      Localized-route smoke checks
 
 Keep display translations separate from timezone identifiers. `city-names.ts` formats city names for the UI; IANA identifiers such as `America/New_York` remain unchanged in conversion logic.
 
-Use Rimelight components and its UnoCSS preset for UI work. Ordinary component styles live in `src/styles/shortcuts.ts`; CSS files contain only theme variables and animation keyframes. UnoCSS uses per-module generation because the global placeholder path does not emit utility CSS in this project's Vite+/Cloudflare build. Semantic shortcuts are safelisted for templates compiled before extraction.
+Use Rimelight components and its UnoCSS preset for UI work. Ordinary component styles live in `src/styles/shortcuts.ts`; CSS files contain only theme variables and animation keyframes. UnoCSS uses chunk-based generation to avoid duplicated per-module preflights; global mode leaves unresolved placeholders in this Vite+/Cloudflare setup. Semantic shortcuts are safelisted for templates compiled before extraction. Keep `builder.sharedPlugins` enabled: it preserves the production client manifest across client and Worker builds.
 
 Static UI text uses Rimelight's typed `t("key")` lookup. Add each new key to all ten dictionaries; `scripts/i18n.test.mjs` checks coverage, including continent and ocean labels. Dynamic city and provider holiday names retain explicit fallbacks. Wikipedia extracts and provider-supplied holiday names can remain in their source language.
 

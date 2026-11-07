@@ -1,4 +1,5 @@
 import { DateTimeField } from "./DateTimeField";
+import { CopyFeedback } from "./CopyFeedback";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 import { createSignal, For, Show } from "solid-js";
 import { discordPreview, discordTimestamp, type DiscordStyle } from "./discord";
@@ -68,9 +69,10 @@ export function DiscordConverter(props: {
         : props.from;
   async function copy(style: DiscordStyle) {
     if (!props.instant) return;
+    setStatus("");
     try {
       await navigator.clipboard.writeText(discordTimestamp(props.instant, style));
-      setStatus(`${t("timezone.copied")} (${style})`);
+      setStatus(t("timezone.copied"));
     } catch {
       setStatus(t("timezone.copyFailed"));
     }
@@ -160,7 +162,7 @@ export function DiscordConverter(props: {
                     <code class="rounded-lg bg-primary-500/10 px-2.5 py-1.5 text-xs text-neutral-950">
                       {discordTimestamp(instant(), format.style)}
                     </code>
-                    <div class="min-w-40 flex-1">
+                    <div class="min-w-40 flex-1 text-center">
                       <p class="text-xs font-bold uppercase tracking-wider text-primary-500">
                         {format.label()}
                       </p>
@@ -184,9 +186,7 @@ export function DiscordConverter(props: {
             </div>
           )}
         </Show>
-        <p class="mt-4 min-h-5 text-sm text-primary-500" role="status" aria-live="polite">
-          {status()}
-        </p>
+        <CopyFeedback message={status()} />
       </div>
     </div>
   );

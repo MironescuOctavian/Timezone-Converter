@@ -1,9 +1,6 @@
-import { geoArea, geoCentroid, geoContains } from "d3-geo";
 import { t, getLocaleInfo } from "@rimelight/i18n";
-import { feature } from "topojson-client";
-import world from "world-atlas/countries-110m.json";
 import countryProfiles from "#data/country-timezones.json";
-import type { GeometryCollection, Topology } from "topojson-specification";
+import mapCountries from "#data/map-countries.json";
 import { dateFormatter } from "./date-format";
 
 // IANA timezone names include daylight saving rules; cities make them easier to recognize.
@@ -127,22 +124,13 @@ const countryCities: Record<string, number> = {
   "036": 24,
   "554": 25,
 };
-const topology = world as unknown as Topology<{ countries: GeometryCollection<{ name: string }> }>;
-const countries = feature(topology, topology.objects.countries).features;
-// Twenty-four 15° longitude bands approximate the world's hourly time zones.
-const globeGrid: GeoJSON.MultiLineString = {
-  type: "MultiLineString",
-  coordinates: Array.from({ length: 24 }, (_, index) =>
-    Array.from({ length: 91 }, (_, latitude) => [index * 15 - 180, latitude * 2 - 90]),
-  ),
-};
 // Keep the curated clocks above, then supply a representative IANA zone for every map shape.
 const specialProfiles: Record<string, { zone: string; flag: string }> = {
   "N. Cyprus": { zone: "Asia/Nicosia", flag: "cy" },
   Somaliland: { zone: "Africa/Mogadishu", flag: "so" },
   Kosovo: { zone: "Europe/Belgrade", flag: "xk" },
 };
-for (const country of countries) {
+for (const country of mapCountries) {
   const key = String(country.id ?? country.properties.name);
   if (countryCities[key] !== undefined) continue;
   const profile = country.id
@@ -157,21 +145,6 @@ for (const country of countries) {
   ]);
   flagCodes.push(profile.flag);
 }
-const labelCountries = countries
-  .map((country) => {
-    let centroid = geoCentroid(country);
-    if (!geoContains(country, centroid) && country.geometry.type === "MultiPolygon") {
-      const largest = country.geometry.coordinates
-        .map((coordinates) => ({ type: "Polygon" as const, coordinates }))
-        .sort((a, b) => geoArea(b) - geoArea(a))[0];
-      if (largest) centroid = geoCentroid(largest);
-    }
-    const name =
-      countryProfiles.find((profile) => profile.id === String(country.id))?.name ??
-      country.properties.name;
-    return { country, area: geoArea(country), centroid, name };
-  })
-  .sort((a, b) => b.area - a.area);
 const countryNamesByCode = new Map(countryProfiles.map((profile) => [profile.flag, profile.name]));
 const countryName = (index: number) =>
   countryNamesByCode.get(flagCodes[index]!) ?? cities[index]?.[1] ?? "";
@@ -256,10 +229,7 @@ export {
   cities,
   flagCodes,
   marqueeRows,
-  countries,
   countryCities,
-  globeGrid,
-  labelCountries,
   countryName,
   displayCountry,
   differenceMinutes,

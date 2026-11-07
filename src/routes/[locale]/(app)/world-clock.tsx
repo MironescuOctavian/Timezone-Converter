@@ -39,8 +39,15 @@ export default function WorldClockPage() {
     setTimelineStart(
       new Date(current.getFullYear(), current.getMonth(), current.getDate()).getTime(),
     );
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
+    const tick = () => {
+      if (!document.hidden) setNow(new Date());
+    };
+    const timer = setInterval(tick, 1000);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", tick);
+    };
   });
   const localIndex = createMemo(() => cities.findIndex((city) => city[2] === local()));
   const rows = createMemo(() => {

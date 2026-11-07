@@ -34,6 +34,9 @@ export default function AppHeader(props: AppHeaderProps) {
         ui={{
           container: () =>
             "mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8",
+          left: () => "flex min-w-0 shrink-0 items-center",
+          center: () => "hidden min-w-0 flex-1 items-center justify-center min-[1000px]:flex",
+          right: () => "flex shrink-0 items-center justify-end",
         }}
         left={
           <a
@@ -42,13 +45,16 @@ export default function AppHeader(props: AppHeaderProps) {
             aria-label={`Timezone Converter · ${t("timezone.navHome")}`}
           >
             <span class="i-lucide-code-xml size-7 text-primary-400" aria-hidden="true" />
-            <span class="hidden sm:inline">
+            <span class="whitespace-nowrap text-sm sm:text-base">
               Timezone Converter<span class="text-primary-300">.</span>
             </span>
           </a>
         }
         center={
-          <nav class="hidden items-center gap-1 md:flex" aria-label={t("timezone.pageSections")}>
+          <nav
+            class="flex items-center gap-1 whitespace-nowrap"
+            aria-label={t("timezone.pageSections")}
+          >
             <a
               href={getLocaleUrl("/", params["locale"])}
               class="rounded-full px-4 py-2 text-sm font-bold text-primary-500 hover:bg-primary-500/15"
@@ -67,13 +73,13 @@ export default function AppHeader(props: AppHeaderProps) {
           <div class="flex items-center gap-2">
             <a
               href={getLocaleUrl("/world-clock", params["locale"])}
-              class="text-xs font-bold text-primary-500 md:hidden"
+              class="whitespace-nowrap text-xs font-bold text-primary-500 min-[1000px]:hidden"
             >
               {t("timezone.worldClock")}
             </a>
             <a
               href="https://octavianmironescu.com/en/contact"
-              class="inline-flex min-h-12 items-center justify-center rounded-full bg-primary-500 px-6 text-base font-bold text-black"
+              class="hidden min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-primary-500 px-4 text-sm font-bold text-black sm:inline-flex lg:px-6"
             >
               {t("timezone.contact")}
             </a>

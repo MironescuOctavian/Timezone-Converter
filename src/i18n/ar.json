@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "لم يتم العثور على الصفحة." } },
   "timezone": {
+    "createdBy": "من إنشاء",
     "localTime": "توقيتك المحلي",
     "heroTitle": "كل منطقة زمنية.",
     "heroTail": "دعونا نجد لك.",

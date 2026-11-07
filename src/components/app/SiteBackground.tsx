@@ -1,5 +1,5 @@
 import "./site-background.css";
-import { For } from "solid-js";
+import { For, onSettled } from "solid-js";
 
 // Stable projected widths avoid 3D rings collapsing into overlapping hairlines.
 const meridianWidths = [120, 300, 480, 650, 790, 900];
@@ -17,8 +17,32 @@ const orbitalLights = [
 
 // CSS animates this single SVG: no scroll listeners, reactive updates, or canvas loop.
 export function SiteBackground() {
+  function observeVisibility(root: HTMLDivElement) {
+    onSettled(() => {
+      let animations: Animation[] = [];
+      let svgs: SVGSVGElement[] = [];
+      const sync = () => {
+        if (document.hidden) {
+          animations = root!
+            .getAnimations({ subtree: true })
+            .filter((animation) => animation.playState === "running");
+          svgs = [...root!.querySelectorAll("svg")].filter((svg) => !svg.animationsPaused());
+          animations.forEach((animation) => animation.pause());
+          svgs.forEach((svg) => svg.pauseAnimations());
+        } else {
+          animations.forEach((animation) => animation.play());
+          svgs.forEach((svg) => svg.unpauseAnimations());
+          animations = [];
+          svgs = [];
+        }
+      };
+      document.addEventListener("visibilitychange", sync);
+      sync();
+      return () => document.removeEventListener("visibilitychange", sync);
+    });
+  }
   return (
-    <div class="site-graticule" aria-hidden="true">
+    <div ref={observeVisibility} class="site-graticule" aria-hidden="true">
       <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" fill="none">
         <defs>
           <pattern id="atlas-crosses" width="48" height="48" patternUnits="userSpaceOnUse">

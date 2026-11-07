@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "पृष्ठ नहीं मिला।" } },
   "timezone": {
+    "createdBy": "निर्माता:",
     "localTime": "आपका स्थानीय समय",
     "heroTitle": "हर समय क्षेत्र.",
     "heroTail": "आइए आपका पता लगाएं",

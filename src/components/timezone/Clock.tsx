@@ -8,8 +8,8 @@ export function AmberClock(props: {
   full?: boolean;
 }) {
   return (
-    <For each={clockParts(props.date, props.zone, props.full)}>
-      {(part) => <span>{part.value}</span>}
+    <For keyed={false} each={clockParts(props.date, props.zone, props.full)}>
+      {(part) => <span>{part().value}</span>}
     </For>
   );
 }

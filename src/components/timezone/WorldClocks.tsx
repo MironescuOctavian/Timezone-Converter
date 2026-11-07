@@ -1,5 +1,5 @@
 import { t } from "@rimelight/i18n";
-import { For } from "solid-js";
+import { createEffect, createSignal, For, onSettled } from "solid-js";
 import { RLMarquee } from "@rimelight/ui";
 import { cities, displayCountry, flagCodes, marqueeRows } from "./data";
 import { displayCity } from "./city-names";
@@ -13,8 +13,51 @@ function setMarqueeRate(element: HTMLElement, rate: number) {
 }
 
 export function WorldClocks(props: { now: Date | undefined; differences: string[] }) {
+  const [visible, setVisible] = createSignal(true);
+  const [clockTime, setClockTime] = createSignal<Date>();
+  createEffect(
+    () => (visible() ? props.now : undefined),
+    (value) => {
+      if (value) setClockTime(value);
+    },
+  );
+  function observeSection(section: HTMLElement) {
+    onSettled(() => {
+      let intersects = true;
+      let paused: Animation[] = [];
+      const sync = () => {
+        const active = intersects && !document.hidden;
+        setVisible(active);
+        if (!active && !paused.length) {
+          paused = section!
+            .getAnimations({ subtree: true })
+            .filter((animation) => animation.playState === "running");
+          paused.forEach((animation) => animation.pause());
+        } else if (active) {
+          paused.forEach((animation) => animation.play());
+          paused = [];
+        }
+      };
+      const observer = new IntersectionObserver((entries) => {
+        intersects = entries[0]?.isIntersecting ?? false;
+        sync();
+      });
+      observer.observe(section);
+      document.addEventListener("visibilitychange", sync);
+      sync();
+      return () => {
+        observer.disconnect();
+        document.removeEventListener("visibilitychange", sync);
+      };
+    });
+  }
   return (
-    <section id="world-clocks" class="mb-16 scroll-mt-24" aria-labelledby="clocks-title">
+    <section
+      ref={observeSection}
+      id="world-clocks"
+      class="mb-16 scroll-mt-24"
+      aria-labelledby="clocks-title"
+    >
       <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <p class="text-xs font-bold tracking-widest text-primary-500">
@@ -78,7 +121,7 @@ export function WorldClocks(props: { now: Date | undefined; differences: string[
                       </div>
                     </div>
                     <p class="mt-4 whitespace-nowrap text-3xl font-bold tracking-tight tabular-nums">
-                      <AmberClock date={props.now} zone={city[2]} />
+                      <AmberClock date={clockTime()} zone={city[2]} />
                     </p>
                     <div class="mt-4 flex items-center justify-between gap-3 border-t border-primary-700/40 pt-3">
                       <span class="inline-flex items-center gap-1.5 rounded-full bg-primary-500/15 px-2.5 py-1 text-xs font-semibold text-primary-500">

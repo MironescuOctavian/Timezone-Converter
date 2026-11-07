@@ -1,3 +1,4 @@
+import { fetchPublicJson } from "./fetch-json";
 import { t } from "@rimelight/i18n";
 import { createEffect, createSignal, Show } from "solid-js";
 import { geoDistance } from "d3-geo";
@@ -78,16 +79,14 @@ export function CityInfo(props: {
           if (!location) {
             const params = new URLSearchParams({
               name,
-              count: "10",
+              count: "20",
               language: "en",
               format: "json",
             });
-            const response = await fetch(
+            const locations = (await fetchPublicJson(
               `https://geocoding-api.open-meteo.com/v1/search?${params}`,
-              { signal: controller.signal },
-            );
-            if (!response.ok) throw new Error("Location unavailable");
-            const locations = (await response.json()) as {
+              controller.signal,
+            )) as {
               results?: {
                 latitude: number;
                 longitude: number;
@@ -121,17 +120,12 @@ export function CityInfo(props: {
             origin: "*",
           });
           const [weatherResult, wikiResult] = await Promise.allSettled([
-            fetch(weatherUrl, { signal: controller.signal }).then((result) => {
-              if (!result.ok) throw new Error("Weather unavailable");
-              return result.json();
-            }),
+            fetchPublicJson(weatherUrl, controller.signal),
             details
-              ? fetch(`https://en.wikipedia.org/w/api.php?${wikiParams}`, {
-                  signal: controller.signal,
-                }).then((result) => {
-                  if (!result.ok) throw new Error("City details unavailable");
-                  return result.json();
-                })
+              ? fetchPublicJson(
+                  `https://en.wikipedia.org/w/api.php?${wikiParams}`,
+                  controller.signal,
+                )
               : Promise.reject(new Error("City details not requested")),
           ]);
           const info: CityInfoData = { latitude: location.latitude, longitude: location.longitude };
@@ -182,10 +176,11 @@ export function CityInfo(props: {
             }
           }
           if (!controller.signal.aborted) {
-            if (info.temperature !== undefined || info.extract || info.photo)
+            if (info.temperature !== undefined || info.extract || info.photo) {
               if (!cityInfoCache.has(key) && cityInfoCache.size >= 64)
                 cityInfoCache.delete(cityInfoCache.keys().next().value!);
-            cityInfoCache.set(key, { data: info, fetchedAt: Date.now() });
+              cityInfoCache.set(key, { data: info, fetchedAt: Date.now() });
+            }
             setData(info);
             setLoading(false);
           }

@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "找不到此页面。" } },
   "timezone": {
+    "createdBy": "创建者：",
     "localTime": "您的当地时间",
     "heroTitle": "每个时区。",
     "heroTail": "让我们找到你的。",

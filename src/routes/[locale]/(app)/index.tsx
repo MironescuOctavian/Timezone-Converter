@@ -24,6 +24,7 @@ import { PresenceLegend, PresenceMarkers } from "#components/timezone/PresenceMa
 import { geographicLabels } from "#components/timezone/geographic-labels";
 import { PageNav } from "#components/timezone/PageNav";
 import { dateFormatter } from "#components/timezone/date-format";
+import { globeGesture } from "#components/timezone/globe-gesture";
 
 export default function HomePage() {
   // Signals store the inputs, current time, and feedback shown after copying.
@@ -76,10 +77,7 @@ export default function HomePage() {
       city: local().split("/").at(-1)?.replaceAll("_", " ") ?? local(),
     };
   });
-  // Track the pointer outside reactive state while dragging in either direction.
-  let dragX: number | undefined;
-  let dragY: number | undefined;
-  let dragDistance = 0;
+  const gesture = globeGesture();
   let pressedCountry: number | undefined;
   const [dragging, setDragging] = createSignal(false);
   const [canvasReady, setCanvasReady] = createSignal(false);
@@ -122,6 +120,7 @@ export default function HomePage() {
   let rotationFrame = 0;
   let pendingLongitude = 0;
   let pendingLatitude = 0;
+  let pendingZoom: number | undefined;
   function flushRotation() {
     if (rotationFrame) cancelAnimationFrame(rotationFrame);
     rotationFrame = 0;
@@ -130,6 +129,20 @@ export default function HomePage() {
     pendingLongitude = pendingLatitude = 0;
     if (longitude) setRotation((angle) => angle + longitude);
     if (latitude) setTilt((angle) => Math.max(-90, Math.min(90, angle + latitude)));
+    if (pendingZoom !== undefined) setZoom(pendingZoom);
+    pendingZoom = undefined;
+  }
+  function endGesture(event: PointerEvent & { currentTarget: SVGSVGElement }, cancelled = false) {
+    flushRotation();
+    const tap = gesture.end(event.pointerId, cancelled);
+    setDragging(gesture.active);
+    if (tap && countryIsActive(pressedCountry)) {
+      setHoverCity(pressedCountry!);
+      setPin({ city: pressedCountry! });
+    }
+    if (!gesture.active) pressedCountry = undefined;
+    if (event.currentTarget.hasPointerCapture(event.pointerId))
+      event.currentTarget.releasePointerCapture(event.pointerId);
   }
   const projection = createMemo(() =>
     geoOrthographic().translate([260, 260]).scale(245).rotate([rotation(), tilt()]).clipAngle(90),
@@ -504,54 +517,37 @@ export default function HomePage() {
               onPointerDown={(event) => {
                 if (event.button !== 0) return;
                 event.preventDefault();
-                dragX = event.clientX;
-                dragY = event.clientY;
-                dragDistance = 0;
-                pressedCountry = hitCountry(event.currentTarget, event.clientX, event.clientY);
+                flushRotation();
+                const pinching = gesture.start(
+                  event.pointerId,
+                  event.clientX,
+                  event.clientY,
+                  zoom(),
+                );
+                pressedCountry = pinching
+                  ? undefined
+                  : hitCountry(event.currentTarget, event.clientX, event.clientY);
                 setDragging(true);
                 event.currentTarget.setPointerCapture(event.pointerId);
               }}
               onPointerMove={(event) => {
-                if (dragX === undefined || dragY === undefined) {
+                if (!gesture.active) {
+                  if (event.pointerType === "touch") return;
                   const index = hitCountry(event.currentTarget, event.clientX, event.clientY);
                   if (countryIsActive(index)) setHoverCity(index!);
                   return;
                 }
-                const distance = event.clientX - dragX;
-                const verticalDistance = event.clientY - dragY;
-                dragDistance += Math.hypot(distance, verticalDistance);
-                dragX = event.clientX;
-                dragY = event.clientY;
-                pendingLongitude += distance * 0.6;
-                pendingLatitude -= verticalDistance * 0.6;
+                const movement = gesture.move(event.pointerId, event.clientX, event.clientY);
+                if (!movement) return;
+                pendingLongitude += movement.dx * 0.6;
+                pendingLatitude -= movement.dy * 0.6;
+                if ("zoom" in movement) pendingZoom = movement.zoom;
                 // Pointer events can outpace refresh rate; project once per frame.
                 if (!rotationFrame) rotationFrame = requestAnimationFrame(flushRotation);
               }}
-              onPointerUp={(event) => {
-                flushRotation();
-                setDragging(false);
-                if (dragDistance < 6 && countryIsActive(pressedCountry)) {
-                  setHoverCity(pressedCountry!);
-                  setPin({ city: pressedCountry! });
-                }
-                dragX = undefined;
-                dragY = undefined;
-                pressedCountry = undefined;
-                event.currentTarget.releasePointerCapture(event.pointerId);
-              }}
-              onPointerCancel={() => {
-                flushRotation();
-                setDragging(false);
-                dragX = undefined;
-                dragY = undefined;
-                pressedCountry = undefined;
-              }}
-              onLostPointerCapture={() => {
-                flushRotation();
-                setDragging(false);
-                dragX = dragY = undefined;
-                pressedCountry = undefined;
-              }}
+              onPointerUp={(event) => endGesture(event)}
+              onPointerCancel={(event) => endGesture(event, true)}
+              onLostPointerCapture={(event) => endGesture(event, true)}
             >
               <circle
                 cx="260"

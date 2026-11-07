@@ -7,6 +7,7 @@ export const chromeUtilities = [
   "min-[1000px]:grid-cols-[1.3fr_1fr_1fr_1.3fr]",
   "min-[1000px]:flex",
   "min-[1000px]:hidden",
+  "min-[1000px]:inline-flex",
   "min-[1000px]:grid-cols-[1.4fr_0.8fr_0.8fr_1.2fr]",
   "sm:text-base",
   "border-b",

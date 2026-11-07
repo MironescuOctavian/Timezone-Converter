@@ -113,7 +113,7 @@ export function CanvasCountries(props: {
         }}
         width="1560"
         height="1560"
-        style={{ width: "100%", height: "100%", display: "block" }}
+        class="block h-full w-full"
         aria-hidden="true"
       />
     </foreignObject>

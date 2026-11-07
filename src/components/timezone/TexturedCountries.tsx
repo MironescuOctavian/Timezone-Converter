@@ -48,7 +48,9 @@ export function TexturedCountries(props: Props) {
   const [revision, setRevision] = createSignal(0);
   let paletteKey = "";
   const colorContext =
-    typeof document === "undefined" ? null : document.createElement("canvas").getContext("2d");
+    typeof document === "undefined"
+      ? null
+      : document.createElement("canvas").getContext("2d", { willReadFrequently: true });
   function color(name: string) {
     const probe = document.createElement("span");
     probe.style.cssText = `display:none;color:var(${name})`;
@@ -218,7 +220,7 @@ export function TexturedCountries(props: Props) {
           }}
           width="1560"
           height="1560"
-          style={{ width: "100%", height: "100%", display: "block" }}
+          class="block h-full w-full"
           aria-hidden="true"
         />
       </foreignObject>

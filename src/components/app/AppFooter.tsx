@@ -7,18 +7,7 @@ export default function AppFooter() {
   const params = useParams();
   return (
     <footer class="site-footer border-t border-primary-700 bg-neutral-50 text-neutral-950">
-      <div
-        class="site-footer-layout"
-        style={{
-          display: "flex",
-          "flex-direction": "row",
-          "flex-wrap": "nowrap",
-          "justify-content": "space-between",
-          "align-items": "flex-start",
-          gap: "2rem",
-          "overflow-x": "auto",
-        }}
-      >
+      <div class="site-footer-layout">
         <div>
           <a
             href={getLocaleUrl("/", params["locale"])}

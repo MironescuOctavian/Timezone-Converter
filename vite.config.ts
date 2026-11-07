@@ -56,6 +56,11 @@ export default defineConfig({
 
     security({
       domain: "octavianmironescu.com",
+      // UI components use dynamic style attributes; style/script blocks retain nonces.
+      directives: { "style-src-attr": ["'unsafe-inline'"] },
+      // RLMarquee 0.0.92 inserts this fixed style block on client navigation.
+      // Pin its contents rather than permitting arbitrary inline style blocks.
+      styleResources: ["'sha256-8K9desuhUhRw+rOTQ7fPQBp9b09vDtUQN6Z+zF4xwRo='"],
       connectSrc: [
         "https://geocoding-api.open-meteo.com",
         "https://api.open-meteo.com",

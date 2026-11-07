@@ -108,7 +108,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
           opener = element;
         }}
         type="button"
-        class="group relative block min-h-72 w-full overflow-hidden rounded-xl"
+        class="city-photo group"
         aria-label={t("timezone.openPhotos")}
         onClick={open}
       >

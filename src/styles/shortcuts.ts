@@ -1,11 +1,21 @@
 // Shared semantic shortcuts keep complex responsive/state styling in UnoCSS.
 // Theme variables and animation keyframes remain in the small CSS token files.
 export const siteShortcuts: Record<string, string> = {
+  "site-header-container":
+    "mx-auto grid max-w-6xl items-center [grid-template-columns:minmax(0,_1fr)_auto] [gap:0.5rem] [padding:0.75rem] [@media_(min-width:_1000px)]:flex [@media_(min-width:_1000px)]:justify-between [@media_(min-width:_1000px)]:[height:4.5rem] [@media_(min-width:_1000px)]:[gap:1rem] [@media_(min-width:_1000px)]:[padding:0_2rem]",
+  "site-header-navigation":
+    "min-w-0 [grid-column:1/-1] [grid-row:2] [@media_(min-width:_1000px)]:flex [@media_(min-width:_1000px)]:flex-1 [@media_(min-width:_1000px)]:justify-center",
+  "site-header-links":
+    "grid w-full grid-cols-3 items-center gap-1 text-center [&_a]:flex [&_a]:items-center [&_a]:justify-center [&_a]:[min-height:2.75rem] [@media_(max-width:_999px)]:[&_a]:[padding:0.5rem] [@media_(max-width:_999px)]:[&_a]:[font-size:0.75rem] [@media_(max-width:_999px)]:[&_a]:[line-height:1.25] [@media_(min-width:_1000px)]:flex [@media_(min-width:_1000px)]:[width:auto] [@media_(min-width:_1000px)]:whitespace-nowrap",
+  "site-header-mobile-contact": "[@media_(min-width:_1000px)]:[display:none_!important]",
   "copy-feedback":
     "mt-4 rounded-xl border border-primary-700/40 bg-primary-500/10 px-5 py-4 text-center text-lg font-bold text-primary-500 [animation:section-enter_250ms_ease-out_both] [@media(prefers-reduced-motion:reduce)]:[animation:none]",
   "converter-search":
     "relative mx-auto w-full max-w-sm [@media(min-width:768px)]:absolute [@media(min-width:768px)]:[left:50%] [@media(min-width:768px)]:[transform:translateX(-50%)]",
-  "site-footer-layout": "mx-auto max-w-6xl px-5 py-8 text-center [&>div]:shrink-0 [&>div]:min-w-0",
+  "site-footer-layout":
+    "mx-auto flex flex-row flex-nowrap items-start justify-between gap-8 overflow-x-auto max-w-6xl px-5 py-8 text-center [&>div]:shrink-0 [&>div]:min-w-0",
+  "city-photo":
+    "relative block w-full overflow-hidden rounded-xl [aspect-ratio:4/3] [&:not(:disabled)]:[min-height:18rem] [@media_(min-width:_640px)]:[aspect-ratio:auto]",
   "timezone-page":
     "[width:100%] [max-width:72rem] [margin-inline:auto] [padding:2rem_1.25rem_5rem] [color:var(--rl-neutral-950)] [@media_(min-width:_640px)]:[padding-inline:2rem] [&_>_section]:[margin-block:0] [&_>_section_+_section]:[margin-top:clamp(3.5rem,_6vw,_5rem)] [&_.section-heading]:[margin-bottom:1.75rem] [&_>_section]:[animation:section-enter_0.65s_ease-out_both] [&_button]:[transition:transform_0.2s_ease,_box-shadow_0.2s_ease,_background-color_0.2s_ease] [&_a]:[transition:transform_0.2s_ease,_box-shadow_0.2s_ease,_background-color_0.2s_ease] [&_button:hover]:[transform:translateY(-2px)] [&_a:hover]:[transform:translateY(-2px)] [@media_(prefers-reduced-motion:_reduce)]:[&_>_section]:[animation:none] [@media_(prefers-reduced-motion:_reduce)]:[&_button]:[transition:none] [@media_(prefers-reduced-motion:_reduce)]:[&_a]:[transition:none] [@media_(prefers-reduced-motion:_reduce)]:[&_button:hover]:[transform:none] [@media_(prefers-reduced-motion:_reduce)]:[&_a:hover]:[transform:none] [@media_(hover:_hover)_and_(prefers-reduced-motion:_no-preference)]:[&_button:not(:disabled):hover]:[box-shadow:0_4px_16px_color-mix(in_srgb,_var(--rl-primary-500)_16%,_transparent)] [@media_(hover:_hover)_and_(prefers-reduced-motion:_no-preference)]:[&_a.hero-cta:hover]:[box-shadow:0_4px_16px_color-mix(in_srgb,_var(--rl-primary-500)_16%,_transparent)] [@media_(hover:_hover)_and_(prefers-reduced-motion:_no-preference)]:[&_button:not(:disabled):active]:[transform:scale(0.98)] [@media_(hover:_hover)_and_(prefers-reduced-motion:_no-preference)]:[&_button:not(:disabled):active]:[box-shadow:none] [&_a.hero-cta]:[min-width:min(100%,_22rem)] [&_a.hero-cta]:[min-height:4.5rem] [&_a.hero-cta]:[padding:1rem_2rem] [&_a.hero-cta]:justify-center [&_a.hero-cta]:[font-size:1.15rem] [&_a.hero-cta]:[box-shadow:0_8px_28px_color-mix(in_srgb,_var(--rl-primary-500)_12%,_transparent)] [&_.section-rail_>_a:hover]:[transform:none] [@media_(max-width:_1279px)]:[padding-bottom:7rem] [--timeline-day:#ffbf00] [--timeline-evening:#ac7b20] [--timeline-night:#40331d]",
   "timezone-world-clock": "[padding-top:7rem]",

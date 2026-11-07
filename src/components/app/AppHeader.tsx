@@ -32,16 +32,15 @@ export default function AppHeader(props: AppHeaderProps) {
         stackIndex={props.stackIndex ?? 50}
         class="border-b border-primary-700/60 bg-neutral-50/95 text-neutral-950 backdrop-blur-xl"
         ui={{
-          container: () =>
-            "mx-auto flex h-18 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8",
+          container: () => "site-header-container",
           left: () => "flex min-w-0 shrink-0 items-center",
-          center: () => "hidden min-w-0 flex-1 items-center justify-center min-[1000px]:flex",
+          center: () => "site-header-navigation",
           right: () => "flex shrink-0 items-center justify-end",
         }}
         left={
           <a
             href={getLocaleUrl("/", params["locale"])}
-            class="inline-flex items-center gap-3 font-bold tracking-tight text-neutral-950"
+            class="inline-flex items-center gap-2 font-bold tracking-tight text-neutral-950"
             aria-label={`Timezone Converter · ${t("timezone.navHome")}`}
           >
             <span class="i-lucide-code-xml size-7 text-primary-400" aria-hidden="true" />
@@ -51,10 +50,7 @@ export default function AppHeader(props: AppHeaderProps) {
           </a>
         }
         center={
-          <nav
-            class="flex items-center gap-1 whitespace-nowrap"
-            aria-label={t("timezone.pageSections")}
-          >
+          <nav class="site-header-links" aria-label={t("timezone.pageSections")}>
             <a
               href={getLocaleUrl("/", params["locale"])}
               class="rounded-full px-4 py-2 text-sm font-bold text-primary-500 hover:bg-primary-500/15"
@@ -67,19 +63,19 @@ export default function AppHeader(props: AppHeaderProps) {
             >
               {t("timezone.worldClock")}
             </a>
+            <a
+              href="https://octavianmironescu.com/en/contact"
+              class="site-header-mobile-contact rounded-full bg-primary-500 px-3 py-2 text-xs font-bold text-black"
+            >
+              {t("timezone.contact")}
+            </a>
           </nav>
         }
         right={
           <div class="flex items-center gap-2">
             <a
-              href={getLocaleUrl("/world-clock", params["locale"])}
-              class="whitespace-nowrap text-xs font-bold text-primary-500 min-[1000px]:hidden"
-            >
-              {t("timezone.worldClock")}
-            </a>
-            <a
               href="https://octavianmironescu.com/en/contact"
-              class="hidden min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-primary-500 px-4 text-sm font-bold text-black sm:inline-flex lg:px-6"
+              class="hidden min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-primary-500 px-4 text-sm font-bold text-black min-[1000px]:inline-flex lg:px-6"
             >
               {t("timezone.contact")}
             </a>

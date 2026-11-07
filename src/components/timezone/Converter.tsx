@@ -1,5 +1,6 @@
 import { DateTimeField } from "./DateTimeField";
 import { CopyFeedback } from "./CopyFeedback";
+import { createConversionCount } from "./conversion-count";
 import { SearchToolbar } from "./CitySearch";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 import { createEffect, createMemo, createSignal, lazy, Loading, Show } from "solid-js";
@@ -47,6 +48,16 @@ export function Converter(props: {
   destinationRef: (element: HTMLElement) => void;
 }) {
   const [mode, setMode] = createSignal<"regular" | "discord">("regular");
+  const [interacted, setInteracted] = createSignal(false);
+  const conversionCount = createConversionCount(() =>
+    interacted() && mode() === "regular" && props.instant
+      ? `${props.instant.getTime()}:${props.from}:${props.to}`
+      : undefined,
+  );
+  function inputChanged() {
+    setInteracted(true);
+    props.setCopyStatus("");
+  }
   const [search, setSearch] = createSignal("");
   const [remotePlaces, setRemotePlaces] = createSignal<Place[]>([]);
   const [selectedPlace, setSelectedPlace] = createSignal<Place>();
@@ -58,6 +69,7 @@ export function Converter(props: {
     () => props.convertedCity,
     (city) => {
       if (city !== undefined) {
+        setInteracted(true);
         setMode("regular");
         setSelectedFlag(undefined);
         setSelectedPlace(undefined);
@@ -301,7 +313,7 @@ export function Converter(props: {
         : { ...match, value: `${match.zone}#${encodeURIComponent(match.city)}` },
     );
     props.setConvertedCity(undefined);
-    props.setCopyStatus("");
+    inputChanged();
     setSearch(`${match.label} (${match.zone})`);
   }
   const convertedDay = createMemo(() => {
@@ -418,7 +430,7 @@ export function Converter(props: {
                   value={props.date}
                   onChange={(value) => {
                     props.setDate(value);
-                    props.setCopyStatus("");
+                    inputChanged();
                   }}
                 />
               </div>
@@ -441,7 +453,7 @@ export function Converter(props: {
                         ? props.local
                         : e.currentTarget.value.split("#")[0]!,
                     );
-                    props.setCopyStatus("");
+                    inputChanged();
                   }}
                 >
                   <TimezoneOptions
@@ -485,7 +497,7 @@ export function Converter(props: {
                     );
                     setSearch("");
                     props.setConvertedCity(undefined);
-                    props.setCopyStatus("");
+                    inputChanged();
                   }}
                 >
                   <TimezoneOptions
@@ -505,7 +517,7 @@ export function Converter(props: {
             </div>
             {/* A full date makes changes across midnight visible. */}
             <div
-              class="mt-8 flex flex-col items-center gap-6 rounded-2xl border border-primary-700 bg-gradient-to-br from-primary-950/60 to-neutral-50 px-5 py-8 text-center text-neutral-950 sm:px-8 sm:py-10"
+              class="relative mt-8 flex flex-col items-center gap-6 rounded-2xl border border-primary-700 bg-gradient-to-br from-primary-950/60 to-neutral-50 px-5 pt-8 pb-14 text-center text-neutral-950 sm:px-8 sm:pt-10 sm:pb-14"
               aria-live="polite"
             >
               <div>
@@ -583,6 +595,18 @@ export function Converter(props: {
                 </Show>
               </div>
               <CopyFeedback message={props.copyStatus} />
+              <Show when={conversionCount() !== undefined}>
+                <span class="absolute bottom-3 right-4 inline-flex items-center gap-1.5 text-xs text-neutral-950/65">
+                  <span
+                    class="i-lucide-arrow-left-right size-3.5 text-primary-500"
+                    aria-hidden="true"
+                  />
+                  <strong class="font-semibold tabular-nums">
+                    {new Intl.NumberFormat(getLocaleInfo().tag).format(conversionCount()!)}
+                  </strong>
+                  {t("timezone.siteConversions")}
+                </span>
+              </Show>
             </div>
             <div class="mt-6 rounded-2xl border border-primary-700/50 bg-default p-5 sm:p-6">
               <p class="text-xs font-bold uppercase tracking-widest text-primary-500">

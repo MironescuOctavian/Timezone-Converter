@@ -2,6 +2,9 @@ import { createMemo, createSignal, For, Show } from "solid-js";
 import { geoDistance, type GeoProjection } from "d3-geo";
 import { t } from "@rimelight/i18n";
 import { usePresence } from "./Presence";
+import { REGIONS, MIN_REGION_VIEWERS } from "#presence/regions";
+const regionLabel = (key: keyof typeof REGIONS) => t(`timezone.${REGIONS[key].label}`);
+const countRange = (count: number) => `${count}–${count + MIN_REGION_VIEWERS - 1}`;
 
 export function PresenceMarkers(props: { projection: GeoProjection; zoom: number }) {
   const presence = usePresence();
@@ -10,7 +13,7 @@ export function PresenceMarkers(props: { projection: GeoProjection; zoom: number
     const project = props.projection;
     const center = project.invert?.([260, 260]);
     if (!center) return [];
-    return presence.cities().flatMap((city) => {
+    return presence.regions().flatMap((city) => {
       const coordinates: [number, number] = [city.longitude, city.latitude];
       if (geoDistance(center, coordinates) >= Math.PI / 2 - 0.03) return [];
       const point = project(coordinates);
@@ -26,7 +29,7 @@ export function PresenceMarkers(props: { projection: GeoProjection; zoom: number
             transform={`translate(${city.x},${city.y}) scale(${1 / props.zoom})`}
             tabindex="0"
             role="img"
-            aria-label={`${city.city} · ${city.timezone} · ${city.viewers} ${t("timezone.online")}`}
+            aria-label={`${regionLabel(city.key)} · ${countRange(city.viewers)} ${t("timezone.online")}`}
             onPointerEnter={() => setHovered(city.key)}
             onPointerLeave={() => setHovered(undefined)}
             onFocus={() => setHovered(city.key)}
@@ -67,10 +70,10 @@ export function PresenceMarkers(props: { projection: GeoProjection; zoom: number
               font-size="11"
               font-weight="700"
             >
-              {city().city.slice(0, 25)} · {city().viewers} {t("timezone.online")}
+              {regionLabel(city().key)}
             </text>
             <text x="0" y="-25" text-anchor="middle" fill="white" font-size="10">
-              {city().timezone.replaceAll("_", " ")}
+              {countRange(city().viewers)} {t("timezone.viewersOnline")}
             </text>
             <text x="0" y="-11" text-anchor="middle" fill="#bcb5a6" font-size="8">
               {t("timezone.anonymousViewer")}
@@ -88,16 +91,16 @@ export function PresenceLegend() {
     <div class="mt-4 rounded-xl border border-primary-700/40 bg-primary-500/5 p-4 text-center">
       <p class="flex items-center justify-center gap-2 text-sm font-semibold">
         <span class="i-lucide-users size-4 text-primary-500" aria-hidden="true" />
-        {presence.connected()
-          ? `${presence.total()} ${presence.total() === 1 ? t("timezone.viewerOnline") : t("timezone.viewersOnline")}`
+        {presence.connected() && presence.ready()
+          ? `${countRange(presence.total())} ${t("timezone.viewersOnline")}`
           : t("timezone.presenceConnecting")}
       </p>
       <p class="mt-2 text-xs leading-relaxed opacity-70">{t("timezone.presencePrivacy")}</p>
       <p class="mt-2 text-xs text-primary-500">
         {presence.hidden()
           ? t("timezone.presenceHidden")
-          : presence.location()
-            ? `${presence.location()!.city} · ${presence.location()!.timezone.replaceAll("_", " ")}`
+          : presence.sharing()
+            ? t("timezone.presenceSharing")
             : t("timezone.presenceUnknown")}
       </p>
       <button

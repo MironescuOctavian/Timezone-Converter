@@ -1,6 +1,12 @@
 import { geoRotation, geoEquirectangular, geoPath, type GeoProjection } from "d3-geo";
 import { countries } from "./geography";
 
+// Render the visible square directly instead of magnifying a cropped canvas.
+export function globeViewport(zoom: number) {
+  const scale = 1 / Math.max(1, Math.min(4, zoom));
+  return { origin: 260 * (1 - scale), size: 520 * scale, scale };
+}
+
 // Columns map camera-facing, right and up axes back to geographic coordinates.
 export function inverseGlobeRotation(rotation: [number, number, number]) {
   const transform = geoRotation(rotation);
@@ -31,6 +37,8 @@ export function bakeGlobeTextures(width = 2048) {
   const idContext = ids.getContext("2d")!,
     borderContext = borders.getContext("2d")!;
   const projection = geoEquirectangular()
+    // Resolve curved coastlines more finely once, while baking reusable textures.
+    .precision(0.1)
     .translate([width / 2, width / 4])
     .scale(width / (2 * Math.PI));
   const idPath = geoPath(projection, idContext),

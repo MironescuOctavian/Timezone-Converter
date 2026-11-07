@@ -1,8 +1,5 @@
-import { TexturedCountries } from "#components/timezone/TexturedCountries";
 import { t } from "@rimelight/i18n";
-import { createEffect, createMemo, createSignal, For, onSettled, Show } from "solid-js";
-import { RLButton } from "@rimelight/ui";
-import { geoCentroid, geoContains, geoDistance, geoOrthographic, geoPath } from "d3-geo";
+import { createMemo, createSignal, For, lazy, Loading, onSettled, Show } from "solid-js";
 import timezoneCountries from "#data/timezone-countries.json";
 import {
   cities,
@@ -14,19 +11,23 @@ import {
   toInstant,
   formatClipboardTime,
 } from "#components/timezone/data";
-import { countries, globeGrid, labelCountries } from "#components/timezone/geography";
 import "#components/timezone/page.css";
 import { Hero } from "#components/timezone/Hero";
 import { WorldClocks } from "#components/timezone/WorldClocks";
 import { Converter } from "#components/timezone/Converter";
 import { CountryCard } from "#components/timezone/CountryCard";
-import { PresenceLegend, PresenceMarkers } from "#components/timezone/PresenceMarkers";
-import { geographicLabels } from "#components/timezone/geographic-labels";
+import { PresenceLegend } from "#components/timezone/PresenceMarkers";
 import { PageNav } from "#components/timezone/PageNav";
 import { dateFormatter } from "#components/timezone/date-format";
-import { globeGesture } from "#components/timezone/globe-gesture";
+
+import { useGlobeActivation } from "#components/timezone/GlobeActivation";
+import { GlobePlaceholder } from "#components/timezone/GlobePlaceholder";
+const InteractiveGlobe = lazy(() => import("#components/timezone/InteractiveGlobe"));
 
 export default function HomePage() {
+  const activation = useGlobeActivation();
+  const [mapSelection, setMapSelection] = createSignal<number>();
+
   // Signals store the inputs, current time, and feedback shown after copying.
   const [now, setNow] = createSignal<Date | undefined>();
   const [local, setLocal] = createSignal("UTC");
@@ -35,9 +36,6 @@ export default function HomePage() {
   const [date, setDate] = createSignal("");
   const [copyStatus, setCopyStatus] = createSignal("");
   const [hoverCity, setHoverCity] = createSignal(5);
-  const [rotation, setRotation] = createSignal(-25);
-  const [tilt, setTilt] = createSignal(-15);
-  const [zoom, setZoom] = createSignal(1);
   const [pin, setPin] = createSignal<{
     city: number;
     zone?: string;
@@ -55,7 +53,6 @@ export default function HomePage() {
   });
   let converterSection: HTMLElement | undefined;
   let destinationSelect: HTMLElement | undefined;
-  let globePanel: HTMLDivElement | undefined;
   const localClock = createMemo(() => {
     const current = now();
     if (!current) return { time: "--:--:--", zone: "LOCAL TIME", city: "" };
@@ -76,118 +73,6 @@ export default function HomePage() {
       zone: parts.find((part) => part.type === "timeZoneName")?.value ?? local(),
       city: local().split("/").at(-1)?.replaceAll("_", " ") ?? local(),
     };
-  });
-  const gesture = globeGesture();
-  let pressedCountry: number | undefined;
-  const [dragging, setDragging] = createSignal(false);
-  const [canvasReady, setCanvasReady] = createSignal(false);
-  const [adjusting, setAdjusting] = createSignal(false);
-  let interactionTimer: ReturnType<typeof setTimeout> | undefined;
-  function markInteraction() {
-    setAdjusting(true);
-    clearTimeout(interactionTimer);
-    interactionTimer = setTimeout(() => setAdjusting(false), 180);
-  }
-  function hitCountry(svg: SVGSVGElement, x: number, y: number) {
-    const matrix = svg.getScreenCTM();
-    if (!matrix) return;
-    const point = new DOMPoint(x, y).matrixTransform(matrix.inverse());
-    if (Math.hypot(point.x - 260, point.y - 260) > 245) return;
-    const coordinates = projection().invert?.([point.x, point.y]);
-    if (!coordinates) return;
-    const country = countries.find((shape) => geoContains(shape, coordinates));
-    return country ? countryCities[String(country.id ?? country.properties.name)] : undefined;
-  }
-  createEffect(
-    () => dragging() || adjusting(),
-    (active) => {
-      if (!active) return;
-      const roots = [...document.querySelectorAll(".site-graticule, .clock-marquee")];
-      const animations = roots
-        .flatMap((root) => root.getAnimations({ subtree: true }))
-        .filter((animation) => animation.playState === "running");
-      const svgs = [...document.querySelectorAll<SVGSVGElement>(".site-graticule svg")].filter(
-        (svg) => !svg.animationsPaused(),
-      );
-      animations.forEach((animation) => animation.pause());
-      svgs.forEach((svg) => svg.pauseAnimations());
-      return () => {
-        animations.forEach((animation) => animation.play());
-        svgs.forEach((svg) => svg.unpauseAnimations());
-      };
-    },
-  );
-  let rotationFrame = 0;
-  let pendingLongitude = 0;
-  let pendingLatitude = 0;
-  let pendingZoom: number | undefined;
-  function flushRotation() {
-    if (rotationFrame) cancelAnimationFrame(rotationFrame);
-    rotationFrame = 0;
-    const longitude = pendingLongitude;
-    const latitude = pendingLatitude;
-    pendingLongitude = pendingLatitude = 0;
-    if (longitude) setRotation((angle) => angle + longitude);
-    if (latitude) setTilt((angle) => Math.max(-90, Math.min(90, angle + latitude)));
-    if (pendingZoom !== undefined) setZoom(pendingZoom);
-    pendingZoom = undefined;
-  }
-  function endGesture(event: PointerEvent & { currentTarget: SVGSVGElement }, cancelled = false) {
-    flushRotation();
-    const tap = gesture.end(event.pointerId, cancelled);
-    setDragging(gesture.active);
-    if (tap && countryIsActive(pressedCountry)) {
-      setHoverCity(pressedCountry!);
-      setPin({ city: pressedCountry! });
-    }
-    if (!gesture.active) pressedCountry = undefined;
-    if (event.currentTarget.hasPointerCapture(event.pointerId))
-      event.currentTarget.releasePointerCapture(event.pointerId);
-  }
-  const projection = createMemo(() =>
-    geoOrthographic().translate([260, 260]).scale(245).rotate([rotation(), tilt()]).clipAngle(90),
-  );
-  // Tenths of a viewBox unit preserve the map outline while shortening DOM updates.
-  const path = createMemo(() => geoPath(projection()).digits(1));
-  const regionLabels = createMemo(() => geographicLabels(projection(), zoom()));
-  const namedCountries = createMemo(() =>
-    labelCountries.flatMap((item) => {
-      const index = countryCities[String(item.country.id ?? item.country.properties.name)];
-      return index === undefined ? [] : [{ ...item, name: displayCountry(index) }];
-    }),
-  );
-  const countryLabels = createMemo(() => {
-    const project = projection();
-    const center = project.invert?.([260, 260]);
-    if (!center) return [];
-    const scale = zoom();
-    const minimumArea = scale >= 4 ? 0 : 0.035 * Math.pow((4 - scale) / 3, 3);
-    const labels: { x: number; y: number; name: string; width: number; key: string }[] = [];
-    for (const { country, centroid, area, name } of namedCountries()) {
-      if (area < minimumArea) continue;
-      const index = countryCities[String(country.id ?? country.properties.name)];
-      if (index === undefined) continue;
-      if (geoDistance(center, centroid) > Math.PI / 2 - 0.08) continue;
-      const point = project(centroid);
-      const width = Math.max(20, name.length * 5.5) / scale;
-      if (
-        !point ||
-        labels.some(
-          (label) =>
-            Math.abs(label.x - point[0]) < (label.width + width) / 2 &&
-            Math.abs(label.y - point[1]) < 12 / scale,
-        )
-      )
-        continue;
-      labels.push({
-        x: point[0],
-        y: point[1],
-        name,
-        width,
-        key: String(country.id ?? country.properties.name),
-      });
-    }
-    return labels;
   });
   const instant = createMemo(() => toInstant(date(), from()));
   const currentMinute = createMemo(() =>
@@ -255,17 +140,7 @@ export default function HomePage() {
 
   function selectCity(index: number) {
     setHoverCity(index);
-    const country = countries.find(
-      (item) => countryCities[String(item.id ?? item.properties.name)] === index,
-    );
-    if (country) {
-      const [longitude, latitude] = geoCentroid(country);
-      setRotation(-longitude);
-      setTilt(-latitude);
-    } else {
-      setRotation(100); // The three US clocks share the same country outline.
-      setTilt(-40);
-    }
+    setMapSelection(index);
   }
 
   function searchCity(value: string) {
@@ -296,21 +171,13 @@ export default function HomePage() {
     const localIndex =
       exactIndex >= 0 ? exactIndex : flagCodes.findIndex((code) => code === countryCode);
     if (localIndex >= 0) {
-      const country = countries.find((item) => {
-        const index = countryCities[String(item.id ?? item.properties.name)];
-        return index !== undefined && flagCodes[index] === flagCodes[localIndex];
+      setPin({
+        city: localIndex,
+        zone,
+        cityName: (zone.split("/").at(-1) ?? zone).replaceAll("_", " "),
       });
-      if (country) {
-        const coordinates = labelCountries.find((item) => item.country === country)!.centroid;
-        setPin({
-          city: localIndex,
-          zone,
-          cityName: (zone.split("/").at(-1) ?? zone).replaceAll("_", " "),
-        });
-        setHoverCity(localIndex);
-        setRotation(-coordinates[0]);
-        setTilt(-coordinates[1]);
-      }
+      setHoverCity(localIndex);
+      setMapSelection(localIndex);
     }
     setDate(
       new Date(current.getTime() - current.getTimezoneOffset() * 60_000).toISOString().slice(0, 19),
@@ -321,26 +188,9 @@ export default function HomePage() {
     };
     const timer = setInterval(tick, 1000);
     document.addEventListener("visibilitychange", tick);
-    const panel = globePanel;
-    const onWheel = (event: WheelEvent) => {
-      if (
-        event.ctrlKey ||
-        event.metaKey ||
-        event.deltaY === 0 ||
-        (event.target instanceof Element && event.target.closest("select, input"))
-      )
-        return;
-      event.preventDefault();
-      markInteraction();
-      setZoom((value) => Math.max(1, Math.min(4, value + (event.deltaY < 0 ? 0.25 : -0.25))));
-    };
-    panel?.addEventListener("wheel", onWheel, { passive: false });
     return () => {
       clearInterval(timer);
       document.removeEventListener("visibilitychange", tick);
-      clearTimeout(interactionTimer);
-      if (rotationFrame) cancelAnimationFrame(rotationFrame);
-      panel?.removeEventListener("wheel", onWheel);
     };
   });
 
@@ -412,9 +262,6 @@ export default function HomePage() {
         </div>
         {/* Country selection also works without precision pointing on the globe. */}
         <div
-          ref={(element) => {
-            globePanel = element;
-          }}
           id="globe"
           class="globe-panel min-w-0 relative scroll-mt-24 rounded-3xl border border-primary-700 bg-neutral-50 p-5 text-center shadow-[0_8px_40px_var(--rl-primary-950)] sm:p-7"
         >
@@ -508,143 +355,23 @@ export default function HomePage() {
             </p>
             <p class="mt-1 text-left text-xs opacity-65">{t("timezone.bandExplanation")}</p>
           </div>
-          <div class="globe-stage relative min-w-0">
-            <svg
-              viewBox={`${260 - 260 / zoom()} ${260 - 260 / zoom()} ${520 / zoom()} ${520 / zoom()}`}
-              class="globe-canvas mx-auto mt-3 w-full cursor-grab touch-none active:cursor-grabbing"
-              role="img"
-              aria-label="Interactive globe. Drag to rotate; tap a highlighted country to see its time, or use the country selector."
-              onPointerDown={(event) => {
-                if (event.button !== 0) return;
-                event.preventDefault();
-                flushRotation();
-                const pinching = gesture.start(
-                  event.pointerId,
-                  event.clientX,
-                  event.clientY,
-                  zoom(),
-                );
-                pressedCountry = pinching
-                  ? undefined
-                  : hitCountry(event.currentTarget, event.clientX, event.clientY);
-                setDragging(true);
-                event.currentTarget.setPointerCapture(event.pointerId);
-              }}
-              onPointerMove={(event) => {
-                if (!gesture.active) {
-                  if (event.pointerType === "touch") return;
-                  const index = hitCountry(event.currentTarget, event.clientX, event.clientY);
-                  if (countryIsActive(index)) setHoverCity(index!);
-                  return;
-                }
-                const movement = gesture.move(event.pointerId, event.clientX, event.clientY);
-                if (!movement) return;
-                pendingLongitude += movement.dx * 0.6;
-                pendingLatitude -= movement.dy * 0.6;
-                if ("zoom" in movement) pendingZoom = movement.zoom;
-                // Pointer events can outpace refresh rate; project once per frame.
-                if (!rotationFrame) rotationFrame = requestAnimationFrame(flushRotation);
-              }}
-              onPointerUp={(event) => endGesture(event)}
-              onPointerCancel={(event) => endGesture(event, true)}
-              onLostPointerCapture={(event) => endGesture(event, true)}
-            >
-              <circle
-                cx="260"
-                cy="260"
-                r="245"
-                fill="var(--rl-primary-950)"
-                stroke="var(--rl-primary-500)"
-              />
-              <TexturedCountries
-                projection={projection()}
-                dragging={dragging() || adjusting()}
-                hover={hoverCity()}
+          <Show
+            when={activation.enabled()}
+            fallback={<GlobePlaceholder onEnable={activation.enable} />}
+          >
+            <Loading fallback={<GlobePlaceholder loading />}>
+              <InteractiveGlobe
+                selection={mapSelection()}
+                hoverCity={hoverCity()}
                 active={countryIsActive}
-                onReady={() => setCanvasReady(true)}
+                onHover={setHoverCity}
+                onSelect={(city) => {
+                  setHoverCity(city);
+                  setPin({ city });
+                }}
               />
-              <Show when={!canvasReady()}>
-                <For each={countries}>
-                  {(country) => (
-                    <path
-                      d={path()(country) ?? ""}
-                      fill="var(--rl-primary-500)"
-                      fill-opacity={
-                        countryIsActive(
-                          countryCities[String(country.id ?? country.properties.name)],
-                        )
-                          ? ".7"
-                          : ".1"
-                      }
-                      stroke="var(--rl-neutral-50)"
-                      stroke-width=".7"
-                    />
-                  )}
-                </For>
-              </Show>
-              <path
-                d={path()(globeGrid) ?? ""}
-                fill="none"
-                stroke="var(--rl-primary-500)"
-                stroke-opacity=".28"
-                stroke-width=".8"
-                pointer-events="none"
-              />
-              <For
-                keyed={false}
-                each={
-                  zoom() > 1
-                    ? countryLabels().filter((label) => countryIsActive(countryCities[label.key]))
-                    : []
-                }
-              >
-                {(label) => (
-                  <text
-                    x={label().x}
-                    y={label().y}
-                    text-anchor="middle"
-                    dominant-baseline="central"
-                    fill="var(--site-map-country-label)"
-                    stroke="var(--site-map-label-outline)"
-                    paint-order="stroke"
-                    font-size={String(11 / zoom())}
-                    stroke-width={String(3 / zoom())}
-                    font-weight="700"
-                    pointer-events="none"
-                    aria-hidden="true"
-                  >
-                    {label().name}
-                  </text>
-                )}
-              </For>
-              <For keyed={false} each={regionLabels()}>
-                {(label) => (
-                  <text
-                    class="globe-region-label"
-                    x={label().x}
-                    y={label().y}
-                    text-anchor="middle"
-                    dominant-baseline="central"
-                    fill={
-                      label().ocean ? "var(--site-map-ocean-label)" : "var(--site-map-land-label)"
-                    }
-                    stroke="var(--site-map-label-outline)"
-                    paint-order="stroke"
-                    stroke-width={String(1.6 / zoom())}
-                    font-size={String((label().ocean ? 9 : 11) / zoom())}
-                    font-weight={label().ocean ? "500" : "600"}
-                    letter-spacing={String((label().ocean ? 1 : 0.9) / zoom())}
-                    opacity={label().ocean ? ".9" : "1"}
-                    pointer-events="none"
-                    aria-hidden="true"
-                  >
-                    {t.raw(`timezone.mapLabels.${label().name}`, label().name).toUpperCase()}
-                  </text>
-                )}
-              </For>
-              <PresenceMarkers projection={projection()} zoom={zoom()} />
-            </svg>
-          </div>
+            </Loading>
+          </Show>
           <div class="globe-hover-slot min-w-0 grid gap-3">
             <Show when={pin()}>
               {(selected) => (
@@ -676,67 +403,6 @@ export default function HomePage() {
               onConvert={() => convertSelectedCity(hoverCity())}
             />
           </div>
-          {/* Buttons provide the same rotation for keyboard and touch users. */}
-          <div class="globe-controls mt-2 grid gap-4">
-            <div class="flex flex-wrap items-center justify-center gap-2">
-              <RLButton
-                color="primary"
-                variant="outline"
-                size="lg"
-                class="min-h-12 min-w-12"
-                onClick={() => {
-                  markInteraction();
-                  setRotation((angle) => angle - 20);
-                }}
-                aria-label={t("timezone.rotateLeft")}
-              >
-                ←
-              </RLButton>
-              <button
-                type="button"
-                class="globe-zoom-button rounded-xl border border-primary-700 text-xl font-bold disabled:opacity-40"
-                aria-label={t("timezone.zoomOut")}
-                disabled={zoom() <= 1}
-                onClick={() => {
-                  markInteraction();
-                  setZoom((value) => Math.max(1, value - 0.25));
-                }}
-              >
-                −
-              </button>
-              <span
-                class="globe-zoom-value text-center text-xs font-semibold tabular-nums"
-                aria-label={`Globe zoom ${Math.round(zoom() * 100)} percent`}
-              >
-                {Math.round(zoom() * 100)}%
-              </span>
-              <button
-                type="button"
-                class="globe-zoom-button rounded-xl border border-primary-700 text-xl font-bold disabled:opacity-40"
-                aria-label={t("timezone.zoomIn")}
-                disabled={zoom() >= 4}
-                onClick={() => {
-                  markInteraction();
-                  setZoom((value) => Math.min(4, value + 0.25));
-                }}
-              >
-                +
-              </button>
-              <RLButton
-                color="primary"
-                variant="outline"
-                size="lg"
-                class="min-h-12 min-w-12"
-                onClick={() => {
-                  markInteraction();
-                  setRotation((angle) => angle + 20);
-                }}
-                aria-label={t("timezone.rotateRight")}
-              >
-                →
-              </RLButton>
-            </div>
-          </div>
           <div class="globe-details min-w-0 rounded-2xl border border-primary-700/40 bg-default p-4 sm:p-5">
             {/* A compact legend explains the globe without covering the map. */}
             <div class="globe-guide text-left">
@@ -764,7 +430,9 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <PresenceLegend />
+            <Show when={activation.enabled()}>
+              <PresenceLegend />
+            </Show>
             <p class="mt-3 text-xs opacity-60">{t("timezone.representative")}</p>
             <a
               class="mt-1 inline-block text-xs text-primary-500 underline"

@@ -1,3 +1,4 @@
+// Private distance estimates only: these details never enter the presence protocol.
 export type ViewerLocation = {
   city: string;
   country: string;
@@ -5,13 +6,8 @@ export type ViewerLocation = {
   latitude: number;
   longitude: number;
 };
-export type ViewerCity = ViewerLocation & { key: string; viewers: number };
-export type PresenceMessage =
-  | { type: "welcome"; location: ViewerLocation | null }
-  | { type: "snapshot"; cities: ViewerCity[]; total: number };
 
-// Cloudflare geolocation is approximate. Coarsen it further before sharing anything.
-// Do not accept browser-supplied coordinates or forward IPs to the Durable Object.
+// Coarsen Cloudflare metadata before returning it privately to the requesting browser.
 export function approximateLocation(cf?: {
   city?: unknown;
   country?: unknown;
@@ -50,16 +46,4 @@ export function approximateLocation(cf?: {
     latitude: Math.round(latitude * 2) / 2,
     longitude: Math.round(longitude * 2) / 2,
   };
-}
-
-export function groupViewers(locations: (ViewerLocation | null)[]): ViewerCity[] {
-  const cities = new Map<string, ViewerCity>();
-  for (const location of locations) {
-    if (!location) continue;
-    const key = `${location.country}:${location.city}:${location.timezone}`;
-    const existing = cities.get(key);
-    if (existing) existing.viewers++;
-    else cities.set(key, { ...location, key, viewers: 1 });
-  }
-  return [...cities.values()];
 }

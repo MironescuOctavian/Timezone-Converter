@@ -1,0 +1,74 @@
+export const REGIONS = {
+  AF: { label: "continentAfrica", latitude: 2, longitude: 20 },
+  AS: { label: "continentAsia", latitude: 35, longitude: 90 },
+  EU: { label: "continentEurope", latitude: 52, longitude: 15 },
+  NA: { label: "continentNorthAmerica", latitude: 45, longitude: -100 },
+  SA: { label: "continentSouthAmerica", latitude: -15, longitude: -60 },
+  OC: { label: "continentOceania", latitude: -25, longitude: 135 },
+  AN: { label: "continentPolar", latitude: -80, longitude: 0 },
+} as const;
+export type RegionCode = keyof typeof REGIONS;
+export const MIN_REGION_VIEWERS = 5;
+export const PRESENCE_INTERVAL = 25_000;
+export type PresenceAttachment = { version: 2; region: RegionCode | null };
+export type ViewerRegion = {
+  key: RegionCode;
+  latitude: number;
+  longitude: number;
+  viewers: number;
+};
+export type PresenceSnapshot = {
+  type: "snapshot";
+  ready: boolean;
+  regions: ViewerRegion[];
+  total: number;
+};
+export type PresenceMessage = PresenceSnapshot | { type: "welcome"; sharing: boolean };
+
+export function regionCode(value: unknown): RegionCode | null {
+  return typeof value === "string" && Object.hasOwn(REGIONS, value) ? (value as RegionCode) : null;
+}
+export function isPresenceAttachment(value: unknown): value is PresenceAttachment {
+  if (!value || typeof value !== "object") return false;
+  const attachment = value as PresenceAttachment;
+  return (
+    Object.keys(value).length === 2 &&
+    attachment.version === 2 &&
+    (attachment.region === null || regionCode(attachment.region) !== null)
+  );
+}
+export function connectionBand(count: number) {
+  return Math.floor(count / MIN_REGION_VIEWERS) * MIN_REGION_VIEWERS;
+}
+export function regionSnapshot(attachments: PresenceAttachment[]): PresenceSnapshot {
+  const counts = new Map<RegionCode, number>();
+  for (const { region } of attachments)
+    if (region) counts.set(region, (counts.get(region) ?? 0) + 1);
+  return {
+    type: "snapshot",
+    ready: true,
+    total: connectionBand(attachments.length),
+    regions: [...counts]
+      .filter(([, count]) => count >= MIN_REGION_VIEWERS)
+      .map(([key, count]) => ({
+        key,
+        latitude: REGIONS[key].latitude,
+        longitude: REGIONS[key].longitude,
+        viewers: connectionBand(count),
+      })),
+  };
+}
+// Withdrawal can reduce/remove published clusters, but must not reveal pending arrivals.
+export function withdrawSnapshot(
+  published: PresenceSnapshot,
+  current: PresenceSnapshot,
+): PresenceSnapshot {
+  return {
+    ...published,
+    total: Math.min(published.total, current.total),
+    regions: published.regions.flatMap((region) => {
+      const next = current.regions.find((item) => item.key === region.key);
+      return next ? [{ ...region, viewers: Math.min(region.viewers, next.viewers) }] : [];
+    }),
+  };
+}

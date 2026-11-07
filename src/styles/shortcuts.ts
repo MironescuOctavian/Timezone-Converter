@@ -1,6 +1,7 @@
 // Shared semantic shortcuts keep complex responsive/state styling in UnoCSS.
 // Theme variables and animation keyframes remain in the small CSS token files.
 export const siteShortcuts: Record<string, string> = {
+  "globe-enable-button": "[color:#000] [&:not(:disabled)]:[min-height:3rem]",
   "site-header-container":
     "mx-auto grid max-w-6xl items-center [grid-template-columns:minmax(0,_1fr)_auto] [gap:0.5rem] [padding:0.75rem] [@media_(min-width:_1000px)]:flex [@media_(min-width:_1000px)]:justify-between [@media_(min-width:_1000px)]:[height:4.5rem] [@media_(min-width:_1000px)]:[gap:1rem] [@media_(min-width:_1000px)]:[padding:0_2rem]",
   "site-header-navigation":

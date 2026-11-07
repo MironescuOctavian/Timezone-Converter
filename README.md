@@ -4,6 +4,10 @@ A free, ad-free timezone converter and world clock by [Mironescu Octavian](https
 
 Built with Solid 2, TypeScript, Rimelight, UnoCSS, and Cloudflare Workers.
 
+The globe starts as a static preview. **Enable interactive globe** loads its renderer, geometry and textures and starts the regional presence connection. Activation stays in document memory while navigating between pages; a fresh document starts disabled again. Converter and country search remain available before activation. Enabling the globe does not change regional-sharing consent.
+
+The converted-time result includes a site-wide conversion total. It counts valid regular conversions after visitor edits settle, excluding initial page loads and clock ticks. Only an aggregate integer is persisted in the `ConversionCounter` Durable Object; dates, timezones and visitor identifiers are not sent to the counter. Totals begin when tracking is deployed and do not include unrecorded historical conversions. The `CONVERSION_COUNTER` binding and export are defined in `cloudflare.config.ts`; deploy the updated Worker to activate them. Public total reads may be cached for 15 seconds.
+
 ## Features
 
 - **Timezone conversion:** second-level date and time controls, searchable cities, continent-grouped timezone menus, flags, clipboard copying, and Google Calendar event drafts. Starts with your timezone and Bucharest, Romania as the destination.
@@ -12,7 +16,7 @@ Built with Solid 2, TypeScript, Rimelight, UnoCSS, and Cloudflare Workers.
 - **World Clock:** live times for featured destinations and your timezone, searchable additional cities, local dates, UTC offsets, and expandable city details.
 - **Public holidays:** lazy-loaded country calendars in expanded World Clock details, selected-date highlighting, upcoming/full-year views, and separate nationwide/regional coverage. Dates come from the Nager.Date v4 API through a cached same-origin endpoint; no API key is required. Coverage is a planning aid, not a guarantee of time off.
 - **City details:** current weather, photographs with a gallery, Wikipedia summaries, and approximate straight-line distance with kilometre/mile controls. World Clock details also include daylight information and clock-change dates where applicable.
-- **Anonymous live presence:** approximate city markers and online connection counts, with a privacy notice and a **Hide my dot** control.
+- **Optional regional presence:** consent-based broad regional clusters, minimum group sizes and batched connection ranges, with an immediate stop-sharing control.
 - **Appearance:** light, dark, and system themes; an animated cartographic background; section navigation; and reduced-motion support.
 - **Localization:** English by default, plus Romanian, Portuguese, Arabic, German, Spanish, French, Hindi, Russian, and Chinese. English, Romanian, and Portuguese appear first in the language menu.
 
@@ -53,7 +57,7 @@ Vite+ built-in commands and package scripts are distinct. Use `vp run <name>` fo
 
 ## Deploy to Cloudflare
 
-This is a **Cloudflare Workers** application with static assets and a Durable Object. `cloudflare.config.ts` is the source of deployment configuration; `src/fetch.ts` is the Worker entry point.
+This is a **Cloudflare Workers** application with static assets and Durable Objects. `cloudflare.config.ts` is the source of deployment configuration; `src/fetch.ts` is the Worker entry point.
 
 The Worker name is **`timezone-converter`**. The `workerName` constant is also used by the `GLOBE_PRESENCE` binding, so both references stay aligned. When deploying to another Worker, update that constant to match its exact Cloudflare dashboard name.
 
@@ -77,15 +81,16 @@ pnpm exec cf deploy --prebuilt
 
 Presence follows the architecture of [Cloudflare's multiplayer globe template](https://github.com/cloudflare/templates/tree/main/multiplayer-globe-template). A single Durable Object coordinates WebSocket connections, using Cloudflare's native hibernation support without a separate PartyKit service.
 
-- `/api/presence` accepts same-origin WebSocket connections and applies the configured connection rate limit.
-- Cloudflare estimates a visitor's city, timezone, and coordinates. Coordinates are rounded to half-degree steps before sharing, and visitors in the same city are grouped.
-- Names, IP addresses, precise device locations, and permanent visitor identifiers are not broadcast by this feature.
-- Online counts represent open connections, not verified unique people. Connections with unknown cities count online without a map marker.
-- Closing a connection removes its live presence. This feature does not save a visit history in application storage.
-- **Hide my dot** removes the public location while still allowing the viewer to see the map. Only that preference is stored locally.
+- `/api/presence?v=2` accepts same-origin, rate-limited WebSocket connections. Location sharing is off unless `share=1` is explicitly chosen; old preferences do not grant consent under the new policy.
+- Only Cloudflare's estimated continent is read for opted-in connections. The presence object receives an optional broad region code, never a city, timezone, visitor coordinates, IP address or copied request headers. Map positions are fixed region centres.
+- A region appears only with at least five opted-in connections. Regional and global counts use ranges in groups of five, not exact values. These are connections, not verified unique people; thresholds reduce exposure but do not guarantee anonymity.
+- Durable Object alarms publish arrivals and ordinary departures about every 25 seconds. New viewers receive the last published batch rather than a fresh arrival count.
+- **Stop sharing my region** clears the connection's region immediately when received by the server and reduces/removes published clusters without revealing pending arrivals. Other tabs follow the saved preference. Browsing the map remains possible without sharing.
+- Connection attachments hold only the optional region. One overwritten aggregate snapshot is retained while connections remain; it and the alarm are deleted after the last connection closes. No visit/event history is kept. Legacy city-based attachments are scrubbed and their connections closed on upgrade.
+- Production automatic request logs, tracing, issues and Logpush are disabled in `cloudflare.config.ts` to reduce retained request metadata. This reduces diagnostic visibility. Account-level security logs, live tails and external exports must be reviewed separately in Cloudflare; repository settings cannot erase existing platform logs.
 - `/api/location` privately returns the viewer's coarsened location for distance estimates with `Cache-Control: private, no-store`. A representative timezone city may be used as a clearly approximate fallback.
 
-Theme preference is stored in a cookie; distance units and the map-visibility preference can be stored in local storage. Clipboard operations happen only when requested. External weather, search, flag, and image providers receive normal browser requests. The in-app privacy policy describes these features.
+Theme preference is stored in a cookie; distance units and optional regional-sharing consent can be stored in local storage. Clipboard operations happen only when requested. External weather, search, flag, and image providers receive normal browser requests. The in-app privacy policy describes these features.
 
 ## Data sources and limits
 

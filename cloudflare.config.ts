@@ -10,16 +10,20 @@ export default defineConfig({
     entrypoint: "./src/fetch.ts",
     exports: {
       GlobePresence: exports.durableObject({ storage: "sqlite" }),
+      ConversionCounter: exports.durableObject({ storage: "sqlite" }),
     },
     observability: {
-      enabled: true,
+      // Automatic request diagnostics can retain connection metadata.
+      enabled: false,
+      logs: { enabled: false, invocationLogs: false, persist: false },
       traces: {
-        enabled: true,
+        enabled: false,
       },
       issues: {
-        enabled: true,
+        enabled: false,
       },
     },
+    logpush: false,
     cache: {
       enabled: true,
     },
@@ -28,6 +32,10 @@ export default defineConfig({
       GLOBE_PRESENCE: bindings.durableObject({
         worker: workerName,
         exportName: "GlobePresence",
+      }),
+      CONVERSION_COUNTER: bindings.durableObject({
+        worker: workerName,
+        exportName: "ConversionCounter",
       }),
       RATE_LIMIT: bindings.rateLimit({
         namespace: "1001",

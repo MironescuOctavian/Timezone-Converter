@@ -1,8 +1,20 @@
 import { describe, expect, it } from "vite-plus/test";
 import { geoOrthographic, geoRotation } from "d3-geo";
-import { inverseGlobeRotation } from "./globe-texture";
+import { globeViewport, inverseGlobeRotation } from "./globe-texture";
 
 describe("textured sphere coordinates", () => {
+  it("maps visible framebuffer pixels to the same geographic coordinates at every zoom", () => {
+    for (const zoom of [1, 1.25, 2, 3, 4]) {
+      const view = globeViewport(zoom);
+      expect(view.origin + view.size / 2).toBe(260);
+      for (const clipX of [-1, -0.5, 0, 0.5, 1]) {
+        const svgX = view.origin + ((clipX + 1) / 2) * view.size;
+        expect((svgX - 260) / 245).toBeCloseTo(clipX * (260 / 245) * view.scale, 10);
+      }
+    }
+    expect(globeViewport(0)).toEqual(globeViewport(1));
+    expect(globeViewport(10)).toEqual(globeViewport(4));
+  });
   it("aligns the texture with SVG labels and picking across rotations", () => {
     for (const rotation of [
       [0, 0, 0],

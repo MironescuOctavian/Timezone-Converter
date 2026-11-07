@@ -1,12 +1,13 @@
 import { createEffect, createSignal, onSettled, Show } from "solid-js";
 import type { GeoProjection } from "d3-geo";
 import { CanvasCountries } from "./CanvasCountries";
-import { bakeGlobeTextures, cameraMatrix } from "./globe-texture";
+import { bakeGlobeTextures, cameraMatrix, globeViewport } from "./globe-texture";
 import { countryCities } from "./data";
 import { countries } from "./geography";
 
 type Props = {
   projection: GeoProjection;
+  zoom: number;
   dragging: boolean;
   hover: number;
   active: (index: number | undefined) => boolean;
@@ -26,8 +27,9 @@ uniform sampler2D palette;
 uniform vec4 borderColor;
 uniform vec4 outlineColor;
 uniform float selected;
+uniform float viewScale;
 void main(){
-  vec2 p=point*(260./245.);
+  vec2 p=point*(260./245.)*viewScale;
   float r=dot(p,p);if(r>1.)discard;
   vec3 world=rotation*vec3(sqrt(max(0.,1.-r)),p.x,p.y);
   vec2 uv=vec2(atan(world.y,world.x)/6.28318530718+.5,.5-asin(clamp(world.z,-1.,1.))/3.14159265359);
@@ -153,6 +155,7 @@ export function TexturedCountries(props: Props) {
     () => ({
       revision: revision(),
       projection: props.projection,
+      zoom: props.zoom,
       dragging: props.dragging,
       hover: props.hover,
       active: countries.map((country) =>
@@ -201,6 +204,7 @@ export function TexturedCountries(props: Props) {
         false,
         cameraMatrix(state.projection),
       );
+      gl.uniform1f(gl.getUniformLocation(program, "viewScale"), globeViewport(state.zoom).scale);
       gl.uniform1f(
         gl.getUniformLocation(program, "selected"),
         countries.findIndex(
@@ -213,7 +217,13 @@ export function TexturedCountries(props: Props) {
   );
   return (
     <Show when={!failed()} fallback={<CanvasCountries {...props} />}>
-      <foreignObject x="0" y="0" width="520" height="520" pointer-events="none">
+      <foreignObject
+        x={globeViewport(props.zoom).origin}
+        y={globeViewport(props.zoom).origin}
+        width={globeViewport(props.zoom).size}
+        height={globeViewport(props.zoom).size}
+        pointer-events="none"
+      >
         <canvas
           ref={(element) => {
             canvas = element;

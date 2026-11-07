@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { approximateLocation, groupViewers } from "./shared";
+import { approximateLocation } from "./shared";
 
 const cf = {
   city: "Bucharest",
@@ -9,8 +9,8 @@ const cf = {
   longitude: "26.1025",
 };
 
-describe("anonymous globe presence", () => {
-  it("shares only coarsened city details, never IPs or precise coordinates", () => {
+describe("private distance location", () => {
+  it("returns coarsened details only for the private distance endpoint", () => {
     const location = approximateLocation({ ...cf, ip: "192.0.2.1" } as typeof cf);
     expect(location).toEqual({
       city: "Bucharest",
@@ -27,13 +27,5 @@ describe("anonymous globe presence", () => {
     expect(approximateLocation({ ...cf, longitude: "not a coordinate" })).toBeNull();
     expect(approximateLocation({ ...cf, latitude: 100 })).toBeNull();
     expect(approximateLocation({ ...cf, timezone: "not/a/zone" })).toBeNull();
-  });
-  it("groups viewers in one city without revealing connection identifiers or hidden visitors", () => {
-    const location = approximateLocation(cf)!;
-    const other = { ...location, city: "Cluj-Napoca" };
-    const groups = groupViewers([location, null, location, other]);
-    expect(groups).toHaveLength(2);
-    expect(groups[0]).toEqual({ ...location, key: "RO:Bucharest:Europe/Bucharest", viewers: 2 });
-    expect(groupViewers([null])).toEqual([]);
   });
 });

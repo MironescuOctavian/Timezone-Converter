@@ -1,29 +1,35 @@
-import { createContext, createSignal, onSettled, useContext } from "solid-js";
+import { createContext, createEffect, createSignal, useContext } from "solid-js";
 import type { JSX } from "@solidjs/web";
-import type { PresenceMessage, ViewerCity, ViewerLocation } from "#presence/shared";
+import type { PresenceMessage, ViewerRegion } from "#presence/regions";
+import { REGION_SHARING_KEY, regionSharingEnabled } from "#presence/consent";
+import { useGlobeActivation } from "./GlobeActivation";
 
 type Presence = ReturnType<typeof createPresence>;
 const PresenceContext = createContext<Presence>();
 export const usePresence = () => useContext(PresenceContext);
 
-function createPresence() {
-  const [cities, setCities] = createSignal<ViewerCity[]>([]);
+function createPresence(enabled: () => boolean) {
+  const [regions, setRegions] = createSignal<ViewerRegion[]>([]);
+  const [ready, setReady] = createSignal(false);
   const [total, setTotal] = createSignal(0);
-  const [location, setLocation] = createSignal<ViewerLocation | null>(null);
+  const [sharing, setSharing] = createSignal(false);
   const [connected, setConnected] = createSignal(false);
-  const [hidden, setHidden] = createSignal(false);
+  const [hidden, setHidden] = createSignal(true);
   let restart: (hide: boolean) => void = () => {};
 
-  onSettled(() => {
+  createEffect(enabled, (active) => {
+    if (!active) return;
     let stopped = false,
       retries = 0;
     let socket: WebSocket | undefined;
     let retry: ReturnType<typeof setTimeout> | undefined;
     let heartbeat: ReturnType<typeof setInterval> | undefined;
     let awaitingPong = false;
-    let hide = false;
+    let hide = true;
     try {
-      hide = localStorage.getItem("hide-globe-presence") === "true";
+      // Older opt-out preferences never count as consent to the new policy.
+      hide = !regionSharingEnabled(localStorage);
+      localStorage.removeItem("hide-globe-presence");
     } catch {
       /* Storage is optional. */
     }
@@ -40,15 +46,17 @@ function createPresence() {
       }
       socket = undefined;
       setConnected(false);
-      setCities([]);
+      setRegions([]);
+      setReady(false);
       setTotal(0);
-      setLocation(null);
+      setSharing(false);
     }
     function connect() {
       if (stopped) return;
       const url = new URL("/api/presence", window.location.origin);
       url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
-      if (hide) url.searchParams.set("share", "0");
+      url.searchParams.set("v", "2");
+      url.searchParams.set("share", hide ? "0" : "1");
       const current = new WebSocket(url);
       socket = current;
       current.onopen = () => {
@@ -75,9 +83,10 @@ function createPresence() {
         }
         try {
           const message = JSON.parse(String(event.data)) as PresenceMessage;
-          if (message.type === "welcome") setLocation(message.location);
-          if (message.type === "snapshot") {
-            setCities(message.cities);
+          if (message.type === "welcome") setSharing(message.sharing);
+          if (message.type === "snapshot" && Array.isArray(message.regions)) {
+            setRegions(message.regions);
+            setReady(message.ready);
             setTotal(message.total);
           }
         } catch {
@@ -87,9 +96,10 @@ function createPresence() {
       current.onclose = () => {
         clearInterval(heartbeat);
         setConnected(false);
-        setCities([]);
+        setRegions([]);
+        setReady(false);
         setTotal(0);
-        setLocation(null);
+        setSharing(false);
         if (!stopped)
           retry = setTimeout(
             connect,
@@ -100,6 +110,12 @@ function createPresence() {
     }
     restart = (value) => {
       hide = value;
+      setHidden(value);
+      if (value && socket?.readyState === WebSocket.OPEN) {
+        setSharing(false);
+        socket.send("hide");
+        return;
+      }
       disconnect();
       connect();
     };
@@ -110,9 +126,21 @@ function createPresence() {
     const resume = () => {
       if (stopped) {
         stopped = false;
+        // Another tab may have withdrawn consent while this page was cached.
+        try {
+          hide = !regionSharingEnabled(localStorage);
+        } catch {
+          hide = true;
+        }
+        setHidden(hide);
         connect();
       }
     };
+    const syncPreference = (event: StorageEvent) => {
+      if (event.key === REGION_SHARING_KEY || event.key === null)
+        restart(event.newValue !== "true");
+    };
+    window.addEventListener("storage", syncPreference);
     window.addEventListener("pagehide", leave);
     window.addEventListener("pageshow", resume);
     connect();
@@ -120,21 +148,23 @@ function createPresence() {
       stopped = true;
       disconnect();
       restart = () => {};
+      window.removeEventListener("storage", syncPreference);
       window.removeEventListener("pagehide", leave);
       window.removeEventListener("pageshow", resume);
     };
   });
   return {
-    cities,
+    regions,
+    ready,
     total,
-    location,
+    sharing,
     connected,
     hidden,
     toggle() {
       const value = !hidden();
       setHidden(value);
       try {
-        localStorage.setItem("hide-globe-presence", String(value));
+        localStorage.setItem(REGION_SHARING_KEY, String(!value));
       } catch {
         /* Still works for this visit. */
       }
@@ -145,5 +175,8 @@ function createPresence() {
 
 // One connection for the whole site, even when navigating between its pages.
 export function PresenceProvider(props: { children?: JSX.Element }) {
-  return <PresenceContext value={createPresence()}>{props.children}</PresenceContext>;
+  const activation = useGlobeActivation();
+  return (
+    <PresenceContext value={createPresence(activation.enabled)}>{props.children}</PresenceContext>
+  );
 }

@@ -3,6 +3,7 @@
 import type { ParentProps } from "solid-js";
 import { HydrationScript, useHead } from "@solidjs/web";
 import { createDocumentHead } from "@rimelight/seo/head";
+import { config as seoConfig } from "virtual:rimelight-seo";
 import { getLocaleInfo } from "@rimelight/i18n";
 import { getDocumentTheme } from "@rimelight/ui/theme";
 import "virtual:uno.css";
@@ -19,7 +20,7 @@ import "virtual:uno.css";
  */
 export default function Document(props: ParentProps) {
   // Inject reactive meta tags, OpenGraph data, and titles for SEO
-  useHead(createDocumentHead());
+  useHead(createDocumentHead({}, seoConfig));
 
   return (
     <html lang={getLocaleInfo().tag} dir={getLocaleInfo().dir} data-theme={getDocumentTheme()}>

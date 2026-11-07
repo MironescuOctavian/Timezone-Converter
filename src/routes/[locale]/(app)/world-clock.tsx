@@ -52,6 +52,8 @@ export default function WorldClockPage() {
     };
   });
   const localIndex = createMemo(() => cities.findIndex((city) => city[2] === local()));
+  // Keep existing clock rows mounted when browser timezone detection reorders them.
+  const defaultRows = cities.map((city, index) => ({ index, zone: city[2]!, name: city[0]! }));
   const rows = createMemo(() => {
     const indices = [...new Set([...(localIndex() >= 0 ? [localIndex()] : []), ...featured])];
     const result: {
@@ -61,11 +63,7 @@ export default function WorldClockPage() {
       countryCode?: string;
       country?: string;
       coordinates?: { latitude: number; longitude: number };
-    }[] = indices.map((index) => ({
-      index,
-      zone: cities[index]![2]!,
-      name: cities[index]![0]!,
-    }));
+    }[] = indices.map((index) => defaultRows[index]!);
     const country = (timezoneCountries as Record<string, string>)[local()];
     const representative = flagCodes.findIndex((flag) => flag === country);
     if (localIndex() < 0 && representative >= 0)

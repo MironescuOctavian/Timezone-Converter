@@ -544,6 +544,7 @@
     }
   },
   "timezone": {
+    "convertDiscord": "Convertește pentru Discord",
     "enableGlobe": "Activează globul interactiv",
     "loadingGlobe": "Se încarcă globul…",
     "globeOnDemand": "Încarcă harta interactivă doar când ai nevoie. Partajarea regiunii rămâne o alegere separată.",

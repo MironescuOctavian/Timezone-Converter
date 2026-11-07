@@ -19,32 +19,31 @@ const orbitalLights = [
 
 // CSS animates this single SVG: no scroll listeners, reactive updates, or canvas loop.
 export function SiteBackground() {
-  function observeVisibility(root: HTMLDivElement) {
-    onSettled(() => {
-      let animations: Animation[] = [];
-      let svgs: SVGSVGElement[] = [];
-      const sync = () => {
-        if (document.hidden) {
-          animations = root!
-            .getAnimations({ subtree: true })
-            .filter((animation) => animation.playState === "running");
-          svgs = [...root!.querySelectorAll("svg")].filter((svg) => !svg.animationsPaused());
-          animations.forEach((animation) => animation.pause());
-          svgs.forEach((svg) => svg.pauseAnimations());
-        } else {
-          animations.forEach((animation) => animation.play());
-          svgs.forEach((svg) => svg.unpauseAnimations());
-          animations = [];
-          svgs = [];
-        }
-      };
-      document.addEventListener("visibilitychange", sync);
-      sync();
-      return () => document.removeEventListener("visibilitychange", sync);
-    });
-  }
+  let root!: HTMLDivElement;
+  onSettled(() => {
+    let animations: Animation[] = [];
+    let svgs: SVGSVGElement[] = [];
+    const sync = () => {
+      if (document.hidden) {
+        animations = root!
+          .getAnimations({ subtree: true })
+          .filter((animation) => animation.playState === "running");
+        svgs = [...root!.querySelectorAll("svg")].filter((svg) => !svg.animationsPaused());
+        animations.forEach((animation) => animation.pause());
+        svgs.forEach((svg) => svg.pauseAnimations());
+      } else {
+        animations.forEach((animation) => animation.play());
+        svgs.forEach((svg) => svg.unpauseAnimations());
+        animations = [];
+        svgs = [];
+      }
+    };
+    document.addEventListener("visibilitychange", sync);
+    sync();
+    return () => document.removeEventListener("visibilitychange", sync);
+  });
   return (
-    <div ref={observeVisibility} class="site-graticule" aria-hidden="true">
+    <div ref={(element) => (root = element)} class="site-graticule" aria-hidden="true">
       <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" fill="none">
         <defs>
           <pattern id="atlas-crosses" width="48" height="48" patternUnits="userSpaceOnUse">

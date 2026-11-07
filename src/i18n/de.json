@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "Die Seite wurde nicht gefunden." } },
   "timezone": {
+    "convertDiscord": "Für Discord umrechnen",
     "enableGlobe": "Interaktiven Globus aktivieren",
     "loadingGlobe": "Globus wird geladen…",
     "globeOnDemand": "Lade die interaktive Karte bei Bedarf. Die Standortfreigabe bleibt eine separate Entscheidung.",

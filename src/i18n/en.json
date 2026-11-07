@@ -464,6 +464,7 @@
     }
   },
   "timezone": {
+    "convertDiscord": "Convert for Discord",
     "enableGlobe": "Enable interactive globe",
     "loadingGlobe": "Loading globe…",
     "globeOnDemand": "Load the interactive map when you need it. Location sharing remains a separate choice.",

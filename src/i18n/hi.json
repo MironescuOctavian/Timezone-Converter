@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "पृष्ठ नहीं मिला।" } },
   "timezone": {
+    "convertDiscord": "Discord के लिए बदलें",
     "enableGlobe": "इंटरैक्टिव ग्लोब चालू करें",
     "loadingGlobe": "ग्लोब लोड हो रहा है…",
     "globeOnDemand": "ज़रूरत होने पर इंटरैक्टिव मानचित्र लोड करें। क्षेत्र साझा करना एक अलग चुनाव है।",

@@ -15,6 +15,7 @@ export const siteShortcuts: Record<string, string> = {
     "mt-4 rounded-xl border border-primary-700/40 bg-primary-500/10 px-5 py-4 text-center text-lg font-bold text-primary-500 [animation:section-enter_250ms_ease-out_both] [@media(prefers-reduced-motion:reduce)]:[animation:none]",
   "converter-search":
     "relative mx-auto w-full max-w-sm [@media(min-width:768px)]:absolute [@media(min-width:768px)]:[left:50%] [@media(min-width:768px)]:[transform:translateX(-50%)]",
+  "converter-section": "scroll-mt-36 sm:scroll-mt-24",
   "site-footer-layout":
     "mx-auto grid grid-cols-2 items-start justify-items-center gap-8 max-w-6xl px-5 py-8 text-center [&>div]:min-w-0 [&>div]:max-w-full [&>div:first-child]:[grid-column:1/-1] [&>div:nth-child(4)]:[grid-column:1/-1] [&>div:last-child]:[grid-column:1/-1] [&_a]:[overflow-wrap:anywhere] [@media_(min-width:_1000px)]:flex [@media_(min-width:_1000px)]:flex-row [@media_(min-width:_1000px)]:flex-nowrap [@media_(min-width:_1000px)]:justify-between [@media_(min-width:_1000px)]:[gap:1rem] [@media_(min-width:_1000px)]:[&>div]:shrink-0 [@media_(min-width:_1280px)]:[gap:2rem] [@media_(max-width:_1279px)]:[padding-bottom:7rem]",
   "city-photo":
@@ -99,6 +100,8 @@ export const siteShortcuts: Record<string, string> = {
     "font-inherit [stroke-linejoin:round] [filter:drop-shadow(0_1px_2px_#0008)]",
   "hero-cta":
     '[@media_(hover:_hover)_and_(prefers-reduced-motion:_no-preference)]:[&:hover_>_[aria-hidden="true"]]:[transform:rotate(-8deg)_scale(1.08)] [@media_(hover:_hover)_and_(prefers-reduced-motion:_no-preference)]:[&_>_[aria-hidden="true"]]:[transition:transform_220ms_ease]',
+  "hero-discord-cta":
+    "[&:not(:disabled)]:[min-height:2.75rem] [padding:0.6rem_1rem] [font-size:0.875rem]",
   "hero-heading":
     "[margin-top:1.75rem] [font-size:clamp(2.5rem,_4.4vw,_3.5rem)] [line-height:1.14] [letter-spacing:-0.045em]",
   "hero-description":

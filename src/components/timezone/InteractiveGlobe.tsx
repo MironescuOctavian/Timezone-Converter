@@ -46,18 +46,17 @@ export default function InteractiveGlobe(props: {
   const labelScale = createMemo(() => Math.max(1, 520 / globeWidth()));
 
   // Dynamically measure SVG element dimensions using ResizeObserver
-  function measureGlobe(element: SVGSVGElement) {
-    onSettled(() => {
-      const observer = new ResizeObserver(([entry]) => {
-        if (entry && entry.contentRect.width > 0 && entry.contentRect.height > 0) {
-          setGlobeWidth(Math.min(entry.contentRect.width, entry.contentRect.height));
-          setGlobeAspect(entry.contentRect.width / entry.contentRect.height);
-        }
-      });
-      observer.observe(element);
-      return () => observer.disconnect();
+  let globeElement!: SVGSVGElement;
+  onSettled(() => {
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry && entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+        setGlobeWidth(Math.min(entry.contentRect.width, entry.contentRect.height));
+        setGlobeAspect(entry.contentRect.width / entry.contentRect.height);
+      }
     });
-  }
+    observer.observe(globeElement);
+    return () => observer.disconnect();
+  });
 
   const [adjusting, setAdjusting] = createSignal(false);
   let interactionTimer: ReturnType<typeof setTimeout> | undefined;
@@ -237,7 +236,7 @@ export default function InteractiveGlobe(props: {
         class="globe-stage relative min-w-0"
       >
         <svg
-          ref={measureGlobe}
+          ref={(element) => (globeElement = element)}
           viewBox={`${260 - 260 / zoom()} ${260 - 260 / zoom()} ${520 / zoom()} ${520 / zoom()}`}
           class="globe-canvas mx-auto mt-3 w-full cursor-grab touch-none active:cursor-grabbing"
           role="img"

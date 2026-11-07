@@ -23,39 +23,38 @@ export function WorldClocks(props: { now: Date | undefined; differences: string[
       if (value) setClockTime(value);
     },
   );
-  function observeSection(section: HTMLElement) {
-    onSettled(() => {
-      let intersects = true;
-      let paused: Animation[] = [];
-      const sync = () => {
-        const active = intersects && !document.hidden;
-        setVisible(active);
-        if (!active && !paused.length) {
-          paused = section!
-            .getAnimations({ subtree: true })
-            .filter((animation) => animation.playState === "running");
-          paused.forEach((animation) => animation.pause());
-        } else if (active) {
-          paused.forEach((animation) => animation.play());
-          paused = [];
-        }
-      };
-      const observer = new IntersectionObserver((entries) => {
-        intersects = entries[0]?.isIntersecting ?? false;
-        sync();
-      });
-      observer.observe(section);
-      document.addEventListener("visibilitychange", sync);
+  let section!: HTMLElement;
+  onSettled(() => {
+    let intersects = true;
+    let paused: Animation[] = [];
+    const sync = () => {
+      const active = intersects && !document.hidden;
+      setVisible(active);
+      if (!active && !paused.length) {
+        paused = section!
+          .getAnimations({ subtree: true })
+          .filter((animation) => animation.playState === "running");
+        paused.forEach((animation) => animation.pause());
+      } else if (active) {
+        paused.forEach((animation) => animation.play());
+        paused = [];
+      }
+    };
+    const observer = new IntersectionObserver((entries) => {
+      intersects = entries[0]?.isIntersecting ?? false;
       sync();
-      return () => {
-        observer.disconnect();
-        document.removeEventListener("visibilitychange", sync);
-      };
     });
-  }
+    observer.observe(section);
+    document.addEventListener("visibilitychange", sync);
+    sync();
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  });
   return (
     <section
-      ref={observeSection}
+      ref={(element) => (section = element)}
       id="world-clocks"
       class="mb-16 scroll-mt-24"
       aria-labelledby="clocks-title"

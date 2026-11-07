@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "找不到此页面。" } },
   "timezone": {
+    "convertDiscord": "转换为 Discord 时间",
     "enableGlobe": "启用交互式地球",
     "loadingGlobe": "正在加载地球…",
     "globeOnDemand": "需要时再加载交互式地图。分享区域仍需单独选择。",

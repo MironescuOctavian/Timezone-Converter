@@ -29,6 +29,7 @@ const InteractiveGlobe = lazy(() => import("#components/timezone/InteractiveGlob
 export default function HomePage() {
   const activation = useGlobeActivation();
   const [mapSelection, setMapSelection] = createSignal<number>();
+  const [conversionMode, setConversionMode] = createSignal<"regular" | "discord">("regular");
 
   // Signals store the inputs, current time, and feedback shown after copying.
   const [now, setNow] = createSignal<Date | undefined>();
@@ -119,6 +120,7 @@ export default function HomePage() {
     (showAllCountries() || focusedCountries().has(index) || index === hoverCity());
 
   function convertSelectedCity(index = hoverCity(), source?: string, destination?: string) {
+    setConversionMode("regular");
     if (source) setFrom(source);
     setTo(destination ?? cities[index]![2]!);
     setConvertedCity(index);
@@ -137,6 +139,19 @@ export default function HomePage() {
         ],
         { duration: reducedMotion ? 0 : 2800, easing: "ease-out" },
       );
+    });
+  }
+
+  function openConverter(mode: "regular" | "discord") {
+    setConversionMode(mode);
+    // Wait for the selected mode's lazy content to settle before scrolling.
+    onSettled(() => {
+      converterSection?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+        block: "start",
+      });
     });
   }
 
@@ -219,6 +234,7 @@ export default function HomePage() {
       {/* Explore the live time in each featured city. */}
       <section id="explore" class="mb-14 grid scroll-mt-24 gap-8 lg:mb-20">
         <Hero
+          onOpenConverter={openConverter}
           now={now()}
           localClock={localClock()}
           onConvert={(zone) => {
@@ -230,6 +246,8 @@ export default function HomePage() {
         />
       </section>
       <Converter
+        mode={conversionMode()}
+        setMode={setConversionMode}
         date={date()}
         from={from()}
         to={to()}

@@ -16,7 +16,7 @@ import type { VitePluginConfig } from "unocss/vite";
 const unoBuildMode = { mode: "dist-chunk" } satisfies VitePluginConfig;
 const localFonts = createLocalFontProcessor({ fontAssetsDir: "public/assets/fonts" });
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   // Client and Worker builds must share plugin state (manifest, theme and CSS).
   builder: { sharedPlugins: true },
   // Development modules change independently of HTML; don't reuse stale module
@@ -62,7 +62,9 @@ export default defineConfig({
       directives: { "style-src-attr": ["'unsafe-inline'"] },
       // RLMarquee 0.0.92 inserts this fixed style block on client navigation.
       // Pin its contents rather than permitting arbitrary inline style blocks.
-      styleResources: ["'sha256-8K9desuhUhRw+rOTQ7fPQBp9b09vDtUQN6Z+zF4xwRo='"],
+      // A hash disables unsafe-inline in the development report policy, including Vite's injected CSS.
+      styleResources:
+        command === "serve" ? [] : ["'sha256-8K9desuhUhRw+rOTQ7fPQBp9b09vDtUQN6Z+zF4xwRo='"],
       connectSrc: [
         "https://geocoding-api.open-meteo.com",
         "https://api.open-meteo.com",
@@ -215,4 +217,4 @@ export default defineConfig({
       },
     }),
   ],
-});
+}));

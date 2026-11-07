@@ -544,6 +544,7 @@
     }
   },
   "timezone": {
+    "convertDiscord": "Converter para Discord",
     "enableGlobe": "Ativar globo interativo",
     "loadingGlobe": "A carregar o globo…",
     "globeOnDemand": "Carregue o mapa interativo quando precisar. A partilha da região continua a ser uma escolha separada.",

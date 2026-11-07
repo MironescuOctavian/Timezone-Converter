@@ -31,6 +31,8 @@ type Place = {
 };
 
 export function Converter(props: {
+  mode: "regular" | "discord";
+  setMode: (mode: "regular" | "discord") => void;
   date: string;
   from: string;
   to: string;
@@ -49,10 +51,9 @@ export function Converter(props: {
   sectionRef: (element: HTMLElement) => void;
   destinationRef: (element: HTMLElement) => void;
 }) {
-  const [mode, setMode] = createSignal<"regular" | "discord">("regular");
   const [interacted, setInteracted] = createSignal(false);
   const conversionCount = createConversionCount(() =>
-    interacted() && mode() === "regular" && props.instant
+    interacted() && props.mode === "regular" && props.instant
       ? `${props.instant.getTime()}:${props.from}:${props.to}`
       : undefined,
   );
@@ -72,7 +73,7 @@ export function Converter(props: {
     (city) => {
       if (city !== undefined) {
         setInteracted(true);
-        setMode("regular");
+        props.setMode("regular");
         setSelectedFlag(undefined);
         setSelectedPlace(undefined);
         setSearch("");
@@ -336,7 +337,7 @@ export function Converter(props: {
         props.sectionRef(element);
       }}
       id="converter"
-      class="min-w-0 scroll-mt-24"
+      class="converter-section min-w-0"
       aria-labelledby="converter-title"
     >
       <div class="section-heading">
@@ -358,23 +359,23 @@ export function Converter(props: {
         >
           <button
             type="button"
-            class={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition-colors ${mode() === "regular" ? "border-primary-500 bg-primary-500 text-black" : "border-primary-700 text-neutral-950 hover:border-primary-500"}`}
-            aria-pressed={mode() === "regular" ? "true" : "false"}
-            onClick={() => setMode("regular")}
+            class={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition-colors ${props.mode === "regular" ? "border-primary-500 bg-primary-500 text-black" : "border-primary-700 text-neutral-950 hover:border-primary-500"}`}
+            aria-pressed={props.mode === "regular" ? "true" : "false"}
+            onClick={() => props.setMode("regular")}
           >
             <span class="i-lucide-clock-3 size-4" aria-hidden="true" /> {t("timezone.regularMode")}
           </button>
           <button
             type="button"
-            class={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition-colors ${mode() === "discord" ? "border-primary-500 bg-primary-500 text-black" : "border-primary-700 text-neutral-950 hover:border-primary-500"}`}
-            aria-pressed={mode() === "discord" ? "true" : "false"}
-            onClick={() => setMode("discord")}
+            class={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition-colors ${props.mode === "discord" ? "border-primary-500 bg-primary-500 text-black" : "border-primary-700 text-neutral-950 hover:border-primary-500"}`}
+            aria-pressed={props.mode === "discord" ? "true" : "false"}
+            onClick={() => props.setMode("discord")}
           >
             <span class="i-mdi-discord size-4" aria-hidden="true" /> Discord
           </button>
         </div>
         <Show
-          when={mode() === "regular"}
+          when={props.mode === "regular"}
           fallback={
             <Loading
               fallback={

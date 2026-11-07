@@ -138,6 +138,7 @@ function AnalogClock(props: {
 }
 
 export function Hero(props: {
+  onOpenConverter: (mode: "regular" | "discord") => void;
   now: Date | undefined;
   localClock: { time: string; zone: string; city: string };
   onConvert: (zone: string) => void;
@@ -194,35 +195,50 @@ export function Hero(props: {
           <span aria-hidden="true">✦</span> {t("timezone.noAds")}
         </p>
         <div class="hero-action">
-          <RLButton
-            href="#converter"
-            color="primary"
-            size="lg"
-            class="hero-cta gap-3 rounded-xl bg-primary-500 font-semibold text-black transition hover:bg-primary-400"
-            onClick={(event: MouseEvent) => {
-              if (
-                event.button !== 0 ||
-                event.ctrlKey ||
-                event.metaKey ||
-                event.shiftKey ||
-                event.altKey
-              )
-                return;
-              const section = document.getElementById("converter");
-              if (!section) return;
-              event.preventDefault();
-              section.scrollIntoView({
-                behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-                  ? "instant"
-                  : "smooth",
-                block: "start",
-              });
-            }}
-          >
-            <span class="i-lucide-clock-3 size-6" aria-hidden="true" />
-            {t("timezone.convertTime")}
-            <span class="i-lucide-arrow-down size-5" aria-hidden="true" />
-          </RLButton>
+          <div class="grid max-w-full justify-items-center gap-3">
+            <RLButton
+              href="#converter"
+              color="primary"
+              size="lg"
+              label={t("timezone.convertTime")}
+              leadingIcon="clock-3"
+              trailingIcon="arrow-down"
+              class="hero-cta gap-3 rounded-xl bg-primary-500 font-semibold text-black transition hover:bg-primary-400"
+              onClick={(event: MouseEvent) => {
+                if (
+                  event.button !== 0 ||
+                  event.ctrlKey ||
+                  event.metaKey ||
+                  event.shiftKey ||
+                  event.altKey
+                )
+                  return;
+                event.preventDefault();
+                props.onOpenConverter("regular");
+              }}
+            />
+            <RLButton
+              href="#converter"
+              color="primary"
+              variant="outline"
+              label={t("timezone.convertDiscord")}
+              leadingIcon="i-mdi-discord"
+              trailingIcon="arrow-down"
+              class="hero-discord-cta gap-2 rounded-xl text-primary-500"
+              onClick={(event: MouseEvent) => {
+                if (
+                  event.button !== 0 ||
+                  event.ctrlKey ||
+                  event.metaKey ||
+                  event.shiftKey ||
+                  event.altKey
+                )
+                  return;
+                event.preventDefault();
+                props.onOpenConverter("discord");
+              }}
+            />
+          </div>
         </div>
       </div>
       <div class="hero-artwork">

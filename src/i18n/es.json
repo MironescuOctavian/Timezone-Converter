@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "No se ha encontrado la página." } },
   "timezone": {
+    "convertDiscord": "Convertir para Discord",
     "enableGlobe": "Activar globo interactivo",
     "loadingGlobe": "Cargando globo…",
     "globeOnDemand": "Carga el mapa interactivo cuando lo necesites. Compartir tu región sigue siendo una elección independiente.",

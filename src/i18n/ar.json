@@ -1,6 +1,7 @@
 {
   "app": { "text": { "page-has-not-been-found": "لم يتم العثور على الصفحة." } },
   "timezone": {
+    "convertDiscord": "تحويل لـ Discord",
     "enableGlobe": "تفعيل الكرة الأرضية التفاعلية",
     "loadingGlobe": "جارٍ تحميل الكرة الأرضية…",
     "globeOnDemand": "حمّل الخريطة التفاعلية عند الحاجة. تبقى مشاركة المنطقة خيارًا منفصلًا.",

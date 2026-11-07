@@ -204,11 +204,16 @@ export function CityInfo(props: {
   );
   return (
     <div class="city-info">
-      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-neutral-950">
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm font-medium text-neutral-950">
         <Show when={props.zone}>
-          <span class="inline-flex items-center gap-1.5 font-semibold tabular-nums">
+          <span
+            class="inline-flex items-center gap-1.5 font-semibold tabular-nums"
+            title={t.raw("timezone.currentCityTime", "Current local time")}
+          >
             <span class="i-lucide-clock-3 size-4 text-primary-500" aria-hidden="true" />
-            <AmberClock date={props.now} zone={props.zone} />
+            <span class="whitespace-nowrap">
+              <AmberClock date={props.now} zone={props.zone} />
+            </span>
           </span>
         </Show>
         <p class="flex items-center gap-2 text-sm font-medium text-neutral-950">
@@ -257,7 +262,7 @@ export function CityInfo(props: {
         </Show>
       </div>
       <Show when={props.world && data()?.sunrise && data()?.sunset}>
-        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+        <div class="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
           <p>
             <span aria-hidden="true">🌅</span> {t.raw("timezone.sunrise", "Sunrise")}
             <br />
@@ -279,7 +284,7 @@ export function CityInfo(props: {
         </div>
       </Show>
       <Show when={props.world && data()?.latitude !== undefined && data()?.longitude !== undefined}>
-        <p class="mt-4 text-xs opacity-70">
+        <p class="mt-4 text-center text-xs opacity-70">
           {t.raw("timezone.coordinates", "Coordinates")}: {data()!.latitude!.toFixed(2)}°,{" "}
           {data()!.longitude!.toFixed(2)}°
           <Show when={data()?.elevation !== undefined}>

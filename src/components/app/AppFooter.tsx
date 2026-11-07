@@ -38,14 +38,14 @@ export default function AppFooter() {
             <span class="i-mdi-github size-4" aria-hidden="true" />
             GitHub
           </h2>
-          {/* Add href when the repository is published. */}
           <a
-            role="link"
-            aria-disabled="true"
-            class="mt-3 inline-block text-sm opacity-60"
-            title={t.raw("timezone.githubSoon", "Project repository coming soon")}
+            href="https://github.com/MironescuOctavian/Timezone-Converter"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-3 inline-flex items-center gap-2 text-sm hover:text-primary-500"
           >
-            {t.raw("timezone.comingSoon", "Coming soon")}
+            Timezone Converter
+            <span class="i-lucide-arrow-up-right size-4 text-primary-500" aria-hidden="true" />
           </a>
         </div>
         <div class="sm:justify-self-end sm:w-full sm:max-w-xs">

@@ -15,6 +15,9 @@ import "#components/timezone/page.css";
 import timezoneCountries from "#data/timezone-countries.json";
 
 import { TimezoneDetails } from "#components/timezone/TimezoneDetails";
+import { CityTimeline, TimelineLegend } from "#components/timezone/CityTimeline";
+import { timelineInstant } from "#components/timezone/timeline";
+import { CityActivity } from "#components/timezone/CityActivity";
 
 // Indices refer to the curated representative cities in timezone/data.ts.
 const featured = [2, 3, 13, 4, 5, 14, 15, 16, 9, 10, 11, 12, 17, 18, 20, 21, 6, 7, 8, 24];
@@ -24,9 +27,16 @@ export default function WorldClockPage() {
   const [local, setLocal] = createSignal("UTC");
   const [added, setAdded] = createSignal<SearchCity[]>([]);
   const [expanded, setExpanded] = createSignal<string>();
+  const [selectedTime, setSelectedTime] = createSignal<Date>();
+  const [timelineStart, setTimelineStart] = createSignal<number>();
+  const shownTime = createMemo(() => selectedTime() ?? now());
   onSettled(() => {
     setLocal(Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
-    setNow(new Date());
+    const current = new Date();
+    setNow(current);
+    setTimelineStart(
+      new Date(current.getFullYear(), current.getMonth(), current.getDate()).getTime(),
+    );
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   });
@@ -101,11 +111,63 @@ export default function WorldClockPage() {
             {t.raw("timezone.localTime", "Your local time")} · {local().replaceAll("_", " ")}
           </p>
           <p class="mt-2 text-2xl font-bold">
-            <AmberClock date={now()} zone={local()} />
+            <AmberClock date={shownTime()} zone={local()} />
           </p>
         </div>
       </Show>
-      <div class="mt-8 grid gap-3">
+      <div class="mt-6 rounded-2xl border border-primary-700/50 bg-neutral-50 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p class="flex items-center gap-2 text-sm font-bold">
+              <span
+                class="i-lucide-sliders-horizontal size-4 text-primary-500"
+                aria-hidden="true"
+              />
+              {t.raw("timezone.compareTimeSlider", "Compare local times")}
+            </p>
+            <p class="mt-2 text-xs opacity-65">
+              {t.raw(
+                "timezone.timelineHelp",
+                "Drag any city’s timeline to compare the same moment everywhere.",
+              )}
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="grid gap-1 text-right text-sm font-semibold tabular-nums">
+              <small class="text-xs font-normal opacity-65">
+                {shownTime()
+                  ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
+                      timeZone: local(),
+                      weekday: "short",
+                      day: "numeric",
+                      month: "short",
+                    }).format(shownTime()!)
+                  : "—"}
+              </small>
+              <span>
+                <AmberClock date={shownTime()} zone={local()} />
+              </span>
+            </span>
+            <button
+              type="button"
+              class="inline-flex min-h-10 items-center gap-2 rounded-full border border-primary-700 px-3 text-xs font-semibold text-primary-500"
+              onClick={() => setSelectedTime(undefined)}
+            >
+              <span
+                class={selectedTime() ? "i-lucide-radio size-4" : "i-lucide-circle-check size-4"}
+                aria-hidden="true"
+              />
+              {selectedTime()
+                ? t.raw("timezone.backToLive", "Back to live")
+                : t.raw("timezone.liveNow", "Live now")}
+            </button>
+          </div>
+        </div>
+        <div class="mt-4 border-t border-primary-700/30 pt-3">
+          <TimelineLegend />
+        </div>
+      </div>
+      <div class="mt-5 grid gap-3">
         <For each={rows()}>
           {(row) => {
             return (
@@ -137,49 +199,67 @@ export default function WorldClockPage() {
                         : ""}
                     </small>
                   </span>
+                  <CityActivity date={shownTime()} zone={row.zone} />
                   <span class="world-clock-row-meta">
-                    <span class="inline-flex items-center gap-2">
-                      <span
-                        class="i-lucide-calendar-days size-4 text-primary-500"
-                        aria-hidden="true"
-                      />
-                      {now()
-                        ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
-                            timeZone: row.zone,
-                            weekday: "short",
-                            day: "numeric",
-                            month: "short",
-                          }).format(now()!)
-                        : "—"}
-                    </span>
-                    <span class="inline-flex items-center gap-2 text-xs opacity-65">
-                      <span class="i-lucide-globe-2 size-3.5 text-primary-500" aria-hidden="true" />
-                      {now()
-                        ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
-                            timeZone: row.zone,
-                            timeZoneName: "longOffset",
-                          })
-                            .formatToParts(now()!)
-                            .find((part) => part.type === "timeZoneName")?.value
-                        : "—"}
+                    <span class="world-clock-row-facts">
+                      <span class="inline-flex items-center gap-2">
+                        <span
+                          class="i-lucide-calendar-days size-4 text-primary-500"
+                          aria-hidden="true"
+                        />
+                        {shownTime()
+                          ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
+                              timeZone: row.zone,
+                              weekday: "short",
+                              day: "numeric",
+                              month: "short",
+                            }).format(shownTime()!)
+                          : "—"}
+                      </span>
+                      <span class="inline-flex items-center gap-2 text-xs opacity-65">
+                        <span
+                          class="i-lucide-globe-2 size-3.5 text-primary-500"
+                          aria-hidden="true"
+                        />
+                        {shownTime()
+                          ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
+                              timeZone: row.zone,
+                              timeZoneName: "longOffset",
+                            })
+                              .formatToParts(shownTime()!)
+                              .find((part) => part.type === "timeZoneName")?.value
+                          : "—"}
+                      </span>
                     </span>
                   </span>
                   <span class="text-right">
                     <strong class="block text-2xl tabular-nums">
-                      <AmberClock date={now()} zone={row.zone} />
+                      <AmberClock date={shownTime()} zone={row.zone} />
                     </strong>
                     <small class="text-primary-500">
-                      {now() ? differenceLabel(differenceMinutes(now()!, row.zone, local())) : ""}
+                      {shownTime()
+                        ? differenceLabel(differenceMinutes(shownTime()!, row.zone, local()))
+                        : ""}
                     </small>
                   </span>
                   <span class="text-primary-500" aria-hidden="true">
                     {expanded() === `${row.zone}#${row.name}` ? "−" : "+"}
                   </span>
                 </button>
+                <CityTimeline
+                  start={timelineStart()}
+                  date={shownTime()}
+                  zone={row.zone}
+                  city={displayCity(row.name)}
+                  onSelect={(minute) => {
+                    if (timelineStart() !== undefined)
+                      setSelectedTime(timelineInstant(timelineStart()!, minute));
+                  }}
+                />
                 <Show when={expanded() === `${row.zone}#${row.name}`}>
                   <div class="flex flex-col gap-4 border-t border-primary-700/40 p-4 sm:p-5">
                     <div class="rounded-xl border border-primary-700/40 p-4">
-                      <p class="mb-3 text-xs font-bold uppercase tracking-widest text-primary-500">
+                      <p class="mb-3 text-center text-xs font-bold uppercase tracking-widest text-primary-500">
                         ☁ {t.raw("timezone.weatherDaylight", "Weather & daylight")}
                       </p>
                       <CityInfo
@@ -188,11 +268,12 @@ export default function WorldClockPage() {
                         countryCode={row.countryCode}
                         coordinates={row.coordinates}
                         zone={row.zone}
+                        now={now()}
                         world
                         details
                       />
                     </div>
-                    <TimezoneDetails zone={row.zone} local={local()} now={now()} />
+                    <TimezoneDetails zone={row.zone} local={local()} now={shownTime()} />
                   </div>
                 </Show>
               </article>

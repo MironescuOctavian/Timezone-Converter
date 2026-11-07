@@ -29,10 +29,6 @@ export default defineConfig({
         worker: workerName,
         exportName: "GlobePresence",
       }),
-      IMAGES: bindings.images(),
-      BLOB: bindings.r2({
-        name: "octavianmironescu-dot-com",
-      }),
       RATE_LIMIT: bindings.rateLimit({
         namespace: "1001",
         simple: {

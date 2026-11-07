@@ -42,7 +42,7 @@ export function TimezoneDetails(props: { zone: string; local: string; now: Date 
     <div class="order-first rounded-xl border border-primary-700/40 p-5 text-center text-sm sm:p-6">
       <p class="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-500">
         <span class="i-lucide-globe-2 size-4" aria-hidden="true" />
-        {t.raw("timezone.timeZoneLabel", "Time zone")}
+        {t("timezone.timeZoneLabel")}
       </p>
       <h3 class="mt-3 break-words text-lg font-semibold">{props.zone.replaceAll("_", " ")}</h3>
       <p class="mt-1 text-xs opacity-65">{zoneName()}</p>
@@ -50,14 +50,14 @@ export function TimezoneDetails(props: { zone: string; local: string; now: Date 
         <div class="rounded-xl bg-primary-500/5 px-3 py-4">
           <dt class="flex items-center justify-center gap-2 text-xs opacity-65">
             <span class="i-lucide-clock-3 size-4 text-primary-500" aria-hidden="true" />
-            {t.raw("timezone.utcOffset", "UTC offset")}
+            {t("timezone.utcOffset")}
           </dt>
           <dd class="mt-2 font-semibold tabular-nums">{offset()}</dd>
         </div>
         <div class="rounded-xl bg-primary-500/5 px-3 py-4">
           <dt class="flex items-center justify-center gap-2 text-xs opacity-65">
             <span class="i-lucide-arrow-left-right size-4 text-primary-500" aria-hidden="true" />
-            {t.raw("timezone.timeDifference", "Compared with you")}
+            {t("timezone.timeDifference")}
           </dt>
           <dd class="mt-2 font-semibold">
             {props.now
@@ -68,7 +68,7 @@ export function TimezoneDetails(props: { zone: string; local: string; now: Date 
         <div class="rounded-xl bg-primary-500/5 px-3 py-4">
           <dt class="flex items-center justify-center gap-2 text-xs opacity-65">
             <span class="i-lucide-calendar-days size-4 text-primary-500" aria-hidden="true" />
-            {t.raw("timezone.localDate", "Local date")}
+            {t("timezone.localDate")}
           </dt>
           <dd class="mt-2 font-semibold">
             {format({ weekday: "short", day: "numeric", month: "short", year: "numeric" })}
@@ -79,9 +79,7 @@ export function TimezoneDetails(props: { zone: string; local: string; now: Date 
         <div class="mt-5 border-t border-primary-700/30 pt-4">
           <p class="flex items-center justify-center gap-2 text-xs font-semibold text-primary-500">
             <span class="i-lucide-sun size-4" aria-hidden="true" />
-            {daylight()
-              ? t.raw("timezone.daylightTime", "Daylight saving time is active")
-              : t.raw("timezone.standardTime", "Standard time is active")}
+            {daylight() ? t("timezone.daylightTime") : t("timezone.standardTime")}
           </p>
           <div class="mt-3 flex flex-wrap justify-center gap-x-6 gap-y-3">
             <For each={changes()}>
@@ -96,10 +94,7 @@ export function TimezoneDetails(props: { zone: string; local: string; now: Date 
                     aria-hidden="true"
                   />
                   <span class="opacity-65">
-                    {change.started
-                      ? t.raw("timezone.dstStarted", "DST started")
-                      : t.raw("timezone.dstEnded", "DST ended")}
-                    :
+                    {change.started ? t("timezone.dstStarted") : t("timezone.dstEnded")}:
                   </span>
                   <strong>
                     {new Intl.DateTimeFormat(getLocaleInfo().tag, {

@@ -1,3 +1,4 @@
+import { dateFormatter } from "./date-format";
 import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import { getLocaleInfo, t } from "@rimelight/i18n";
 
@@ -58,7 +59,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
   });
   const weekdays = createMemo(() =>
     Array.from({ length: 7 }, (_, index) =>
-      new Intl.DateTimeFormat(getLocaleInfo().tag, { weekday: "short", timeZone: "UTC" }).format(
+      dateFormatter(getLocaleInfo().tag, { weekday: "short", timeZone: "UTC" }).format(
         new Date(Date.UTC(2024, 0, 1 + index)),
       ),
     ),
@@ -90,7 +91,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
         <span class="truncate">
           {props.value
             ? `${props.value.slice(8, 10)}/${props.value.slice(5, 7)}/${props.value.slice(0, 4)} · ${props.value.slice(11, 19)}`
-            : t.raw("timezone.chooseDate", "Choose a date and time")}
+            : t("timezone.chooseDate")}
         </span>
         <span
           class="i-lucide-calendar-days absolute right-4 size-4 text-primary-500"
@@ -100,7 +101,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
       <Show when={open()}>
         <div
           role="dialog"
-          aria-label={t.raw("timezone.dateTime", "Date and time")}
+          aria-label={t("timezone.dateTime")}
           class="absolute left-0 top-full z-50 mt-2 w-[min(21rem,80vw)] rounded-2xl border border-primary-700 bg-neutral-50 p-4 text-neutral-950 shadow-[0_16px_50px_#0006]"
           onKeyDown={(event) => {
             if (event.key === "Escape") {
@@ -117,13 +118,13 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
             <button
               type="button"
               class="grid size-8 place-items-center rounded-lg border border-primary-700/50 text-primary-500 hover:bg-primary-500/10"
-              aria-label={t.raw("timezone.previousMonth", "Previous month")}
+              aria-label={t("timezone.previousMonth")}
               onClick={() => moveMonth(-1)}
             >
               ‹
             </button>
             <span class="font-bold">
-              {new Intl.DateTimeFormat(getLocaleInfo().tag, {
+              {dateFormatter(getLocaleInfo().tag, {
                 month: "long",
                 year: "numeric",
                 timeZone: "UTC",
@@ -132,7 +133,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
             <button
               type="button"
               class="grid size-8 place-items-center rounded-lg border border-primary-700/50 text-primary-500 hover:bg-primary-500/10"
-              aria-label={t.raw("timezone.nextMonth", "Next month")}
+              aria-label={t("timezone.nextMonth")}
               onClick={() => moveMonth(1)}
             >
               ›
@@ -163,7 +164,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
           </div>
           <div class="mt-4 grid grid-cols-3 gap-2 border-t border-primary-700/40 pt-4">
             <label class="grid gap-1 text-center text-xs">
-              <span>{t.raw("timezone.hours", "Hours")}</span>
+              <span>{t("timezone.hours")}</span>
               <input
                 class="h-11 w-full rounded-lg border border-primary-700/50 bg-default text-center text-lg font-semibold tabular-nums focus:outline-2 focus:outline-white"
                 type="text"
@@ -174,7 +175,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
               />
             </label>
             <label class="grid gap-1 text-center text-xs">
-              <span>{t.raw("timezone.minutes", "Minutes")}</span>
+              <span>{t("timezone.minutes")}</span>
               <input
                 class="h-11 w-full rounded-lg border border-primary-700/50 bg-default text-center text-lg font-semibold tabular-nums focus:outline-2 focus:outline-white"
                 type="text"
@@ -185,7 +186,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
               />
             </label>
             <label class="grid gap-1 text-center text-xs">
-              <span>{t.raw("timezone.seconds", "Seconds")}</span>
+              <span>{t("timezone.seconds")}</span>
               <input
                 class="h-11 w-full rounded-lg border border-primary-700/50 bg-default text-center text-lg font-semibold tabular-nums focus:outline-2 focus:outline-white"
                 type="text"
@@ -202,7 +203,7 @@ export function DateTimeField(props: { value: string; onChange: (value: string) 
             class="mt-4 min-h-10 w-full rounded-lg bg-primary-500 px-4 text-sm font-bold text-black disabled:opacity-40"
             onClick={apply}
           >
-            {t.raw("timezone.applyDateTime", "Apply date and time")}
+            {t("timezone.applyDateTime")}
           </button>
         </div>
       </Show>

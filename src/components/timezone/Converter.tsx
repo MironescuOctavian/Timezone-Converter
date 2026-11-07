@@ -112,8 +112,8 @@ export function Converter(props: {
   });
   // Search major cities beyond the representative timezone list. Cancel stale requests as the user types.
   createEffect(
-    () => search().trim(),
-    (query) => {
+    () => [search().trim(), getLocaleInfo().code] as const,
+    ([query, language]) => {
       if (query.length < 2 || query.includes(" (")) {
         setRemotePlaces([]);
         return;
@@ -124,7 +124,7 @@ export function Converter(props: {
           const params = new URLSearchParams({
             name: query,
             count: "100",
-            language: "en",
+            language,
             format: "json",
           });
           const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`, {
@@ -209,14 +209,14 @@ export function Converter(props: {
   });
   const groups = createMemo(() =>
     [
-      { key: "Africa", label: t.raw("timezone.continentAfrica", "Africa") },
-      { key: "Asia", label: t.raw("timezone.continentAsia", "Asia") },
-      { key: "Europe", label: t.raw("timezone.continentEurope", "Europe") },
-      { key: "North America", label: t.raw("timezone.continentNorthAmerica", "North America") },
-      { key: "South America", label: t.raw("timezone.continentSouthAmerica", "South America") },
-      { key: "Oceania", label: t.raw("timezone.continentOceania", "Oceania") },
-      { key: "Polar", label: t.raw("timezone.continentPolar", "Polar regions") },
-      { key: "Other", label: t.raw("timezone.continentOther", "Other territories") },
+      { key: "Africa", label: t("timezone.continentAfrica") },
+      { key: "Asia", label: t("timezone.continentAsia") },
+      { key: "Europe", label: t("timezone.continentEurope") },
+      { key: "North America", label: t("timezone.continentNorthAmerica") },
+      { key: "South America", label: t("timezone.continentSouthAmerica") },
+      { key: "Oceania", label: t("timezone.continentOceania") },
+      { key: "Polar", label: t("timezone.continentPolar") },
+      { key: "Other", label: t("timezone.continentOther") },
     ]
       .map((region) => ({
         label: region.label,
@@ -323,23 +323,20 @@ export function Converter(props: {
     >
       <div class="section-heading">
         <p class="text-xs font-bold tracking-widest text-primary-500">
-          {t.raw("timezone.conversionEyebrow", "World Clock Conversion")}
+          {t("timezone.conversionEyebrow")}
         </p>
         <h2 id="converter-title" class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-          {t.raw("timezone.conversionHeading", "Find the timezone you want.")}
+          {t("timezone.conversionHeading")}
         </h2>
         <p class="mt-3 max-w-2xl text-base leading-relaxed text-neutral-950 sm:text-lg">
-          {t.raw(
-            "timezone.conversionDescription",
-            "Choose the time and places you want to convert.",
-          )}
+          {t("timezone.conversionDescription")}
         </p>
       </div>
       <div class="overflow-hidden rounded-3xl border border-primary-700 bg-neutral-50 shadow-[0_16px_60px_var(--rl-primary-950)]">
         <div
           class="timezone-mode-switch flex flex-wrap gap-2 border-b border-primary-700/40 px-5 pt-5 pb-4 sm:px-8 lg:px-10"
           role="group"
-          aria-label={t.raw("timezone.conversionMode", "Conversion mode")}
+          aria-label={t("timezone.conversionMode")}
         >
           <button
             type="button"
@@ -347,8 +344,7 @@ export function Converter(props: {
             aria-pressed={mode() === "regular" ? "true" : "false"}
             onClick={() => setMode("regular")}
           >
-            <span class="i-lucide-clock-3 size-4" aria-hidden="true" />{" "}
-            {t.raw("timezone.regularMode", "Regular")}
+            <span class="i-lucide-clock-3 size-4" aria-hidden="true" /> {t("timezone.regularMode")}
           </button>
           <button
             type="button"
@@ -383,12 +379,10 @@ export function Converter(props: {
                 ◷
               </span>
               <div>
-                <p class="font-bold">{t.raw("timezone.setTime", "Set your time")}</p>
+                <p class="font-bold">{t("timezone.setTime")}</p>
               </div>
               <div class="relative mx-auto w-full sm:max-w-sm md:absolute md:left-1/2 md:-translate-x-1/2">
-                <span class="sr-only">
-                  {t.raw("timezone.searchTimezones", "Search countries, cities or timezones")}
-                </span>
+                <span class="sr-only">{t("timezone.searchTimezones")}</span>
                 <SearchToolbar
                   value={search()}
                   suggestion={completion()?.city}
@@ -407,7 +401,7 @@ export function Converter(props: {
             </div>
             <div class="grid gap-5 lg:grid-cols-3">
               <div class="grid content-start gap-3 text-sm font-semibold">
-                {t.raw("timezone.dateTime", "Date and time")}:
+                {t("timezone.dateTime")}:
                 <DateTimeField
                   value={props.date}
                   onChange={(value) => {
@@ -417,12 +411,12 @@ export function Converter(props: {
                 />
               </div>
               <label class="grid content-start gap-3 text-sm font-semibold">
-                {t.raw("timezone.fromTimezone", "From timezone")}:
+                {t("timezone.fromTimezone")}:
                 <TimezoneSelect
                   groups={groups()}
                   localLabel={localLabel()}
                   selectedFlag={optionFlag(props.from, sourceFlag())}
-                  label={t.raw("timezone.fromTimezone", "From timezone")}
+                  label={t("timezone.fromTimezone")}
                   class="min-h-14 w-full min-w-0 rounded-xl border border-primary-700/50 bg-default px-4 text-base text-neutral-950 transition-colors hover:border-primary-500 focus-visible:outline-2 focus-visible:outline-primary-500"
                   value={fromValue()}
                   onChange={(e) => {
@@ -447,12 +441,12 @@ export function Converter(props: {
                 </TimezoneSelect>
               </label>
               <label class="grid content-start gap-3 text-sm font-semibold">
-                {t.raw("timezone.toTimezone", "To timezone")}:
+                {t("timezone.toTimezone")}:
                 <TimezoneSelect
                   groups={groups()}
                   localLabel={localLabel()}
                   selectedFlag={optionFlag(props.to, selectedFlag())}
-                  label={t.raw("timezone.toTimezone", "To timezone")}
+                  label={t("timezone.toTimezone")}
                   triggerRef={(element) => {
                     props.destinationRef(element);
                   }}
@@ -491,8 +485,8 @@ export function Converter(props: {
                 </TimezoneSelect>
                 <Show when={props.convertedCity !== undefined}>
                   <span class="text-xs font-semibold text-primary-500" role="status">
-                    {t.raw("timezone.selectedGlobe", "Selected from globe")}:{" "}
-                    {cities[props.convertedCity!]![0]} · {props.to.replaceAll("_", " ")}
+                    {t("timezone.selectedGlobe")}: {cities[props.convertedCity!]![0]} ·{" "}
+                    {props.to.replaceAll("_", " ")}
                   </span>
                 </Show>
               </label>
@@ -504,7 +498,7 @@ export function Converter(props: {
             >
               <div>
                 <p class="text-xs font-bold tracking-[0.2em] text-primary-500">
-                  {t.raw("timezone.convertedTime", "YOUR CONVERTED TIME")}
+                  {t("timezone.convertedTime")}
                 </p>
                 <Show when={props.instant}>
                   <p class="mt-3 text-sm font-semibold text-primary-500">{convertedDay()}</p>
@@ -513,16 +507,14 @@ export function Converter(props: {
                   when={props.instant}
                   fallback={
                     <p class="mt-3 max-w-3xl text-2xl font-bold">
-                      {props.date
-                        ? t.raw("timezone.invalidTime", "This local time cannot be converted.")
-                        : t.raw("timezone.chooseDate", "Choose a date and time")}
+                      {props.date ? t("timezone.invalidTime") : t("timezone.chooseDate")}
                     </p>
                   }
                 >
                   <div class="mt-4 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
                     <div>
                       <p class="text-xs font-semibold uppercase tracking-widest opacity-65">
-                        {t.raw("timezone.dateLabel", "Date")}
+                        {t("timezone.dateLabel")}
                       </p>
                       <p class="mt-1 text-2xl font-bold tabular-nums sm:text-3xl">
                         {convertedParts()[0]}
@@ -531,7 +523,7 @@ export function Converter(props: {
                     <span class="h-10 w-px bg-primary-700/60" aria-hidden="true" />
                     <div>
                       <p class="text-xs font-semibold uppercase tracking-widest opacity-65">
-                        {t.raw("timezone.timeLabel", "Time")}
+                        {t("timezone.timeLabel")}
                       </p>
                       <p class="mt-1 text-2xl font-bold tabular-nums sm:text-3xl">
                         {convertedParts()[1]?.replaceAll("/", ":")}
@@ -549,7 +541,7 @@ export function Converter(props: {
                   onClick={props.copy}
                   disabled={!props.instant}
                 >
-                  {t.raw("timezone.copyClipboard", "Copy to clipboard")}
+                  {t("timezone.copyClipboard")}
                 </RLButton>
                 <Show when={props.instant}>
                   {(value) => {
@@ -572,7 +564,7 @@ export function Converter(props: {
                         rel="noopener noreferrer"
                       >
                         <span class="i-lucide-calendar-plus size-4" aria-hidden="true" />
-                        {t.raw("timezone.addCalendar", "Add to Google Calendar")}
+                        {t("timezone.addCalendar")}
                       </a>
                     );
                   }}
@@ -581,7 +573,7 @@ export function Converter(props: {
             </div>
             <div class="mt-6 rounded-2xl border border-primary-700/50 bg-default p-5 sm:p-6">
               <p class="text-xs font-bold uppercase tracking-widest text-primary-500">
-                {t.raw("timezone.exploreDestination", "Explore your destination")}
+                {t("timezone.exploreDestination")}
               </p>
               <h3 class="mt-2 text-xl font-bold">{destinationLabel()}</h3>
               <div class="mt-3">
@@ -592,9 +584,7 @@ export function Converter(props: {
                       <span class="font-semibold tabular-nums">
                         <AmberClock date={props.now} zone={props.to} />
                       </span>
-                      <span class="opacity-65">
-                        {t.raw("timezone.weatherUnavailable", "Current weather unavailable")}
-                      </span>
+                      <span class="opacity-65">{t("timezone.weatherUnavailable")}</span>
                     </p>
                   }
                 >
@@ -615,12 +605,7 @@ export function Converter(props: {
                   />
                 </Show>
               </div>
-              <p class="mt-4 text-xs opacity-60">
-                {t.raw(
-                  "timezone.currentConditions",
-                  "Current conditions from Open-Meteo. City information and images from Wikipedia and Wikimedia.",
-                )}
-              </p>
+              <p class="mt-4 text-xs opacity-60">{t("timezone.currentConditions")}</p>
             </div>
             <p class="mt-2 text-sm text-default" role="status">
               {props.copyStatus}

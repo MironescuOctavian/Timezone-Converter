@@ -6,6 +6,10 @@ import { seo } from "@rimelight/seo/plugin";
 import { security } from "@rimelight/security/plugin";
 import { i18n } from "@rimelight/i18n/plugin";
 import { ui } from "@rimelight/ui/plugin";
+import { siteShortcuts } from "./src/styles/shortcuts";
+import type { VitePluginConfig } from "unocss/vite";
+
+const unoBuildMode = { mode: "per-module" } satisfies VitePluginConfig;
 
 export default defineConfig({
   // Development modules change independently of HTML; don't reuse stale module
@@ -34,16 +38,16 @@ export default defineConfig({
     fileRoutes({ types: ".cloudflare/types/file-routes.d.ts" }),
 
     seo({
-      id: "octavianmironescu.com",
+      id: "timezone-converter",
       url: "https://octavianmironescu.com",
-      name: "Mironescu Octavian",
-      description: "Personal website of Mironescu Octavian",
+      name: "Timezone Converter",
+      description: "Compare world clocks, convert timezones, and create Discord timestamps.",
       author: "Mironescu Octavian",
       branding: {
-        logo: { alt: "Mironescu Octavian" },
+        logo: { alt: "Timezone Converter" },
         colors: { themeColor: "#ffffff", backgroundColor: "#ffffff" },
       },
-      titleTemplate: "%s | Mironescu Octavian",
+      titleTemplate: "%s | Timezone Converter",
     }),
 
     security({
@@ -63,7 +67,21 @@ export default defineConfig({
     i18n({ defaultLocale: "en" }),
     ui({
       unocss: {
+        // Generate CSS during module transforms; Vite+'s Rolldown pipeline has
+        // no vite:css-post hook for UnoCSS's global placeholder replacement.
+        ...unoBuildMode,
+        layers: { site: 10 },
+        shortcuts: Object.entries(siteShortcuts).map(
+          ([name, utilities]): [string, string, { layer: string }] => [
+            name,
+            utilities,
+            { layer: "site" },
+          ],
+        ),
         safelist: [
+          // Some component templates are compiled before extraction. Keep their
+          // semantic shortcuts available in every route's production stylesheet.
+          ...Object.keys(siteShortcuts),
           "i-mdi-github",
           "i-mdi-linkedin",
           "i-mdi-instagram",

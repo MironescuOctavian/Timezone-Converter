@@ -26,7 +26,7 @@ export function PresenceMarkers(props: { projection: GeoProjection; zoom: number
             transform={`translate(${city.x},${city.y}) scale(${1 / props.zoom})`}
             tabindex="0"
             role="img"
-            aria-label={`${city.city} · ${city.timezone} · ${city.viewers} online`}
+            aria-label={`${city.city} · ${city.timezone} · ${city.viewers} ${t("timezone.online")}`}
             onPointerEnter={() => setHovered(city.key)}
             onPointerLeave={() => setHovered(undefined)}
             onFocus={() => setHovered(city.key)}
@@ -67,13 +67,13 @@ export function PresenceMarkers(props: { projection: GeoProjection; zoom: number
               font-size="11"
               font-weight="700"
             >
-              {city().city.slice(0, 25)} · {city().viewers} {t.raw("timezone.online", "online")}
+              {city().city.slice(0, 25)} · {city().viewers} {t("timezone.online")}
             </text>
             <text x="0" y="-25" text-anchor="middle" fill="white" font-size="10">
               {city().timezone.replaceAll("_", " ")}
             </text>
             <text x="0" y="-11" text-anchor="middle" fill="#bcb5a6" font-size="8">
-              {t.raw("timezone.anonymousViewer", "Anonymous · approximate location")}
+              {t("timezone.anonymousViewer")}
             </text>
           </g>
         )}
@@ -89,21 +89,16 @@ export function PresenceLegend() {
       <p class="flex items-center justify-center gap-2 text-sm font-semibold">
         <span class="i-lucide-users size-4 text-primary-500" aria-hidden="true" />
         {presence.connected()
-          ? `${presence.total()} ${presence.total() === 1 ? t.raw("timezone.viewerOnline", "viewer online") : t.raw("timezone.viewersOnline", "viewers online")}`
-          : t.raw("timezone.presenceConnecting", "Live presence reconnecting…")}
+          ? `${presence.total()} ${presence.total() === 1 ? t("timezone.viewerOnline") : t("timezone.viewersOnline")}`
+          : t("timezone.presenceConnecting")}
       </p>
-      <p class="mt-2 text-xs leading-relaxed opacity-70">
-        {t.raw(
-          "timezone.presencePrivacy",
-          "You appear anonymously. Only your approximate city and timezone are visible. No names or IP addresses are shared.",
-        )}
-      </p>
+      <p class="mt-2 text-xs leading-relaxed opacity-70">{t("timezone.presencePrivacy")}</p>
       <p class="mt-2 text-xs text-primary-500">
         {presence.hidden()
-          ? t.raw("timezone.presenceHidden", "Your dot is hidden.")
+          ? t("timezone.presenceHidden")
           : presence.location()
             ? `${presence.location()!.city} · ${presence.location()!.timezone.replaceAll("_", " ")}`
-            : t.raw("timezone.presenceUnknown", "No dot is shown when your city is unavailable.")}
+            : t("timezone.presenceUnknown")}
       </p>
       <button
         type="button"
@@ -115,9 +110,7 @@ export function PresenceLegend() {
           class={presence.hidden() ? "i-lucide-eye size-3.5" : "i-lucide-eye-off size-3.5"}
           aria-hidden="true"
         />
-        {presence.hidden()
-          ? t.raw("timezone.showMyDot", "Show my dot")
-          : t.raw("timezone.hideMyDot", "Hide my dot")}
+        {presence.hidden() ? t("timezone.showMyDot") : t("timezone.hideMyDot")}
       </button>
     </div>
   );

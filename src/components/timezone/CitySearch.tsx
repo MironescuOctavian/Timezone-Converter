@@ -1,5 +1,5 @@
 import { createEffect, createMemo, createSignal, Show } from "solid-js";
-import { t } from "@rimelight/i18n";
+import { getLocaleInfo, t } from "@rimelight/i18n";
 
 export type SearchCity = {
   id: number;
@@ -30,8 +30,8 @@ export function SearchToolbar(props: {
         type="search"
         autocomplete="off"
         value={props.value}
-        aria-label={t.raw("timezone.searchTimezones", "Search countries, cities or timezones")}
-        placeholder={t.raw("timezone.searchTimezones", "Search countries, cities or timezones")}
+        aria-label={t("timezone.searchTimezones")}
+        placeholder={t("timezone.searchTimezones")}
         class="h-12 w-full rounded-xl border border-primary-700/50 bg-default pl-11 pr-4 text-sm text-neutral-950 focus-visible:outline-2 focus-visible:outline-primary-500"
         onInput={(event) => props.onInput(event.currentTarget.value)}
         onKeyDown={(event) => {
@@ -66,15 +66,15 @@ export function CitySearch(props: { onSelect: (city: SearchCity) => void }) {
   const [position, setPosition] = createSignal(0);
   const completion = createMemo(() => results()[position()]);
   createEffect(
-    () => query().trim(),
-    (name) => {
+    () => [query().trim(), getLocaleInfo().code] as const,
+    ([name, language]) => {
       setResults([]);
       setPosition(0);
       if (name.length < 2) return;
       const controller = new AbortController();
       const timer = setTimeout(async () => {
         try {
-          const params = new URLSearchParams({ name, count: "20", language: "en", format: "json" });
+          const params = new URLSearchParams({ name, count: "20", language, format: "json" });
           const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?${params}`, {
             signal: controller.signal,
           });

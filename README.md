@@ -10,6 +10,7 @@ Built with Solid 2, TypeScript, Rimelight, UnoCSS, and Cloudflare Workers.
 - **Discord timestamps:** copyable timestamp formats with previews in your local timezone.
 - **Interactive globe:** drag to rotate in any direction, zoom up to 400%, explore countries, compare time differences, and jump directly to conversion. Continent and ocean labels appear at the initial zoom; ocean labels remain visible when zoomed in.
 - **World Clock:** live times for featured destinations and your timezone, searchable additional cities, local dates, UTC offsets, and expandable city details.
+- **Public holidays:** lazy-loaded country calendars in expanded World Clock details, selected-date highlighting, upcoming/full-year views, and separate nationwide/regional coverage. Dates come from the Nager.Date v4 API through a cached same-origin endpoint; no API key is required. Coverage is a planning aid, not a guarantee of time off.
 - **City details:** current weather, photographs with a gallery, Wikipedia summaries, and approximate straight-line distance with kilometre/mile controls. World Clock details also include daylight information and clock-change dates where applicable.
 - **Anonymous live presence:** approximate city markers and online connection counts, with a privacy notice and a **Hide my dot** control.
 - **Appearance:** light, dark, and system themes; an animated cartographic background; section navigation; and reduced-motion support.
@@ -34,18 +35,19 @@ Cloudflare's Vite plugin runs the Worker locally. Core conversion does not requi
 
 ## Commands
 
-| Command                             | Purpose                                                                                                     |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `vp install`                        | Install project dependencies                                                                                |
-| `vp run dev`                        | Start the development server                                                                                |
-| `vp run build`                      | Build the client and Cloudflare Worker                                                                      |
-| `vp run preview`                    | Preview the production build                                                                                |
-| `vp run generate-types`             | Regenerate Cloudflare binding types                                                                         |
-| `vp test`                           | Run the test suite                                                                                          |
-| `vp check`                          | Check formatting, lint, and types through Vite+                                                             |
-| `vp run check`                      | Run the package script: dependency audit, type generation, and `vp check --fix`; this can change formatting |
-| `vp node scripts/check-locales.mjs` | Check both pages in all ten languages against an existing dev server                                        |
-| `vp run deploy`                     | Build and deploy through the Cloudflare CLI                                                                 |
+| Command                                    | Purpose                                                                                                     |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `vp install`                               | Install project dependencies                                                                                |
+| `vp run dev`                               | Start the development server                                                                                |
+| `vp run build`                             | Build the client and Cloudflare Worker                                                                      |
+| `vp run preview`                           | Preview the production build                                                                                |
+| `vp run generate-types`                    | Regenerate Cloudflare binding types                                                                         |
+| `vp test`                                  | Run the test suite                                                                                          |
+| `vp check`                                 | Check formatting, lint, and types through Vite+                                                             |
+| `vp run check`                             | Run the package script: dependency audit, type generation, and `vp check --fix`; this can change formatting |
+| `vp node scripts/check-locales.mjs`        | Check both pages in all ten languages against an existing dev server                                        |
+| `vp node scripts/check-styles.mjs --build` | Verify UnoCSS utilities and the generated production stylesheet after building                              |
+| `vp run deploy`                            | Build and deploy through the Cloudflare CLI                                                                 |
 
 Vite+ built-in commands and package scripts are distinct. Use `vp run <name>` for the scripts defined in `package.json`.
 
@@ -70,6 +72,7 @@ To reuse a build you have already created:
 vp run build
 pnpm exec cf deploy --prebuilt
 ```
+
 ## Live presence and privacy
 
 Presence follows the architecture of [Cloudflare's multiplayer globe template](https://github.com/cloudflare/templates/tree/main/multiplayer-globe-template). A single Durable Object coordinates WebSocket connections, using Cloudflare's native hibernation support without a separate PartyKit service.
@@ -95,6 +98,7 @@ Theme preference is stored in a cookie; distance units and the map-visibility pr
 | City summaries and photographs                       | Wikipedia and Wikimedia APIs                     |
 | Flags                                                | [FlagCDN](https://flagcdn.com/)                  |
 | Approximate visitor locations                        | Cloudflare request metadata                      |
+| Nationwide and regional public holidays              | [Nager.Date](https://nagerholidays.com/)         |
 
 Country outlines are simplified and do not depict current sea ice. The North Pole is ocean, while Antarctica is included as land. The 24 longitude bands are a visual guide, not legal timezone boundaries. Many countries span several timezones; the globe selects a representative city.
 
@@ -113,10 +117,15 @@ src/components/timezone/       Conversion, globe, clocks, city details, and test
 src/presence/                  Durable Object, presence protocol, and privacy tests
 src/data/                      Country and timezone metadata
 src/i18n/                      Locale dictionaries
+src/styles/shortcuts.ts         Shared UnoCSS utilities for layout, states, and responsive behavior
 scripts/check-locales.mjs      Localized-route smoke checks
 ```
 
 Keep display translations separate from timezone identifiers. `city-names.ts` formats city names for the UI; IANA identifiers such as `America/New_York` remain unchanged in conversion logic.
+
+Use Rimelight components and its UnoCSS preset for UI work. Ordinary component styles live in `src/styles/shortcuts.ts`; CSS files contain only theme variables and animation keyframes. UnoCSS uses per-module generation because the global placeholder path does not emit utility CSS in this project's Vite+/Cloudflare build. Semantic shortcuts are safelisted for templates compiled before extraction.
+
+Static UI text uses Rimelight's typed `t("key")` lookup. Add each new key to all ten dictionaries; `scripts/i18n.test.mjs` checks coverage, including continent and ocean labels. Dynamic city and provider holiday names retain explicit fallbacks. Wikipedia extracts and provider-supplied holiday names can remain in their source language.
 
 ## Verification and troubleshooting
 

@@ -2,7 +2,7 @@ import { createSignal, For, onSettled, Show } from "solid-js";
 import { t } from "@rimelight/i18n";
 
 type Photo = { src: string; page: string; title: string };
-// Cache resolved metadata only; images remain lazy and requests remain cancellable.
+// Bound resolved metadata; images stay lazy and in-flight requests stay cancellable.
 const galleryCache = new Map<string, { photos: Photo[]; expires: number }>();
 
 // Fetch additional article photos only when the lightbox is opened.
@@ -83,6 +83,8 @@ export function PhotoGallery(props: { src: string; page: string; article: string
           { src: props.src, page: props.page, title: props.title },
           ...additional.filter((photo) => photo.page !== props.page).slice(0, 8),
         ];
+        if (!galleryCache.has(props.article) && galleryCache.size >= 32)
+          galleryCache.delete(galleryCache.keys().next().value!);
         galleryCache.set(props.article, { photos, expires: Date.now() + 600_000 });
         if (galleryCache.size > 30) galleryCache.delete(galleryCache.keys().next().value!);
         setPhotos(photos);
@@ -107,7 +109,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
         }}
         type="button"
         class="group relative block min-h-72 w-full overflow-hidden rounded-xl"
-        aria-label={t.raw("timezone.openPhotos", "Open city photos")}
+        aria-label={t("timezone.openPhotos")}
         onClick={open}
       >
         <img
@@ -150,7 +152,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
             <button
               type="button"
               class="grid size-10 place-items-center rounded-full border border-primary-700 text-primary-500"
-              aria-label={t.raw("timezone.closePhotos", "Close photos")}
+              aria-label={t("timezone.closePhotos")}
               onClick={close}
             >
               <span class="i-lucide-x size-5" aria-hidden="true" />
@@ -170,7 +172,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
               <button
                 type="button"
                 class="photo-overlay-control absolute left-3 grid size-11 place-items-center rounded-full border border-primary-500/60 bg-black/75 text-xl text-primary-500"
-                aria-label={t.raw("timezone.previousPhoto", "Previous photo")}
+                aria-label={t("timezone.previousPhoto")}
                 onClick={() => move(-1)}
               >
                 ‹
@@ -178,7 +180,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
               <button
                 type="button"
                 class="photo-overlay-control absolute right-3 grid size-11 place-items-center rounded-full border border-primary-500/60 bg-black/75 text-xl text-primary-500"
-                aria-label={t.raw("timezone.nextPhoto", "Next photo")}
+                aria-label={t("timezone.nextPhoto")}
                 onClick={() => move(1)}
               >
                 ›
@@ -187,9 +189,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
           </div>
           <div class="flex items-center justify-between gap-3 text-xs">
             <span>
-              {loading()
-                ? t.raw("timezone.loadingPhotos", "Loading more photos…")
-                : `${index() + 1} / ${photos().length}`}
+              {loading() ? t("timezone.loadingPhotos") : `${index() + 1} / ${photos().length}`}
             </span>
             <a
               href={current()?.page}
@@ -197,7 +197,7 @@ export function PhotoGallery(props: { src: string; page: string; article: string
               rel="noopener noreferrer"
               class="text-primary-500 underline"
             >
-              {t.raw("timezone.photoCredits", "Photo and credits · Wikimedia")}
+              {t("timezone.photoCredits")}
             </a>
           </div>
           <Show when={photos().length > 1}>

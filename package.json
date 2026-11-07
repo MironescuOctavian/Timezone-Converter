@@ -1,26 +1,28 @@
 {
-  "name": "project-dot-com",
-  "version": "0.0.0",
+  "name": "timezone-converter",
+  "version": "0.0.5",
   "private": true,
-  "description": "Octa's first webdev project",
+  "description": "Timezone Converter: world clocks, timezone conversions, an interactive globe, and Discord timestamps.",
   "keywords": [
+    "discord-timestamps",
     "solid",
-    "typescript"
+    "timezone-converter",
+    "typescript",
+    "world-clock"
   ],
-
-  "homepage": "https://octavianmironescu.com",
+  "homepage": "https://github.com/MironescuOctavian/Timezone-Converter#readme",
   "bugs": {
-    "url": "https://github.com/MironescuOctavian/octavianmironescu.com/issues"
+    "url": "https://github.com/MironescuOctavian/Timezone-Converter/issues"
   },
   "license": "MIT",
   "author": {
-    "name": "octavianmironescu.com",
+    "name": "Mironescu Octavian",
     "email": "contact@octavianmironescu.com",
     "url": "https://octavianmironescu.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MironescuOctavian/octavianmironescu.com.git"
+    "url": "git+https://github.com/MironescuOctavian/Timezone-Converter.git"
   },
   "type": "module",
   "imports": {

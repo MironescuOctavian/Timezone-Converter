@@ -18,10 +18,10 @@ export function WorldClocks(props: { now: Date | undefined; differences: string[
       <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <p class="text-xs font-bold tracking-widest text-primary-500">
-            {t.raw("timezone.aroundWorld", "AROUND THE WORLD")}
+            {t("timezone.aroundWorld")}
           </p>
           <h2 id="clocks-title" class="mt-2 text-2xl font-bold">
-            {t.raw("timezone.everywhere", "Right now, everywhere.")}
+            {t("timezone.everywhere")}
           </h2>
         </div>
         <p class="flex items-center gap-2.5 text-sm text-neutral-950">
@@ -29,7 +29,7 @@ export function WorldClocks(props: { now: Date | undefined; differences: string[
             <span class="timezone-live-ring absolute inset-0 rounded-full bg-[#ffbf00]" />
             <span class="relative h-2.5 w-2.5 rounded-full bg-[#ffbf00] shadow-[0_0_8px_#ffbf0080]" />
           </span>
-          {t.raw("timezone.liveUpdated", "Live, updated every second")}
+          {t("timezone.liveUpdated")}
         </p>
       </div>
       <For each={marqueeRows}>
@@ -83,14 +83,13 @@ export function WorldClocks(props: { now: Date | undefined; differences: string[
                     <div class="mt-4 flex items-center justify-between gap-3 border-t border-primary-700/40 pt-3">
                       <span class="inline-flex items-center gap-1.5 rounded-full bg-primary-500/15 px-2.5 py-1 text-xs font-semibold text-primary-500">
                         <span class="i-lucide-clock-3 size-3.5" aria-hidden="true" />
-                        {props.differences[cities.indexOf(city)] ??
-                          t.raw("timezone.locating", "Locating you…")}
+                        {props.differences[cities.indexOf(city)] ?? t("timezone.locating")}
                       </span>
                       <a
                         href={`https://en.wikipedia.org/wiki/${encodeURIComponent((city[0] === "New York" ? "New York City" : city[0]!).replaceAll(" ", "_"))}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`Read about ${city[0]} on Wikipedia (opens in a new tab)`}
+                        aria-label={`${t("timezone.readMore")} · ${displayCity(city[0])}`}
                         class="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full text-primary-500 hover:bg-primary-500/15 focus-visible:outline-2 focus-visible:outline-primary-500"
                       >
                         ↗

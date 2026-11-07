@@ -10,7 +10,6 @@ import { CityDistance } from "./Distance";
 type CityInfoData = {
   temperature?: number;
   weatherCode?: number;
-  description?: string;
   extract?: string;
   photo?: string;
   photoPage?: string;
@@ -22,17 +21,17 @@ type CityInfoData = {
   longitude?: number;
   elevation?: number;
 };
-// Weather changes over time; keep resolved responses for ten minutes, not pending requests.
+// Cache resolved responses for ten minutes. Bound entries during long globe sessions.
 const cityInfoCache = new Map<string, { data: CityInfoData; fetchedAt: number }>();
 function weatherDescription(code: number) {
-  if (code === 0) return t.raw("timezone.clear", "Clear sky");
-  if (code <= 3) return t.raw("timezone.cloudy", "Partly cloudy");
-  if (code <= 49) return t.raw("timezone.fog", "Foggy");
-  if (code <= 67) return t.raw("timezone.rain", "Rain");
-  if (code <= 77) return t.raw("timezone.snow", "Snow");
-  if (code <= 82) return t.raw("timezone.rainShowers", "Rain showers");
-  if (code <= 86) return t.raw("timezone.snowShowers", "Snow showers");
-  return t.raw("timezone.thunderstorms", "Thunderstorms");
+  if (code === 0) return t("timezone.clear");
+  if (code <= 3) return t("timezone.cloudy");
+  if (code <= 49) return t("timezone.fog");
+  if (code <= 67) return t("timezone.rain");
+  if (code <= 77) return t("timezone.snow");
+  if (code <= 82) return t("timezone.rainShowers");
+  if (code <= 86) return t("timezone.snowShowers");
+  return t("timezone.thunderstorms");
 }
 
 export function CityInfo(props: {
@@ -150,7 +149,6 @@ export function CityInfo(props: {
               info.daylight = weather.daily.daylight_duration[0];
             if (typeof weather.current?.weather_code === "number") {
               info.weatherCode = weather.current.weather_code;
-              info.description = weatherDescription(weather.current.weather_code);
             }
           }
           if (wikiResult.status === "fulfilled") {
@@ -185,7 +183,9 @@ export function CityInfo(props: {
           }
           if (!controller.signal.aborted) {
             if (info.temperature !== undefined || info.extract || info.photo)
-              cityInfoCache.set(key, { data: info, fetchedAt: Date.now() });
+              if (!cityInfoCache.has(key) && cityInfoCache.size >= 64)
+                cityInfoCache.delete(cityInfoCache.keys().next().value!);
+            cityInfoCache.set(key, { data: info, fetchedAt: Date.now() });
             setData(info);
             setLoading(false);
           }
@@ -208,7 +208,7 @@ export function CityInfo(props: {
         <Show when={props.zone}>
           <span
             class="inline-flex items-center gap-1.5 font-semibold tabular-nums"
-            title={t.raw("timezone.currentCityTime", "Current local time")}
+            title={t("timezone.currentCityTime")}
           >
             <span class="i-lucide-clock-3 size-4 text-primary-500" aria-hidden="true" />
             <span class="whitespace-nowrap">
@@ -219,11 +219,7 @@ export function CityInfo(props: {
         <p class="flex items-center gap-2 text-sm font-medium text-neutral-950">
           <Show
             when={!loading() && data()?.temperature !== undefined}
-            fallback={
-              loading()
-                ? t.raw("timezone.checkingWeather", "Checking current weather…")
-                : t.raw("timezone.weatherUnavailable", "Current weather unavailable")
-            }
+            fallback={loading() ? t("timezone.checkingWeather") : t("timezone.weatherUnavailable")}
           >
             <span
               class={`weather-icon text-lg text-primary-500 ${(data()?.weatherCode ?? 0) === 0 ? "weather-sun" : ((data()?.weatherCode ?? 0) >= 51 && (data()?.weatherCode ?? 0) <= 67) || ((data()?.weatherCode ?? 0) >= 80 && (data()?.weatherCode ?? 0) <= 82) ? "weather-rain" : (data()?.weatherCode ?? 0) >= 71 && (data()?.weatherCode ?? 0) <= 86 ? "weather-snow" : ""}`}
@@ -247,7 +243,7 @@ export function CityInfo(props: {
               ·{" "}
               {data()?.weatherCode !== undefined
                 ? weatherDescription(data()!.weatherCode!)
-                : t.raw("timezone.currentWeather", "Current weather")}
+                : t("timezone.currentWeather")}
             </span>
           </Show>
         </p>
@@ -264,17 +260,17 @@ export function CityInfo(props: {
       <Show when={props.world && data()?.sunrise && data()?.sunset}>
         <div class="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
           <p>
-            <span aria-hidden="true">🌅</span> {t.raw("timezone.sunrise", "Sunrise")}
+            <span aria-hidden="true">🌅</span> {t("timezone.sunrise")}
             <br />
             <strong>{data()!.sunrise!.slice(11, 16)}</strong>
           </p>
           <p>
-            <span aria-hidden="true">🌇</span> {t.raw("timezone.sunset", "Sunset")}
+            <span aria-hidden="true">🌇</span> {t("timezone.sunset")}
             <br />
             <strong>{data()!.sunset!.slice(11, 16)}</strong>
           </p>
           <p>
-            <span aria-hidden="true">☀</span> {t.raw("timezone.dayLength", "Day length")}
+            <span aria-hidden="true">☀</span> {t("timezone.dayLength")}
             <br />
             <strong>
               {Math.floor((data()!.daylight ?? 0) / 3600)}h{" "}
@@ -285,11 +281,11 @@ export function CityInfo(props: {
       </Show>
       <Show when={props.world && data()?.latitude !== undefined && data()?.longitude !== undefined}>
         <p class="mt-4 text-center text-xs opacity-70">
-          {t.raw("timezone.coordinates", "Coordinates")}: {data()!.latitude!.toFixed(2)}°,{" "}
+          {t("timezone.coordinates")}: {data()!.latitude!.toFixed(2)}°,{" "}
           {data()!.longitude!.toFixed(2)}°
           <Show when={data()?.elevation !== undefined}>
             {" "}
-            · {t.raw("timezone.elevation", "Elevation")}: {Math.round(data()!.elevation!)} m
+            · {t("timezone.elevation")}: {Math.round(data()!.elevation!)} m
           </Show>
         </p>
       </Show>
@@ -305,8 +301,7 @@ export function CityInfo(props: {
           </Show>
           <div class="flex flex-col items-start">
             <p class="text-xs font-bold uppercase tracking-widest text-primary-500">
-              {t.raw("timezone.aboutCity", "A little about")}{" "}
-              {displayCity(props.cityName ?? cities[props.index]?.[0])}
+              {t("timezone.aboutCity")} {displayCity(props.cityName ?? cities[props.index]?.[0])}
             </p>
             <p class="mt-3 text-sm leading-relaxed text-neutral-950/80">{data()?.extract}</p>
             <a
@@ -315,19 +310,14 @@ export function CityInfo(props: {
               rel="noopener noreferrer"
               class="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-semibold text-primary-500 hover:text-primary-400"
             >
-              {t.raw("timezone.readMore", "Read more on Wikipedia")}
+              {t("timezone.readMore")}
               <span class="i-lucide-arrow-up-right size-4" aria-hidden="true" />
             </a>
           </div>
         </div>
       </Show>
       <Show when={props.details && !loading() && !data()?.extract}>
-        <p class="mt-3 text-sm opacity-65">
-          {t.raw(
-            "timezone.cityUnavailable",
-            "City details and photo are unavailable for this location.",
-          )}
-        </p>
+        <p class="mt-3 text-sm opacity-65">{t("timezone.cityUnavailable")}</p>
       </Show>
     </div>
   );

@@ -1,31 +1,30 @@
 import { createSignal, For, onSettled } from "solid-js";
 import { t } from "@rimelight/i18n";
-import "./page-nav.css";
 
 const sections = [
   {
     id: "explore",
     icon: "i-lucide-house",
-    label: () => t.raw("timezone.navHome", "Home"),
-    detail: () => t.raw("timezone.navHomeDetail", "Start here"),
+    label: () => t("timezone.navHome"),
+    detail: () => t("timezone.navHomeDetail"),
   },
   {
     id: "converter",
     icon: "i-lucide-arrow-left-right",
-    label: () => t.raw("timezone.navConverter", "Converter"),
-    detail: () => t.raw("timezone.navConverterDetail", "Find a time"),
+    label: () => t("timezone.navConverter"),
+    detail: () => t("timezone.navConverterDetail"),
   },
   {
     id: "globe",
     icon: "i-lucide-earth",
-    label: () => t.raw("timezone.navGlobe", "Globe"),
-    detail: () => t.raw("timezone.navGlobeDetail", "Explore places"),
+    label: () => t("timezone.navGlobe"),
+    detail: () => t("timezone.navGlobeDetail"),
   },
   {
     id: "world-clocks",
     icon: "i-lucide-clock-3",
-    label: () => t.raw("timezone.navClocks", "World clocks"),
-    detail: () => t.raw("timezone.navClocksDetail", "Time right now"),
+    label: () => t("timezone.navClocks"),
+    detail: () => t("timezone.navClocksDetail"),
   },
 ];
 
@@ -49,7 +48,7 @@ export function PageNav() {
     return () => observer.disconnect();
   });
   return (
-    <nav class="section-rail" aria-label={t.raw("timezone.pageSections", "Page sections")}>
+    <nav class="section-rail" aria-label={t("timezone.pageSections")}>
       <For each={sections}>
         {(section, index) => (
           <a

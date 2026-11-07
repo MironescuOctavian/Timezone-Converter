@@ -184,14 +184,8 @@ export function TimezoneSelect(props: {
               }}
               type="search"
               class="h-10 w-full rounded-lg border border-primary-700/50 bg-default px-3 text-sm"
-              aria-label={t.raw(
-                "timezone.searchTimezones",
-                "Search countries, cities or timezones",
-              )}
-              placeholder={t.raw(
-                "timezone.searchTimezones",
-                "Search countries, cities or timezones",
-              )}
+              aria-label={t("timezone.searchTimezones")}
+              placeholder={t("timezone.searchTimezones")}
               value={query()}
               onInput={(event) => {
                 setQuery(event.currentTarget.value);

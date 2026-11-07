@@ -4,46 +4,47 @@ import { createSignal, For, Show } from "solid-js";
 import { discordPreview, discordTimestamp, type DiscordStyle } from "./discord";
 import { TimezoneOptions, type TimezoneGroup } from "./TimezoneOptions";
 import { TimezoneSelect } from "./TimezoneSelect";
+import { RLButton } from "@rimelight/ui";
 import timezoneCountries from "#data/timezone-countries.json";
 
 // Keep icons beside the format metadata so each row keeps the same visual structure.
 const formats: { style: DiscordStyle; icon: string; label: () => string }[] = [
-  { style: "t", icon: "i-lucide-clock-3", label: () => t.raw("timezone.shortTime", "Short time") },
+  { style: "t", icon: "i-lucide-clock-3", label: () => t("timezone.shortTime") },
   {
     style: "T",
     icon: "i-lucide-timer",
-    label: () => t.raw("timezone.longTime", "Time with seconds"),
+    label: () => t("timezone.longTime"),
   },
-  { style: "d", icon: "i-lucide-calendar", label: () => t.raw("timezone.shortDate", "Short date") },
+  { style: "d", icon: "i-lucide-calendar", label: () => t("timezone.shortDate") },
   {
     style: "D",
     icon: "i-lucide-calendar-days",
-    label: () => t.raw("timezone.longDate", "Long date"),
+    label: () => t("timezone.longDate"),
   },
   {
     style: "f",
     icon: "i-lucide-calendar-clock",
-    label: () => t.raw("timezone.dateTimeShort", "Date and time"),
+    label: () => t("timezone.dateTimeShort"),
   },
   {
     style: "F",
     icon: "i-lucide-calendar-range",
-    label: () => t.raw("timezone.dateTimeFull", "Full date and time"),
+    label: () => t("timezone.dateTimeFull"),
   },
   {
     style: "s",
     icon: "i-lucide-hash",
-    label: () => t.raw("timezone.numericDateTime", "Numeric date and time"),
+    label: () => t("timezone.numericDateTime"),
   },
   {
     style: "S",
     icon: "i-lucide-alarm-clock",
-    label: () => t.raw("timezone.numericDateTimeSeconds", "Numeric date and time with seconds"),
+    label: () => t("timezone.numericDateTimeSeconds"),
   },
   {
     style: "R",
     icon: "i-lucide-history",
-    label: () => t.raw("timezone.relativeTime", "Relative time"),
+    label: () => t("timezone.relativeTime"),
   },
 ];
 
@@ -69,11 +70,9 @@ export function DiscordConverter(props: {
     if (!props.instant) return;
     try {
       await navigator.clipboard.writeText(discordTimestamp(props.instant, style));
-      setStatus(`${t.raw("timezone.copied", "Copied to clipboard!")} (${style})`);
+      setStatus(`${t("timezone.copied")} (${style})`);
     } catch {
-      setStatus(
-        t.raw("timezone.copyFailed", "Could not copy. Please check clipboard permissions."),
-      );
+      setStatus(t("timezone.copyFailed"));
     }
   }
   return (
@@ -81,20 +80,15 @@ export function DiscordConverter(props: {
       <div class="mb-6 border-b border-primary-700/40 pb-5">
         <p class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-500">
           <span class="i-mdi-discord size-5" aria-hidden="true" />
-          {t.raw("timezone.discordHeading", "Discord timestamps")}
+          {t("timezone.discordHeading")}
         </p>
-        <p class="mt-2 text-sm leading-relaxed opacity-75">
-          {t.raw(
-            "timezone.discordDescription",
-            "Choose a time, then copy a format. Discord displays it in each reader’s local timezone.",
-          )}
-        </p>
+        <p class="mt-2 text-sm leading-relaxed opacity-75">{t("timezone.discordDescription")}</p>
       </div>
       <div class="grid gap-5 sm:grid-cols-2">
         <div class="grid gap-3 text-sm font-semibold">
           <span class="inline-flex items-center gap-2">
             <span class="i-lucide-calendar-clock size-4 text-primary-500" aria-hidden="true" />
-            {t.raw("timezone.dateTime", "Date and time")}
+            {t("timezone.dateTime")}
           </span>
           <DateTimeField
             value={props.date}
@@ -107,13 +101,13 @@ export function DiscordConverter(props: {
         <label class="grid gap-3 text-sm font-semibold">
           <span class="inline-flex items-center gap-2">
             <span class="i-lucide-globe-2 size-4 text-primary-500" aria-hidden="true" />
-            {t.raw("timezone.fromTimezone", "From timezone")}
+            {t("timezone.fromTimezone")}
           </span>
           <TimezoneSelect
             groups={props.groups}
             localLabel={props.localLabel}
             selectedFlag={(timezoneCountries as Record<string, string>)[props.from]}
-            label={t.raw("timezone.fromTimezone", "From timezone")}
+            label={t("timezone.fromTimezone")}
             class="min-h-14 w-full min-w-0 rounded-xl border border-primary-700/50 bg-default px-4 text-base text-neutral-950"
             value={fromValue()}
             onChange={(event) => {
@@ -140,19 +134,15 @@ export function DiscordConverter(props: {
         <div class="mb-4 flex flex-wrap items-end justify-between gap-2">
           <h3 class="flex items-center gap-2 text-lg font-bold">
             <span class="i-lucide-list-filter size-5 text-primary-500" aria-hidden="true" />
-            {t.raw("timezone.discordFormats", "Choose a format")}
+            {t("timezone.discordFormats")}
           </h3>
-          <p class="text-xs opacity-65">
-            {t.raw("timezone.discordPreviewNote", "Preview shown in your local timezone")}
-          </p>
+          <p class="text-xs opacity-65">{t("timezone.discordPreviewNote")}</p>
         </div>
         <Show
           when={props.instant}
           fallback={
             <p class="rounded-xl border border-primary-700/40 p-4 text-sm">
-              {props.date
-                ? t.raw("timezone.invalidTime", "This local time cannot be converted.")
-                : t.raw("timezone.chooseDate", "Choose a date and time")}
+              {props.date ? t("timezone.invalidTime") : t("timezone.chooseDate")}
             </p>
           }
         >
@@ -178,15 +168,16 @@ export function DiscordConverter(props: {
                         {discordPreview(instant(), format.style, props.local, getLocaleInfo().tag)}
                       </p>
                     </div>
-                    <button
+                    <RLButton
                       type="button"
+                      size="sm"
+                      leadingIcon="i-lucide-copy"
                       class="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-primary-500 px-4 text-sm font-bold text-black hover:bg-primary-400 focus-visible:outline-2 focus-visible:outline-primary-500"
                       onClick={() => copy(format.style)}
-                      aria-label={`${t.raw("timezone.copyClipboard", "Copy to clipboard")}: ${format.label()}`}
+                      aria-label={`${t("timezone.copyClipboard")}: ${format.label()}`}
                     >
-                      <span class="i-lucide-copy size-4" aria-hidden="true" />
-                      {t.raw("timezone.copy", "Copy")}
-                    </button>
+                      {t("timezone.copy")}
+                    </RLButton>
                   </div>
                 )}
               </For>

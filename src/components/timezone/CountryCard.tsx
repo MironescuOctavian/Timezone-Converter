@@ -17,16 +17,10 @@ export function CountryCard(props: {
   return (
     <div
       class="country-card w-full rounded-2xl border border-primary-500 bg-default p-4 text-left shadow-[0_8px_24px_#0003]"
-      aria-label={
-        props.selected
-          ? t.raw("timezone.selectedCountry", "Selected country")
-          : t.raw("timezone.hoveredCountry", "Hovered country")
-      }
+      aria-label={props.selected ? t("timezone.selectedCountry") : t("timezone.hoveredCountry")}
     >
       <p class="mb-3 text-xs font-bold uppercase tracking-widest text-primary-500">
-        {props.selected
-          ? t.raw("timezone.selectedCountry", "Selected country")
-          : t.raw("timezone.hoveredCountry", "Exploring")}
+        {props.selected ? t("timezone.selectedCountry") : t("timezone.hoveredCountry")}
       </p>
       <div class="flex items-center gap-3">
         <img
@@ -45,7 +39,7 @@ export function CountryCard(props: {
               href={`https://en.wikipedia.org/wiki/${encodeURIComponent(countryName(props.index).replaceAll(" ", "_"))}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Read about ${countryName(props.index)} on Wikipedia`}
+              aria-label={`${t("timezone.readMore")} · ${displayCountry(props.index)}`}
             >
               <span class="i-lucide-arrow-up-right size-4" aria-hidden="true" />
             </a>
@@ -70,7 +64,7 @@ export function CountryCard(props: {
           class="rounded-lg bg-primary-500 px-3 py-2 text-sm font-semibold text-black"
           onClick={props.onConvert}
         >
-          {t.raw("timezone.convertThis", "Convert to this time")} ↑
+          {t("timezone.convertThis")} ↑
         </button>
       </div>
     </div>

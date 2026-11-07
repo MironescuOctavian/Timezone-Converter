@@ -18,6 +18,8 @@ import { TimezoneDetails } from "#components/timezone/TimezoneDetails";
 import { CityTimeline, TimelineLegend } from "#components/timezone/CityTimeline";
 import { timelineInstant } from "#components/timezone/timeline";
 import { CityActivity } from "#components/timezone/CityActivity";
+import { CountryHolidays } from "#components/timezone/CountryHolidays";
+import { dateFormatter } from "#components/timezone/date-format";
 
 // Indices refer to the curated representative cities in timezone/data.ts.
 const featured = [2, 3, 13, 4, 5, 14, 15, 16, 9, 10, 11, 12, 17, 18, 20, 21, 6, 7, 8, 24];
@@ -79,24 +81,17 @@ export default function WorldClockPage() {
     ];
   });
   return (
-    <main class="timezone-page mx-auto max-w-6xl px-5 pb-20 pt-28 text-neutral-950 sm:px-8">
+    <main class="timezone-page timezone-world-clock">
       <p class="text-xs font-bold uppercase tracking-widest text-primary-500">
-        {t.raw("timezone.aroundWorld", "Around the world")}
+        {t("timezone.aroundWorld")}
       </p>
       <h1 class="mt-3 text-4xl font-bold sm:text-5xl">
-        {t.raw("timezone.worldClock", "World Clock")}
+        {t("timezone.worldClock")}
         <span class="text-primary-500">.</span>
       </h1>
-      <p class="mt-3 max-w-2xl opacity-70">
-        {t.raw(
-          "timezone.worldClockIntro",
-          "Explore local time, weather and daylight in cities around the world.",
-        )}
-      </p>
+      <p class="mt-3 max-w-2xl opacity-70">{t("timezone.worldClockIntro")}</p>
       <div class="relative mt-8 max-w-xl">
-        <p class="mb-2 block text-sm font-semibold">
-          {t.raw("timezone.addLocation", "Add a location")}
-        </p>
+        <p class="mb-2 block text-sm font-semibold">{t("timezone.addLocation")}</p>
         <CitySearch
           onSelect={(city) =>
             setAdded((current) => [city, ...current.filter((item) => item.id !== city.id)])
@@ -108,7 +103,7 @@ export default function WorldClockPage() {
       >
         <div class="mt-8 rounded-2xl border border-primary-700 bg-neutral-50 p-5">
           <p class="text-xs font-bold uppercase tracking-widest text-primary-500">
-            {t.raw("timezone.localTime", "Your local time")} · {local().replaceAll("_", " ")}
+            {t("timezone.localTime")} · {local().replaceAll("_", " ")}
           </p>
           <p class="mt-2 text-2xl font-bold">
             <AmberClock date={shownTime()} zone={local()} />
@@ -123,20 +118,15 @@ export default function WorldClockPage() {
                 class="i-lucide-sliders-horizontal size-4 text-primary-500"
                 aria-hidden="true"
               />
-              {t.raw("timezone.compareTimeSlider", "Compare local times")}
+              {t("timezone.compareTimeSlider")}
             </p>
-            <p class="mt-2 text-xs opacity-65">
-              {t.raw(
-                "timezone.timelineHelp",
-                "Drag any city’s timeline to compare the same moment everywhere.",
-              )}
-            </p>
+            <p class="mt-2 text-xs opacity-65">{t("timezone.timelineHelp")}</p>
           </div>
           <div class="flex items-center gap-3">
             <span class="grid gap-1 text-right text-sm font-semibold tabular-nums">
               <small class="text-xs font-normal opacity-65">
                 {shownTime()
-                  ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
+                  ? dateFormatter(getLocaleInfo().tag, {
                       timeZone: local(),
                       weekday: "short",
                       day: "numeric",
@@ -157,9 +147,7 @@ export default function WorldClockPage() {
                 class={selectedTime() ? "i-lucide-radio size-4" : "i-lucide-circle-check size-4"}
                 aria-hidden="true"
               />
-              {selectedTime()
-                ? t.raw("timezone.backToLive", "Back to live")
-                : t.raw("timezone.liveNow", "Live now")}
+              {selectedTime() ? t("timezone.backToLive") : t("timezone.liveNow")}
             </button>
           </div>
         </div>
@@ -194,9 +182,7 @@ export default function WorldClockPage() {
                     </strong>
                     <small class="block break-words opacity-65">
                       {row.zone.replaceAll("_", " ")}
-                      {row.zone === local()
-                        ? ` · ${t.raw("timezone.yourTimezone", "Your timezone")}`
-                        : ""}
+                      {row.zone === local() ? ` · ${t("timezone.yourTimezone")}` : ""}
                     </small>
                   </span>
                   <CityActivity date={shownTime()} zone={row.zone} />
@@ -208,7 +194,7 @@ export default function WorldClockPage() {
                           aria-hidden="true"
                         />
                         {shownTime()
-                          ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
+                          ? dateFormatter(getLocaleInfo().tag, {
                               timeZone: row.zone,
                               weekday: "short",
                               day: "numeric",
@@ -222,7 +208,7 @@ export default function WorldClockPage() {
                           aria-hidden="true"
                         />
                         {shownTime()
-                          ? new Intl.DateTimeFormat(getLocaleInfo().tag, {
+                          ? dateFormatter(getLocaleInfo().tag, {
                               timeZone: row.zone,
                               timeZoneName: "longOffset",
                             })
@@ -260,7 +246,7 @@ export default function WorldClockPage() {
                   <div class="flex flex-col gap-4 border-t border-primary-700/40 p-4 sm:p-5">
                     <div class="rounded-xl border border-primary-700/40 p-4">
                       <p class="mb-3 text-center text-xs font-bold uppercase tracking-widest text-primary-500">
-                        ☁ {t.raw("timezone.weatherDaylight", "Weather & daylight")}
+                        ☁ {t("timezone.weatherDaylight")}
                       </p>
                       <CityInfo
                         index={row.index}
@@ -274,6 +260,11 @@ export default function WorldClockPage() {
                       />
                     </div>
                     <TimezoneDetails zone={row.zone} local={local()} now={shownTime()} />
+                    <CountryHolidays
+                      country={row.countryCode ?? flagCodes[row.index]}
+                      zone={row.zone}
+                      date={shownTime()}
+                    />
                   </div>
                 </Show>
               </article>

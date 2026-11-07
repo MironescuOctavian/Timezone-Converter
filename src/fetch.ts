@@ -4,6 +4,7 @@ import { i18n } from "@rimelight/i18n/middleware";
 import { seo } from "@rimelight/seo/middleware";
 import { handleRequest } from "virtual:solid-ssr-handler";
 import { approximateLocation } from "./presence/shared";
+import { holidayApi } from "./holidays/api";
 export { GlobePresence } from "./presence/GlobePresence";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -39,6 +40,7 @@ app.get("/api/location", (c) => {
   if (origin && origin !== new URL(c.req.url).origin) return c.json(null, 403);
   return c.json(approximateLocation(c.req.raw.cf as Record<string, unknown> | undefined));
 });
+app.route("/api/holidays", holidayApi);
 app.use(i18n());
 app.use(seo());
 

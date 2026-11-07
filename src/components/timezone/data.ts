@@ -4,6 +4,7 @@ import { feature } from "topojson-client";
 import world from "world-atlas/countries-110m.json";
 import countryProfiles from "#data/country-timezones.json";
 import type { GeometryCollection, Topology } from "topojson-specification";
+import { dateFormatter } from "./date-format";
 
 // IANA timezone names include daylight saving rules; cities make them easier to recognize.
 const cities = [
@@ -87,21 +88,15 @@ function differenceLabel(minutes: number) {
   return `${amount} ${minutes > 0 ? t.raw("timezone.ahead", "ahead of you") : t.raw("timezone.behind", "behind you")}`;
 }
 
-const clockFormatters = new Map<string, Intl.DateTimeFormat>();
 function clockParts(date: Date | undefined, zone: string | undefined, full = false) {
   if (!date || !zone) return [{ type: "literal", value: "—" }];
   const locale = getLocaleInfo().tag;
-  const key = `${locale}:${zone}:${full}`;
-  let formatter = clockFormatters.get(key);
-  if (!formatter) {
-    formatter = new Intl.DateTimeFormat(
-      locale,
-      full
-        ? { timeZone: zone, dateStyle: "full", timeStyle: "medium" }
-        : { timeZone: zone, hour: "numeric", minute: "2-digit", second: "2-digit" },
-    );
-    clockFormatters.set(key, formatter);
-  }
+  const formatter = dateFormatter(
+    locale,
+    full
+      ? { timeZone: zone, dateStyle: "full", timeStyle: "medium" }
+      : { timeZone: zone, hour: "numeric", minute: "2-digit", second: "2-digit" },
+  );
   return formatter.formatToParts(date);
 }
 
@@ -192,24 +187,19 @@ function displayCountry(index: number) {
   const code = flagCodes[index]?.toUpperCase();
   return code ? (names.of(code) ?? countryName(index)) : countryName(index);
 }
-const zoneFormatters = new Map<string, Intl.DateTimeFormat>();
 
 // Read the calendar fields of an instant as they appear in a particular timezone.
 function zoneParts(date: Date, zone: string) {
-  let formatter = zoneFormatters.get(zone);
-  if (!formatter) {
-    formatter = new Intl.DateTimeFormat("en-CA", {
-      timeZone: zone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hourCycle: "h23",
-    });
-    zoneFormatters.set(zone, formatter);
-  }
+  const formatter = dateFormatter("en-CA", {
+    timeZone: zone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
   return Object.fromEntries(
     formatter.formatToParts(date).map((part) => [part.type, Number(part.value)]),
   ) as {
@@ -224,7 +214,7 @@ function zoneParts(date: Date, zone: string) {
 
 // Format the same instant in each selected zone without depending on browser locale.
 function formatClipboardTime(date: Date, zone: string) {
-  const parts = new Intl.DateTimeFormat("en-GB", {
+  const parts = dateFormatter("en-GB", {
     timeZone: zone,
     year: "2-digit",
     month: "2-digit",

@@ -1,3 +1,4 @@
+import { dateFormatter } from "./date-format";
 import { createMemo, createSignal, For, onSettled, Show } from "solid-js";
 import { RLButton } from "@rimelight/ui";
 import { getLocaleInfo, t } from "@rimelight/i18n";
@@ -16,32 +17,15 @@ const heroClocks = [
   { city: "Tokyo", country: "JP", zone: "Asia/Tokyo" },
   { city: "Sydney", country: "AU", zone: "Australia/Sydney" },
 ];
-const formatters = new Map(
-  heroClocks.map((clock) => [
-    clock.zone,
-    new Intl.DateTimeFormat("en-GB", {
-      timeZone: clock.zone,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hourCycle: "h23",
-    }),
-  ]),
-);
-function formatter(zone: string) {
-  let result = formatters.get(zone);
-  if (!result) {
-    result = new Intl.DateTimeFormat("en-GB", {
-      timeZone: zone,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hourCycle: "h23",
-    });
-    formatters.set(zone, result);
-  }
-  return result;
-}
+// Numeric fields stay in Latin digits for hand-angle calculations.
+const formatter = (zone: string) =>
+  dateFormatter("en-GB", {
+    timeZone: zone,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
 
 function hands(date: Date | undefined, zone: string) {
   if (!date) return { hour: 0, minute: 0, second: 0, daytime: true };
@@ -88,7 +72,7 @@ function AnalogClock(props: {
       <div
         class="hero-clock-face"
         role="img"
-        aria-label={`${props.clock.city}: ${props.now ? formatter(props.clock.zone).format(props.now) : "—"}`}
+        aria-label={`${displayCity(props.clock.city)}: ${props.now ? formatter(props.clock.zone).format(props.now) : "—"}`}
       >
         <span class="hero-clock-markers" aria-hidden="true" />
         <span class="hero-clock-tick hero-clock-tick-top" />
@@ -135,7 +119,7 @@ function AnalogClock(props: {
           onClick={() => props.onConvert(props.clock.zone)}
         >
           <span class="i-lucide-arrow-left-right size-4" aria-hidden="true" />
-          {t.raw("timezone.heroConvertAction", "CONVERT")}
+          {t("timezone.heroConvertAction")}
         </button>
         <a
           href={`https://en.wikipedia.org/wiki/${encodeURIComponent((props.clock.country ? new Intl.DisplayNames(["en"], { type: "region" }).of(props.clock.country) : props.clock.city) ?? props.clock.city)}`}
@@ -143,7 +127,7 @@ function AnalogClock(props: {
           rel="noopener noreferrer"
         >
           <span class="i-lucide-book-open size-4" aria-hidden="true" />
-          {t.raw("timezone.heroLookupAction", "LOOKUP COUNTRY")}
+          {t("timezone.heroLookupAction")}
           <span class="i-lucide-arrow-up-right size-3" aria-hidden="true" />
         </a>
       </div>
@@ -177,7 +161,7 @@ export function Hero(props: {
       <div class="hero-copy">
         <span
           class="hero-local inline-flex flex-wrap items-center gap-2 rounded-xl border border-primary-500/40 bg-primary-500/5 px-4 py-3 font-mono text-sm font-bold text-primary-500"
-          aria-label={t.raw("timezone.localTime", "Your local time and timezone")}
+          aria-label={t("timezone.localTime")}
         >
           <svg
             viewBox="0 0 24 24"
@@ -197,18 +181,15 @@ export function Hero(props: {
           </span>
         </span>
         <h1 class="hero-heading font-bold tracking-tight">
-          {t.raw("timezone.heroTitle", "Every time zone.")}
+          {t("timezone.heroTitle")}
           <br />
-          <span class="text-primary-500">{t.raw("timezone.heroTail", "Let’s find yours.")}</span>
+          <span class="text-primary-500">{t("timezone.heroTail")}</span>
         </h1>
         <p class="hero-description text-base leading-relaxed text-neutral-950/75 sm:text-lg">
-          {t.raw(
-            "timezone.heroDescription",
-            "See the world at a glance, find a time that works, and share it with anyone.",
-          )}
+          {t("timezone.heroDescription")}
         </p>
         <p class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary-500">
-          <span aria-hidden="true">✦</span> {t.raw("timezone.noAds", "No ads. Always free to use.")}
+          <span aria-hidden="true">✦</span> {t("timezone.noAds")}
         </p>
         <div class="hero-action">
           <RLButton
@@ -237,7 +218,7 @@ export function Hero(props: {
             }}
           >
             <span class="i-lucide-clock-3 size-6" aria-hidden="true" />
-            {t.raw("timezone.convertTime", "Convert a time")}
+            {t("timezone.convertTime")}
             <span class="i-lucide-arrow-down size-5" aria-hidden="true" />
           </RLButton>
         </div>
@@ -245,12 +226,9 @@ export function Hero(props: {
       <div class="hero-artwork">
         <p class="hero-artwork-label">
           <span class="size-2.5 rounded-full bg-primary-500" aria-hidden="true" />
-          {t.raw("timezone.liveWorldClocks", "Live clocks around the world")}
+          {t("timezone.liveWorldClocks")}
         </p>
-        <div
-          class="hero-clocks"
-          aria-label={t.raw("timezone.liveWorldClocks", "Live clocks around the world")}
-        >
+        <div class="hero-clocks" aria-label={t("timezone.liveWorldClocks")}>
           <For each={clocks()}>
             {(clock, index) => (
               <AnalogClock

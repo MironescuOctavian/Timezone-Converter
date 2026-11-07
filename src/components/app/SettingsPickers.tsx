@@ -201,7 +201,7 @@ export function LanguagePicker() {
   );
   return (
     <SettingsMenu
-      label={t.raw("timezone.language", "Language")}
+      label={t("timezone.language")}
       icon="i-lucide-languages"
       items={items()}
       value={params["locale"] ?? "en"}
@@ -240,25 +240,25 @@ export function ThemePicker() {
     {
       value: "system",
       icon: "i-lucide-laptop",
-      label: t.raw("timezone.systemTheme", "System"),
-      description: t.raw("timezone.systemThemeDetail", "Follow your device"),
+      label: t("timezone.systemTheme"),
+      description: t("timezone.systemThemeDetail"),
     },
     {
       value: "light",
       icon: "i-lucide-sun",
-      label: t.raw("timezone.lightTheme", "Light"),
-      description: t.raw("timezone.lightThemeDetail", "Warm and bright"),
+      label: t("timezone.lightTheme"),
+      description: t("timezone.lightThemeDetail"),
     },
     {
       value: "dark",
       icon: "i-lucide-moon",
-      label: t.raw("timezone.darkTheme", "Dark"),
-      description: t.raw("timezone.darkThemeDetail", "Low-light comfort"),
+      label: t("timezone.darkTheme"),
+      description: t("timezone.darkThemeDetail"),
     },
   ]);
   return (
     <SettingsMenu
-      label={t.raw("timezone.theme", "Theme")}
+      label={t("timezone.theme")}
       items={options()}
       icon={
         preference() === "light"

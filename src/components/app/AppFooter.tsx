@@ -7,30 +7,28 @@ export default function AppFooter() {
   const params = useParams();
   return (
     <footer class="site-footer border-t border-primary-700 bg-neutral-50 text-neutral-950">
-      <div class="mx-auto grid max-w-7xl gap-8 px-6 py-8 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.2fr] lg:px-10">
+      <div class="mx-auto grid max-w-6xl gap-8 px-5 py-8 sm:grid-cols-2 sm:px-8 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1.2fr]">
         <div>
           <a
             href={getLocaleUrl("/", params["locale"])}
             class="inline-flex items-center gap-2 text-lg font-bold"
           >
             <span class="i-lucide-code-xml size-7 text-primary-400" aria-hidden="true" />
-            Mironescu Octavian<span class="text-primary-300">.</span>
+            Timezone Converter<span class="text-primary-300">.</span>
           </a>
-          <p class="mt-3 text-sm opacity-70">
-            {t.raw("timezone.tagline", "Never stop searching.")}
-          </p>
+          <p class="mt-3 text-sm opacity-70">{t("timezone.tagline")}</p>
           <p class="mt-2 text-xs opacity-55">© {new Date().getFullYear()} octavianmironescu.com</p>
         </div>
         <div class="sm:justify-self-start sm:pl-4">
           <h2 class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-500">
             <span class="i-mdi-shield-check-outline size-4" aria-hidden="true" />
-            {t.raw("timezone.legal", "Legal")}
+            {t("timezone.legal")}
           </h2>
           <a
             class="mt-3 inline-block text-sm hover:text-primary-500"
             href={getLocaleUrl("/legal/privacy-policy", params["locale"])}
           >
-            {t.raw("timezone.privacyPolicy", "Privacy policy")}
+            {t("timezone.privacyPolicy")}
           </a>
         </div>
         <div>
@@ -51,7 +49,7 @@ export default function AppFooter() {
         <div class="sm:justify-self-end sm:w-full sm:max-w-xs">
           <h2 class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-500">
             <span class="i-mdi-send-outline size-4" aria-hidden="true" />
-            {t.raw("timezone.contact", "Contact")}
+            {t("timezone.contact")}
           </h2>
           <div class="mt-3 grid gap-1 text-sm">
             <a
@@ -62,9 +60,7 @@ export default function AppFooter() {
                 class="i-mdi-message-text-outline size-4 shrink-0 text-primary-500"
                 aria-hidden="true"
               />
-              <span class="flex-1 font-semibold">
-                {t.raw("timezone.getInTouch", "Get in touch")}
-              </span>
+              <span class="flex-1 font-semibold">{t("timezone.getInTouch")}</span>
               <span aria-hidden="true">↗</span>
             </a>
             <a

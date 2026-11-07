@@ -24,6 +24,7 @@ import { CountryCard } from "#components/timezone/CountryCard";
 import { PresenceLegend, PresenceMarkers } from "#components/timezone/PresenceMarkers";
 import { geographicLabels } from "#components/timezone/geographic-labels";
 import { PageNav } from "#components/timezone/PageNav";
+import { dateFormatter } from "#components/timezone/date-format";
 
 export default function HomePage() {
   // Signals store the inputs, current time, and feedback shown after copying.
@@ -43,7 +44,6 @@ export default function HomePage() {
     cityName?: string;
   }>();
   const [globeSearch, setGlobeSearch] = createSignal("");
-  const [, setCountryHovered] = createSignal(false);
   const [showAllCountries, setShowAllCountries] = createSignal(true);
   const [convertedCity, setConvertedCity] = createSignal<number | undefined>();
   const destinationIndex = createMemo(() => {
@@ -59,7 +59,7 @@ export default function HomePage() {
   const localClock = createMemo(() => {
     const current = now();
     if (!current) return { time: "--:--:--", zone: "LOCAL TIME", city: "" };
-    const parts = new Intl.DateTimeFormat("en-GB", {
+    const parts = dateFormatter("en-GB", {
       timeZone: local(),
       hour: "2-digit",
       minute: "2-digit",
@@ -187,7 +187,6 @@ export default function HomePage() {
 
   function selectCity(index: number) {
     setHoverCity(index);
-    setCountryHovered(true);
     const country = countries.find(
       (item) => countryCities[String(item.id ?? item.properties.name)] === index,
     );
@@ -277,16 +276,14 @@ export default function HomePage() {
     const converted = formatClipboardTime(value, to());
     try {
       await navigator.clipboard.writeText(`${from()}: ${initial}\n${to()}: ${converted}`);
-      setCopyStatus(t.raw("timezone.copied", "Copied to clipboard!"));
+      setCopyStatus(t("timezone.copied"));
     } catch {
-      setCopyStatus(
-        t.raw("timezone.copyFailed", "Could not copy. Please check clipboard permissions."),
-      );
+      setCopyStatus(t("timezone.copyFailed"));
     }
   }
 
   return (
-    <main class="timezone-page mx-auto max-w-6xl px-5 pb-20 pt-8 text-neutral-950 sm:px-8 sm:pt-12">
+    <main class="timezone-page timezone-home">
       <PageNav />
       {/* Explore the live time in each featured city. */}
       <section id="explore" class="mb-14 grid scroll-mt-24 gap-8 lg:mb-20">
@@ -327,16 +324,13 @@ export default function HomePage() {
       <section class="mb-14 mt-14 scroll-mt-24 lg:mb-20">
         <div class="section-heading">
           <p class="text-xs font-bold tracking-widest text-primary-500">
-            {t.raw("timezone.globeEyebrow", "WORLD EXPLORER")}
+            {t("timezone.globeEyebrow")}
           </p>
           <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            {t.raw("timezone.globeHeading", "Explore time around the world.")}
+            {t("timezone.globeHeading")}
           </h2>
           <p class="mt-3 max-w-2xl text-base leading-relaxed sm:text-lg">
-            {t.raw(
-              "timezone.globeDescription",
-              "Explore the globe, discover local times, and compare places around the world.",
-            )}
+            {t("timezone.globeDescription")}
           </p>
         </div>
         {/* Country selection also works without precision pointing on the globe. */}
@@ -366,7 +360,7 @@ export default function HomePage() {
                 }}
               >
                 <span class="i-lucide-globe-2 size-4" aria-hidden="true" />
-                {t.raw("timezone.allCountries", "All countries")}
+                {t("timezone.allCountries")}
               </button>
               <button
                 type="button"
@@ -381,17 +375,17 @@ export default function HomePage() {
                 }}
               >
                 <span class="i-lucide-layers size-4" aria-hidden="true" />
-                {t.raw("timezone.distinctGaps", "Distinct time gaps")}
+                {t("timezone.distinctGaps")}
               </button>
             </div>
             <div class="grid gap-4 sm:grid-cols-2">
               <label class="grid gap-2 text-left text-sm font-semibold">
-                {t.raw("timezone.searchCities", "Search countries or cities")}
+                {t("timezone.searchCities")}
                 <input
                   type="search"
                   list="globe-search-suggestions"
                   value={globeSearch()}
-                  placeholder={t.raw("timezone.searchPlaceholder", "Search for a country or city")}
+                  placeholder={t("timezone.searchPlaceholder")}
                   autocomplete="off"
                   class="min-h-12 w-full min-w-0 rounded-xl bg-neutral-50 px-4 text-base text-neutral-950 ring ring-default focus-visible:outline-2 focus-visible:outline-primary-500"
                   onInput={(event) => setGlobeSearch(event.currentTarget.value)}
@@ -412,7 +406,7 @@ export default function HomePage() {
                 </datalist>
               </label>
               <label class="grid gap-2 text-left text-sm font-semibold">
-                {t.raw("timezone.exploreCountry", "Explore a country or city")}
+                {t("timezone.exploreCountry")}
                 <select
                   class="min-h-12 w-full rounded-xl bg-neutral-50 px-4 text-base text-neutral-950 ring ring-default focus-visible:outline-2 focus-visible:outline-primary-500"
                   value={String(hoverCity())}
@@ -433,19 +427,9 @@ export default function HomePage() {
               </label>
             </div>
             <p class="mt-2 text-left text-xs opacity-65">
-              {showAllCountries()
-                ? t.raw("timezone.exploreEvery", "Explore every mapped country.")
-                : t.raw(
-                    "timezone.gapExplanation",
-                    "One highlighted country per current time difference from you. Dimmed countries share a time gap.",
-                  )}
+              {showAllCountries() ? t("timezone.exploreEvery") : t("timezone.gapExplanation")}
             </p>
-            <p class="mt-1 text-left text-xs opacity-65">
-              {t.raw(
-                "timezone.bandExplanation",
-                "The 24 longitude bands show approximate hourly zones; local time boundaries can differ.",
-              )}
-            </p>
+            <p class="mt-1 text-left text-xs opacity-65">{t("timezone.bandExplanation")}</p>
           </div>
           <div class="globe-stage relative min-w-0">
             <svg
@@ -478,7 +462,6 @@ export default function HomePage() {
               onPointerUp={(event) => {
                 if (dragDistance < 6 && countryIsActive(pressedCountry)) {
                   setHoverCity(pressedCountry!);
-                  setCountryHovered(true);
                   setPin({ city: pressedCountry! });
                 }
                 dragX = undefined;
@@ -537,7 +520,6 @@ export default function HomePage() {
                       const index = countryCities[String(country.id ?? country.properties.name)];
                       if (countryIsActive(index) && dragX === undefined) {
                         setHoverCity(index!);
-                        setCountryHovered(true);
                       }
                     }}
                   >
@@ -578,7 +560,7 @@ export default function HomePage() {
                     pointer-events="none"
                     aria-hidden="true"
                   >
-                    {label.name}
+                    {displayCountry(countryCities[label.key]!)}
                   </text>
                 )}
               </For>
@@ -628,7 +610,7 @@ export default function HomePage() {
                             local(),
                           ),
                         )
-                      : t.raw("timezone.detectingTimezone", "Detecting your timezone…")
+                      : t("timezone.detectingTimezone")
                   }
                   onConvert={() => convertSelectedCity(selected().city, undefined, selected().zone)}
                 />
@@ -637,10 +619,7 @@ export default function HomePage() {
             <CountryCard
               index={hoverCity()}
               now={now()}
-              difference={
-                differences()[hoverCity()] ??
-                t.raw("timezone.detectingTimezone", "Detecting your timezone…")
-              }
+              difference={differences()[hoverCity()] ?? t("timezone.detectingTimezone")}
               onConvert={() => convertSelectedCity(hoverCity())}
             />
           </div>
@@ -653,14 +632,14 @@ export default function HomePage() {
                 size="lg"
                 class="min-h-12 min-w-12"
                 onClick={() => setRotation((angle) => angle - 20)}
-                aria-label={t.raw("timezone.rotateLeft", "Rotate globe left")}
+                aria-label={t("timezone.rotateLeft")}
               >
                 ←
               </RLButton>
               <button
                 type="button"
                 class="globe-zoom-button rounded-xl border border-primary-700 text-xl font-bold disabled:opacity-40"
-                aria-label={t.raw("timezone.zoomOut", "Zoom out")}
+                aria-label={t("timezone.zoomOut")}
                 disabled={zoom() <= 1}
                 onClick={() => setZoom((value) => Math.max(1, value - 0.25))}
               >
@@ -675,7 +654,7 @@ export default function HomePage() {
               <button
                 type="button"
                 class="globe-zoom-button rounded-xl border border-primary-700 text-xl font-bold disabled:opacity-40"
-                aria-label={t.raw("timezone.zoomIn", "Zoom in")}
+                aria-label={t("timezone.zoomIn")}
                 disabled={zoom() >= 4}
                 onClick={() => setZoom((value) => Math.min(4, value + 0.25))}
               >
@@ -687,7 +666,7 @@ export default function HomePage() {
                 size="lg"
                 class="min-h-12 min-w-12"
                 onClick={() => setRotation((angle) => angle + 20)}
-                aria-label={t.raw("timezone.rotateRight", "Rotate globe right")}
+                aria-label={t("timezone.rotateRight")}
               >
                 →
               </RLButton>
@@ -697,47 +676,38 @@ export default function HomePage() {
             {/* A compact legend explains the globe without covering the map. */}
             <div class="globe-guide text-left">
               <p class="text-xs font-bold uppercase tracking-widest text-primary-500">
-                {t.raw("timezone.globeGuide", "Explore the globe")}
+                {t("timezone.globeGuide")}
               </p>
               <div class="mt-3 grid grid-cols-1 gap-3">
                 <div class="flex items-start gap-2">
                   <span class="i-lucide-move size-4 shrink-0 text-primary-500" aria-hidden="true" />
-                  <span class="text-xs font-medium">
-                    {t.raw("timezone.dragRotate", "Drag to rotate")}
-                  </span>
+                  <span class="text-xs font-medium">{t("timezone.dragRotate")}</span>
                 </div>
                 <div class="flex items-start gap-2">
                   <span
                     class="i-lucide-zoom-in size-4 shrink-0 text-primary-500"
                     aria-hidden="true"
                   />
-                  <span class="text-xs font-medium">{t.raw("timezone.zoomIn", "Zoom in")}</span>
+                  <span class="text-xs font-medium">{t("timezone.zoomIn")}</span>
                 </div>
                 <div class="flex items-start gap-2">
                   <span
                     class="i-lucide-mouse-pointer-2 size-4 shrink-0 text-primary-500"
                     aria-hidden="true"
                   />
-                  <span class="text-xs font-medium">
-                    {t.raw("timezone.tapExplore", "Tap to explore")}
-                  </span>
+                  <span class="text-xs font-medium">{t("timezone.tapExplore")}</span>
                 </div>
               </div>
             </div>
             <PresenceLegend />
-            <p class="mt-3 text-xs opacity-60">
-              {t.raw(
-                "timezone.representative",
-                "One representative city per country. Countries may span several timezones.",
-              )}
-            </p>
+            <p class="mt-3 text-xs opacity-60">{t("timezone.representative")}</p>
             <a
               class="mt-1 inline-block text-xs text-primary-500 underline"
               href="https://github.com/dr5hn/countries-states-cities-database"
               target="_blank"
               rel="noreferrer"
             >
-              {t.raw("timezone.countryData", "Country data · ODbL")}
+              {t("timezone.countryData")}
             </a>
           </div>
         </div>

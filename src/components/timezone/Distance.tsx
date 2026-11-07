@@ -108,13 +108,13 @@ export function CityDistance(props: { coordinates?: Coordinates | undefined }) {
         {value() !== undefined
           ? `≈ ${new Intl.NumberFormat(getLocaleInfo().tag, { maximumFractionDigits: 0 }).format(value()!)} ${distance.unit()}`
           : distance.loading()
-            ? t.raw("timezone.locatingDistance", "Locating…")
-            : t.raw("timezone.distanceUnavailable", "Distance unavailable")}
+            ? t("timezone.locatingDistance")
+            : t("timezone.distanceUnavailable")}
       </span>
       <span
         class="inline-flex overflow-hidden rounded-md border border-primary-700/50 p-0.5"
         role="group"
-        aria-label={t.raw("timezone.distanceUnit", "Distance unit")}
+        aria-label={t("timezone.distanceUnit")}
       >
         {(["km", "mi"] as const).map((unit) => (
           <button

@@ -1,0 +1,43 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+.zed/
+
+# Dependencies
+node_modules/
+
+# Environment Variables
+*.env*
+!.env.example
+
+# Outputs
+dist/
+
+# Testing
+reports/
+coverage/
+playwright-report/
+test-results/
+
+# Logs
+logs/
+*.log*
+*.cpuprofile
+
+# Misc
+*.local
+*.tsbuildinfo
+
+# Cloudflare
+.cloudflare/
+.cache/
+.dev.vars*
+!.dev.vars.example
+
+# Drizzle
+server/db/drizzle/*.json
+server/db/drizzle/_journal.json

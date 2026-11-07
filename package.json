@@ -1,0 +1,73 @@
+{
+  "name": "project-dot-com",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Octa's first webdev project",
+  "keywords": [
+    "solid",
+    "typescript"
+  ],
+
+  "homepage": "https://octavianmironescu.com",
+  "bugs": {
+    "url": "https://github.com/MironescuOctavian/octavianmironescu.com/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "octavianmironescu.com",
+    "email": "contact@octavianmironescu.com",
+    "url": "https://octavianmironescu.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MironescuOctavian/octavianmironescu.com.git"
+  },
+  "type": "module",
+  "imports": {
+    "#*": [
+      "./src/*",
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts",
+      "./src/*/index.tsx"
+    ]
+  },
+  "scripts": {
+    "prepare": "vp config",
+    "generate-types": "cf workers types",
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "deploy": "cf deploy",
+    "check": "pnpm audit && cf workers types && vp check --fix"
+  },
+  "dependencies": {
+    "@cloudflare/vite-plugin": "2.0.0-beta.v.8",
+    "@rimelight/i18n": "0.1.20",
+    "@rimelight/security": "0.0.52",
+    "@rimelight/seo": "0.0.40",
+    "@rimelight/ui": "0.0.92",
+    "@solidjs/router": "2.0.0-next.43",
+    "@solidjs/vite-plugin": "3.0.0-next.54",
+    "@solidjs/web": "2.0.0-rc.20",
+    "d3-geo": "3.1.2",
+    "hono": "5.0.0-rc.1",
+    "solid-js": "2.0.0-rc.20",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "1.2.150",
+    "@iconify-json/mdi": "1.2.3",
+    "@rimelight/config": "0.0.45",
+    "@types/d3-geo": "3.1.1",
+    "@types/topojson-client": "3.1.5",
+    "@types/topojson-specification": "1.0.5",
+    "cf": "1.0.0-beta.26",
+    "filesystem-routing": "0.4.2",
+    "typescript": "7.1.0-beta",
+    "unocss": "66.12.0",
+    "vite-plus": "1.4.0"
+  },
+  "packageManager": "pnpm@12.16.1"
+}

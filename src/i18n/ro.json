@@ -1,0 +1,767 @@
+{
+  "page": {
+    "contact": {
+      "meta": {
+        "title": "Contactează-ne",
+        "description": "Intră în legătură cu Mironescu Octavian."
+      },
+      "hero": {
+        "description": "Ai o întrebare, o propunere sau vrei să colaborezi? Trimite-ne un mesaj direct.",
+        "title": "Intră în legătură"
+      },
+      "form": {
+        "email": {
+          "label": "Adresă de e-mail *"
+        },
+        "message": {
+          "label": "Mesaj *"
+        },
+        "name": {
+          "label": "Numele tău *"
+        },
+        "placeholder": {
+          "email": "ion@exemplu.com",
+          "message": "Scrie mesajul tău aici...",
+          "name": "Ion Popescu",
+          "subject": "Cum te pot ajuta?"
+        },
+        "send": {
+          "button": "Trimite mesajul"
+        },
+        "subject": {
+          "label": "Subiect (opțional)"
+        }
+      }
+    },
+    "resume": {
+      "meta": {
+        "title": "CV",
+        "description": "CV-ul lui Mironescu Octavian, dezvoltator software Java și web."
+      },
+      "hero": {
+        "title": "Salut! Sunt Mironescu Octavian",
+        "description": "Sunt dezvoltator software Java și web.",
+        "action": {
+          "hire": "Angajează-mă"
+        }
+      },
+      "sidebar": {
+        "name": "Mironescu Octavian",
+        "title": "Dezvoltator software",
+        "location": "București, România"
+      },
+      "aria": {
+        "sidebar": {
+          "profile": "Profil"
+        },
+        "social": {
+          "linkedin": "LinkedIn",
+          "github": "GitHub"
+        }
+      },
+      "about": {
+        "heading": "Despre mine",
+        "gender": {
+          "label": "Gen",
+          "value": "Masculin"
+        },
+        "pronouns": {
+          "label": "Pronume",
+          "value": "El"
+        },
+        "nationality": {
+          "label": "Naționalitate",
+          "value": "Română"
+        },
+        "age": {
+          "label": "Vârstă",
+          "value": "ani"
+        },
+        "location": {
+          "label": "Locație"
+        }
+      },
+      "languages": {
+        "heading": "Limbi"
+      },
+      "lang": {
+        "english": "Engleză",
+        "romanian": "Română",
+        "german": "Germană"
+      },
+      "level": {
+        "fluent": "Vorbitor fluent",
+        "basic": "Începător"
+      },
+      "skills": {
+        "heading": "Competențe",
+        "java": {
+          "title": "Dezvoltator software Java",
+          "description": "Proiectez, construiesc și întrețin aplicații enterprise și servicii backend folosind limbajul Java și vastul său ecosistem."
+        },
+        "web": {
+          "title": "Dezvoltator software web",
+          "description": "Construiesc aplicații web rapide, responsive și sigure folosind arhitecturi moderne, integrarea framework-urilor și tehnici de optimizare a performanței."
+        },
+        "design": {
+          "title": "Filozofie de design",
+          "description": "Mă concentrez pe experiențe accesibile, atenție la detaliile interfeței, feedback interactiv fluid și sisteme modulare consecvente vizual."
+        }
+      },
+      "tech": {
+        "heading": "Tehnologii și unelte",
+        "group": {
+          "web-dev": "Limbaje și unelte"
+        },
+        "cat": {
+          "languages": "Limbaje și framework-uri",
+          "environment": "Mediu de dezvoltare",
+          "build": "Build și pachete",
+          "deployment": "Implementare"
+        }
+      },
+      "experience": {
+        "heading": "Experiență"
+      },
+      "exp": {
+        "summary": {
+          "label": "Rezumat"
+        },
+        "responsibilities": {
+          "label": "Responsabilități"
+        }
+      },
+      "experiences": [
+        {
+          "company": "Property Pass",
+          "period": "Iunie 2022 - Noiembrie 2022",
+          "tags": ["Kotlin", "Java", "Spring Boot", "MongoDB", "GraphQL"],
+          "role": "Programator junior",
+          "location": "Utrecht, Țările de Jos - Remote",
+          "summary": "Am dezvoltat, construit și întreținut aplicația din spatele site-ului companiei, care gestiona pașapoartele imobiliare pentru proprietarii de imobile comerciale.",
+          "responsibilities": [
+            "Dezvoltarea unei aplicații Spring Boot scrise în Kotlin, din domeniul comerțului imobiliar.",
+            "Crearea și gestionarea datelor într-un cluster MongoDB.",
+            "Scrierea de pipeline-uri de agregare MongoDB pentru analize destinate stakeholderilor.",
+            "Refactorizarea documentației proiectului."
+          ]
+        },
+        {
+          "company": "CoruScript",
+          "period": "Mai 2023 - Ianuarie 2024",
+          "tags": ["Java", "Spring Boot", "Amazon Web Services", "PostgreSQL"],
+          "role": "Programator junior",
+          "location": "București, România - La birou/Remote",
+          "summary": "Am dezvoltat partea de backend a site-ului unei platforme care oferă servicii de construire a aplicațiilor în funcție de nevoile clienților.",
+          "responsibilities": [
+            "Am dezvoltat, testat și întreținut aplicația site-ului companiei, construită cu Java și Spring.",
+            "Am întreținut și scris pipeline-uri pentru arhitectura cloud folosind AWS."
+          ]
+        },
+        {
+          "role": "Activitate freelance",
+          "period": "Februarie 2024 - Prezent",
+          "location": "București, România - La birou/Remote",
+          "summary": "Am scris, testat și întreținut software și site-uri pentru diverși clienți, pe bază de contract."
+        }
+      ],
+      "education": [
+        {
+          "degree": "Licență în Informatică",
+          "school": "OVID - Universitatea Ovidius Constanța",
+          "period": "2018 - 2021"
+        },
+        {
+          "degree": "Master în Informatică",
+          "school": "OVID - Universitatea Ovidius Constanța",
+          "period": "2021 - 2023"
+        }
+      ],
+      "headings": {
+        "education": "Educație",
+        "projects": "Proiecte",
+        "certifications": "Certificări"
+      },
+      "projects": [
+        {
+          "name": "Bot de automatizare Discord",
+          "role": "Dezvoltator și mentenanță",
+          "period": "2024",
+          "tags": ["Java", "Discord Developer Portal"]
+        }
+      ],
+      "project": {
+        "view": {
+          "button": "Vezi"
+        }
+      },
+      "period": {
+        "present": "Prezent"
+      },
+      "certifications": [],
+      "labels": {
+        "credential-id": "ID"
+      }
+    },
+    "legal": {
+      "meta": {
+        "title": "Documente legale",
+        "description": "Politici și acorduri."
+      },
+      "empty": "Încă nu există documente legale."
+    },
+    "blog": {
+      "meta": {
+        "title": "Mironescu Octavian",
+        "description": "Site-ul personal al lui Mironescu Octavian"
+      },
+      "categories": {
+        "aria-label": "Categorii"
+      },
+      "empty": "Nu există încă articole de blog."
+    },
+    "branding": {
+      "heading": "Identitate vizuală"
+    },
+    "other-documents": {
+      "heading": "Alte documente"
+    },
+    "privacy-policy": {
+      "heading": "Politica de confidențialitate"
+    },
+    "home": {
+      "hero": {
+        "greeting": "Salut, sunt Mironescu Octavian",
+        "title": "Dezvoltator software"
+      },
+      "skills": {
+        "label": "Competențele mele",
+        "heading": "Ce fac?"
+      },
+      "github": {
+        "heading": "Activitate pe GitHub",
+        "calendar-alt": "Calendarul contribuțiilor pe GitHub ale lui MironescuOctavian"
+      },
+      "projects": {
+        "label": "Lucrările mele",
+        "heading": "Proiecte",
+        "github-aria": "Depozit GitHub",
+        "preview-aria": "Previzualizare live",
+        "more": "Mai multe proiecte pe GitHub"
+      },
+      "contact": {
+        "label": "Hai să vorbim",
+        "heading": "Contact",
+        "country": "România"
+      },
+      "sections": {
+        "hero": {
+          "eyebrow": "DEZVOLTATOR SOFTWARE · BUCUREȘTI, ROMÂNIA",
+          "title": "Salut, sunt Mironescu Octavian.",
+          "description": "Transform idei în experiențe digitale interactive și fluide, folosind tehnologii moderne pentru frontend și backend.",
+          "explore": "Explorează proiectele",
+          "download": "Descarcă CV-ul"
+        },
+        "about": {
+          "eyebrow": "CÂTEVA DESPRE MINE",
+          "title": "Software construit cu grijă,",
+          "titleTail": "pentru durată.",
+          "paragraph1": "Sunt dezvoltator software din București și lucrez atât la sisteme backend, cât și la experiențe web moderne. Îmi place să transform probleme reale în produse clare și de încredere."
+        },
+        "services": {
+          "eyebrow": "CU CE MĂ OCUP",
+          "title": "De la fundații solide",
+          "titleTail": "până la detaliile finale.",
+          "web": {
+            "title": "Dezvoltare web",
+            "description": "Interfețe responsive și accesibile, care fac produsele complexe ușor de folosit.",
+            "points": [
+              "Pagini adaptate pentru telefoane, tablete și desktopuri",
+              "Interfețe interactive cu TypeScript și framework-uri moderne",
+              "Navigare accesibilă, formulare clare și componente reutilizabile",
+              "Îmbunătățiri de performanță și ușurință în utilizare"
+            ]
+          },
+          "backend": {
+            "title": "Dezvoltare backend",
+            "description": "API-uri, modele de date și servicii fiabile, construite pentru nevoi reale.",
+            "points": [
+              "Proiectare și implementare API cu Java, Kotlin și Spring Boot",
+              "Modelarea datelor și integrarea bazelor SQL și NoSQL",
+              "Autentificare, validare și gestionarea erorilor",
+              "Logică de business ușor de întreținut și integrări externe"
+            ]
+          },
+          "delivery": {
+            "title": "Livrare și infrastructură",
+            "description": "Procese practice de build, containere și cloud pentru livrarea software-ului.",
+            "points": [
+              "Aplicații containerizate și build-uri repetabile",
+              "Lansare pe platforme cloud și edge",
+              "Configurare, gestionarea mediilor și pregătirea versiunilor",
+              "Depanare și îmbunătățiri după lansare"
+            ]
+          }
+        },
+        "technologies": {
+          "title": "Tehnologii folosite",
+          "description": "Uneltele pe care le folosesc pentru a construi, livra și întreține software."
+        }
+      }
+    }
+  },
+  "app": {
+    "header": {
+      "nav": {
+        "home": "Acasă",
+        "blog": "Blog",
+        "legal": "Informații Legale",
+        "about": "Despre",
+        "resume": "CV",
+        "contact": "Contact"
+      },
+      "menu": {
+        "title": "Meniu",
+        "open": "Deschide meniul"
+      },
+      "actions": {
+        "title": "Linkuri",
+        "open": "Deschide linkurile"
+      }
+    },
+    "loading": {
+      "page": "Se încarcă.",
+      "post": "Se încarcă articolul...",
+      "document": "Se încarcă documentul..."
+    },
+    "footer": {
+      "home-aria": "Acasă",
+      "tagline": "Nu înceta niciodată să cauți.",
+      "theme-selector": "Selector de temă",
+      "language-selector": "Selector de limbă"
+    },
+    "text": {
+      "resources": "Resurse",
+      "branding": "Identitate vizuală",
+      "legal": "Juridic",
+      "privacy-policy": "Politica de confidențialitate",
+      "other-documents": "Alte documente",
+      "blog-stuff": "Despre blog",
+      "information-about-myself": "Informații despre mine",
+      "legal-stuff": "Informații juridice",
+      "information-about-the-website": "Informații despre site",
+      "get-in-touch": "Ia legătura",
+      "page-has-not-been-found": "Pagina nu a fost găsită.",
+      "about": "Despre",
+      "about-this-website": "Despre acest site",
+      "branding-guidelines-and-assets": "Ghid de identitate vizuală și resurse",
+      "octavian-mironescu": "Mironescu Octavian",
+      "personal-website-of-octavian-mironescu": "Site-ul personal al lui Mironescu Octavian",
+      "additional-legal-documents-and-resources": "Documente juridice și resurse suplimentare",
+      "privacy-policy-for-octavianmironescu-com": "Politica de confidențialitate pentru octavianmironescu.com",
+      "java": "Java",
+      "spring-boot": "Spring Boot",
+      "intellij": "IntelliJ",
+      "visual-studio-code": "Visual Studio Code",
+      "gradle": "Gradle",
+      "docker": "Docker",
+      "system": "Sistem",
+      "white": "Luminos",
+      "dark": "Întunecat",
+      "web-development": "Dezvoltare web",
+      "software-development": "Dezvoltare software",
+      "devops-cloud-infrastructure": "DevOps și infrastructură cloud",
+      "backend-api-service": "Serviciu API backend",
+      "full-stack-platform": "Platformă full-stack",
+      "developer-automation-tools": "Instrumente de automatizare pentru dezvoltatori",
+      "github": "GitHub",
+      "typescript": "TypeScript",
+      "vue": "Vue",
+      "solidjs": "SolidJS",
+      "unocss": "UnoCSS",
+      "webstorm": "WebStorm",
+      "vite-plus": "Vite-plus",
+      "cloudflare": "Cloudflare"
+    }
+  },
+  "home": {
+    "hero": {
+      "greeting": "Salut, sunt Mironescu Octavian",
+      "title": "Dezvoltator software"
+    },
+    "skills": {
+      "label": "Competențele mele",
+      "heading": "Ce fac?"
+    },
+    "github": {
+      "heading": "Activitate pe GitHub",
+      "calendar-alt": "Calendarul contribuțiilor pe GitHub ale lui MironescuOctavian"
+    },
+    "projects": {
+      "label": "Lucrările mele",
+      "heading": "Proiecte",
+      "github-aria": "Depozit GitHub",
+      "preview-aria": "Previzualizare live",
+      "more": "Mai multe proiecte pe GitHub"
+    },
+    "contact": {
+      "label": "Hai să vorbim",
+      "heading": "Contact",
+      "country": "România"
+    },
+    "sections": {
+      "hero": {
+        "eyebrow": "DEZVOLTATOR SOFTWARE · BUCUREȘTI, ROMÂNIA",
+        "title": "Salut, sunt Mironescu Octavian.",
+        "description": "Transform idei în experiențe digitale interactive și fluide, folosind tehnologii moderne pentru frontend și backend.",
+        "explore": "Explorează proiectele",
+        "download": "Descarcă CV-ul"
+      },
+      "about": {
+        "eyebrow": "CÂTEVA DESPRE MINE",
+        "title": "Software construit cu grijă,",
+        "titleTail": "pentru durată.",
+        "paragraph1": "Sunt dezvoltator software din București și lucrez atât la sisteme backend, cât și la experiențe web moderne. Îmi place să transform probleme reale în produse clare și de încredere.",
+        "paragraph2": "Din 2022, am lucrat în echipe pentru a proiecta și livra software, de la servicii Java și Spring Boot la interfețe și infrastructura care le susține.",
+        "approach": "Abordarea mea: înțeleg problema, aleg o soluție practică și acord atenție detaliilor pe care oamenii le folosesc."
+      },
+      "services": {
+        "eyebrow": "CU CE MĂ OCUP",
+        "title": "De la fundații solide",
+        "titleTail": "până la detaliile finale.",
+        "web": {
+          "title": "Dezvoltare web",
+          "description": "Interfețe responsive și accesibile, care fac produsele complexe ușor de folosit.",
+          "points": [
+            "Pagini adaptate pentru telefoane, tablete și desktopuri",
+            "Interfețe interactive cu TypeScript și framework-uri moderne",
+            "Navigare accesibilă, formulare clare și componente reutilizabile",
+            "Îmbunătățiri de performanță și ușurință în utilizare"
+          ]
+        },
+        "backend": {
+          "title": "Dezvoltare backend",
+          "description": "API-uri, modele de date și servicii fiabile, construite pentru nevoi reale.",
+          "points": [
+            "Proiectare și implementare API cu Java, Kotlin și Spring Boot",
+            "Modelarea datelor și integrarea bazelor SQL și NoSQL",
+            "Autentificare, validare și gestionarea erorilor",
+            "Logică de business ușor de întreținut și integrări externe"
+          ]
+        },
+        "delivery": {
+          "title": "Livrare și infrastructură",
+          "description": "Procese practice de build, containere și cloud pentru livrarea software-ului.",
+          "points": [
+            "Aplicații containerizate și build-uri repetabile",
+            "Lansare pe platforme cloud și edge",
+            "Configurare, gestionarea mediilor și pregătirea versiunilor",
+            "Depanare și îmbunătățiri după lansare"
+          ]
+        }
+      },
+      "technologies": {
+        "title": "Tehnologii folosite",
+        "description": "Uneltele pe care le folosesc pentru a construi, livra și întreține software.",
+        "stack": "Tehnologii",
+        "categories": "Categorii de tehnologii",
+        "display": "Mod de afișare",
+        "grid": "Vizualizare grilă",
+        "graph": "Vizualizare grafic",
+        "all": "Toate",
+        "toolCount": "instrumente",
+        "labels": {
+          "languages": "Limbaje",
+          "frameworks": "Framework-uri și UI",
+          "data": "Date și API-uri",
+          "tools": "Instrumente și livrare"
+        },
+        "graphTitle": "Cum se grupează tehnologiile",
+        "graphExplanation": "Fiecare punct reprezintă o tehnologie. Urmărește linia până la cercul numerotat pentru a vedea categoria. Numărul din centru arată totalul instrumentelor. Legenda de mai jos arată numele și numărul lor în fiecare categorie.",
+        "descriptions": {
+          "languages": "Limbaje folosite pentru a scrie software și a lucra cu date.",
+          "frameworks": "Framework-uri și instrumente pentru construirea interfețelor și aplicațiilor web.",
+          "data": "Baze de date și API-uri pentru stocarea și schimbul informațiilor.",
+          "tools": "Instrumente pentru dezvoltare, pachete, livrare și infrastructură."
+        }
+      },
+      "work": {
+        "eyebrow": "PROIECTE SELECTATE",
+        "title": "Proiecte",
+        "description": "Câteva lucruri pe care le-am construit și proiectele care prind contur.",
+        "repositories": "Toate repository-urile",
+        "portfolioDescription": "Site-ul meu personal și portofoliul, construite cu SolidJS și Rimelight.",
+        "comingDescription": "Detaliile și previzualizarea vor fi adăugate aici.",
+        "view": "Vezi proiectul",
+        "labels": {
+          "portfolio": "Portofoliu personal",
+          "live": "Online",
+          "backendTitle": "Serviciu API backend",
+          "backend": "Sisteme backend",
+          "comingSoon": "În curând",
+          "platformTitle": "Platformă full-stack",
+          "application": "Aplicație web"
+        },
+        "preview": "Previzualizare"
+      },
+      "packages": {
+        "eyebrow": "MUNCA MEA · NPM",
+        "title": "Pachete create de mine.",
+        "description": "Pachete Rimelight pentru interfețe, localizare, SEO, autentificare, securitate și conținut.",
+        "explore": "Explorează pe npm"
+      },
+      "blog": {
+        "eyebrow": "BLOG DE DEZVOLTATOR",
+        "title": "De la biroul de dezvoltare.",
+        "description": "Articole despre dezvoltarea software, decizii tehnice și lecții învățate.",
+        "firstPost": "Primul articol prinde contur.",
+        "empty": "Nu există încă articole. Când voi avea ceva de împărtășit, va apărea aici.",
+        "visit": "Vizitează blogul"
+      },
+      "activity": {
+        "eyebrow": "OPEN SOURCE",
+        "title": "Activitate GitHub",
+        "description": "Contribuții și experimente recente.",
+        "calendarAlt": "Calendarul contribuțiilor GitHub ale lui Mironescu Octavian"
+      },
+      "contact": {
+        "eyebrow": "HAI SĂ VORBIM",
+        "title": "Hai să construim ceva util.",
+        "description": "Ai un proiect, o întrebare sau vrei să saluți? Mă bucur să aud de la tine.",
+        "action": "Contactează-mă"
+      },
+      "highlights": {
+        "title": "Repere",
+        "projects": "Proiecte",
+        "projectsNote": "Un portofoliu în creștere",
+        "certificates": "Certificate",
+        "certificatesNote": "Dezvoltare profesională",
+        "badges": "Insigne",
+        "badgesNote": "Competențe în dezvoltare",
+        "years": "Ani de experiență",
+        "yearsNote": "Construiesc din 2022"
+      }
+    }
+  },
+  "timezone": {
+    "localTime": "Ora ta locală",
+    "heroTitle": "Toate fusurile orare.",
+    "heroTail": "Găsește ora potrivită.",
+    "heroDescription": "Vezi cât e ceasul în lume, alege ora potrivită și distribuie rezultatul cu ușurință.",
+    "convertTime": "Convertește ora",
+    "liveWorldClocks": "Ora exactă în întreaga lume",
+    "navHome": "Acasă",
+    "navHomeDetail": "Începe de aici",
+    "navGlobe": "Glob",
+    "navGlobeDetail": "Explorează locuri",
+    "navClocks": "Ceasuri mondiale",
+    "navClocksDetail": "Ora locală, în timp real",
+    "navConverter": "Convertor",
+    "navConverterDetail": "Găsește o oră",
+    "pageSections": "Secțiunile paginii",
+    "allCountries": "Toate țările",
+    "distinctGaps": "Diferențe orare distincte",
+    "exploreCountry": "Explorează o țară sau un oraș",
+    "searchCities": "Caută orașe sau țări",
+    "searchPlaceholder": "Caută o țară sau un oraș",
+    "exploreEvery": "Explorează toate țările de pe hartă.",
+    "gapExplanation": "Este evidențiată câte o țară pentru fiecare diferență orară față de ora ta locală. Țările estompate au aceeași diferență orară ca una dintre cele evidențiate.",
+    "bandExplanation": "Cele 24 de benzi longitudinale sunt orientative; limitele reale ale fusurilor orare pot fi diferite.",
+    "zoomIn": "Mărește",
+    "zoomOut": "Micșorează",
+    "rotateLeft": "Rotește globul spre stânga",
+    "rotateRight": "Rotește globul spre dreapta",
+    "dragRotate": "Trage pentru a roti",
+    "tapExplore": "Atinge pentru a explora",
+    "selectedCountry": "Țara selectată",
+    "hoveredCountry": "Țara explorată",
+    "convertThis": "Convertește în acest fus orar",
+    "compareCountries": "Compară țările",
+    "selectCountry": "Selectează o țară de pe glob pentru a o compara cu alta.",
+    "compareTimes": "Compară orele",
+    "representative": "Este afișat un oraș reprezentativ pentru fiecare țară. Unele țări au mai multe fusuri orare.",
+    "countryData": "Date geografice · ODbL",
+    "detectingTimezone": "Se detectează fusul orar...",
+    "aroundWorld": "În jurul lumii",
+    "everywhere": "Chiar acum, peste tot.",
+    "liveUpdated": "Actualizare în timp real, secundă de secundă",
+    "locating": "Se determină locația…",
+    "together": "TIMP, ÎMPREUNĂ",
+    "findCommon": "Găsește o oră potrivită pentru toți",
+    "chooseTime": "Alege data și ora pentru a vedea ora corespunzătoare în alte fusuri orare.",
+    "setTime": "Alege data și ora",
+    "choosePlaces": "Alege ora și locurile pe care vrei să le compari.",
+    "dateTime": "Data și ora",
+    "fromTimezone": "Fus orar inițial",
+    "toTimezone": "Fus orar de destinație",
+    "yourTimezone": "Fusul tău orar",
+    "selectedGlobe": "Selectat de pe glob",
+    "convertedTime": "ORA CONVERTITĂ",
+    "invalidTime": "Această oră locală nu poate fi convertită.",
+    "chooseDate": "Alege data și ora",
+    "exploreDestination": "Descoperă destinația",
+    "currentConditions": "Date meteo furnizate de Open-Meteo. Informații și fotografii de pe Wikipedia și Wikimedia.",
+    "copied": "Copiat în clipboard!",
+    "copyFailed": "Copierea nu a reușit. Verifică permisiunile browserului pentru clipboard.",
+    "checkingWeather": "Se încarcă datele meteo…",
+    "weatherUnavailable": "Datele meteo nu sunt disponibile",
+    "currentWeather": "Vremea actuală",
+    "photoCredits": "Sursa și autorul fotografiei · Wikimedia",
+    "aboutCity": "Pe scurt despre",
+    "readMore": "Citește mai multe pe Wikipedia",
+    "cityUnavailable": "Detaliile orașului și fotografia nu sunt disponibile pentru această locație.",
+    "sameTime": "Aceeași oră ca la tine",
+    "ahead": "mai târziu",
+    "behind": "mai devreme",
+    "contact": "Contact",
+    "pageTitle": "Convertor de fusuri orare",
+    "clear": "Cer senin",
+    "cloudy": "Parțial înnorat",
+    "fog": "Ceață",
+    "rain": "Ploaie",
+    "snow": "Ninsoare",
+    "rainShowers": "Averse de ploaie",
+    "snowShowers": "Averse de ninsoare",
+    "thunderstorms": "Furtuni",
+    "getInTouch": "Ia legătura",
+    "privacyPolicy": "Politica de confidențialitate",
+    "legal": "Informații legale",
+    "tagline": "Continuă să explorezi.",
+    "noAds": "Fără reclame. Gratuit, mereu.",
+    "worldClock": "Ceasuri mondiale",
+    "copyClipboard": "Copiază în clipboard",
+    "addCalendar": "Adaugă în Google Calendar",
+    "addLocation": "Adaugă o locație",
+    "worldClockIntro": "Descoperă ora locală, vremea și durata zilei în orașe din întreaga lume.",
+    "weatherDaylight": "Vremea și durata zilei",
+    "timeZoneLabel": "Fus orar",
+    "dstStarted": "Trecerea la ora de vară",
+    "dstEnded": "Revenirea la ora standard",
+    "sunrise": "Răsărit",
+    "sunset": "Apus",
+    "dayLength": "Durata zilei",
+    "railHeading": "Explorează pagina",
+    "railDescription": "Găsește ora potrivită oriunde",
+    "coordinates": "Coordonate",
+    "elevation": "Altitudine",
+    "globeGuide": "Explorează globul",
+    "conversionEyebrow": "CONVERSIE ÎNTRE FUSURI ORARE",
+    "conversionHeading": "Află ora în fusul orar dorit.",
+    "conversionDescription": "Alege data, ora și fusurile orare pentru conversie.",
+    "dateLabel": "Data",
+    "timeLabel": "Ora",
+    "conversionMode": "Mod de conversie",
+    "regularConversion": "Conversie standard",
+    "discordHeading": "Marcaje de timp pentru Discord",
+    "discordDescription": "Alege data și ora, apoi copiază formatul dorit. Discord afișează automat ora locală pentru fiecare persoană care vede mesajul.",
+    "discordFormats": "Alege un format",
+    "discordPreviewNote": "Previzualizare în fusul tău orar",
+    "shortTime": "Oră și minute",
+    "longTime": "Oră, minute și secunde",
+    "shortDate": "Dată în format scurt",
+    "longDate": "Dată completă",
+    "dateTimeShort": "Dată și oră",
+    "dateTimeFull": "Dată și oră, cu ziua săptămânii",
+    "numericDateTime": "Dată și oră în cifre",
+    "numericDateTimeSeconds": "Dată și oră în cifre, cu secunde",
+    "relativeTime": "Timp relativ",
+    "copy": "Copiază",
+    "regularMode": "Standard",
+    "searchTimezones": "Caută țări, orașe sau fusuri orare",
+    "currentCityTime": "Ora locală actuală",
+    "continentAfrica": "Africa",
+    "continentAsia": "Asia",
+    "continentEurope": "Europa",
+    "continentNorthAmerica": "America de Nord",
+    "continentSouthAmerica": "America de Sud",
+    "continentOceania": "Oceania",
+    "continentPolar": "Regiuni polare",
+    "continentOther": "Alte teritorii",
+    "previousMonth": "Luna precedentă",
+    "nextMonth": "Luna următoare",
+    "hours": "Ore",
+    "minutes": "Minute",
+    "seconds": "Secunde",
+    "applyDateTime": "Aplică data și ora",
+    "globeEyebrow": "EXPLOREAZĂ LUMEA",
+    "globeHeading": "Descoperă ora locală oriunde în lume.",
+    "globeDescription": "Rotește globul, descoperă ora locală și compară fusurile orare din întreaga lume.",
+    "openPhotos": "Deschide fotografiile orașului",
+    "closePhotos": "Închide fotografiile",
+    "previousPhoto": "Fotografia precedentă",
+    "nextPhoto": "Fotografia următoare",
+    "loadingPhotos": "Se încarcă mai multe fotografii…",
+    "heroConvertAction": "CONVERTEȘTE",
+    "heroLookupAction": "DESPRE ȚARĂ",
+    "language": "Limbă",
+    "theme": "Aspect",
+    "systemTheme": "Automat",
+    "systemThemeDetail": "Urmează setarea dispozitivului",
+    "lightTheme": "Luminos",
+    "lightThemeDetail": "Culori calde și luminoase",
+    "darkTheme": "Întunecat",
+    "darkThemeDetail": "Confortabil în lumină slabă",
+    "comingSoon": "În curând",
+    "githubSoon": "Codul sursă al proiectului va fi disponibil în curând",
+    "utcOffset": "Diferența față de UTC",
+    "timeDifference": "Față de ora ta locală",
+    "localDate": "Data locală",
+    "daylightTime": "Ora de vară este în vigoare",
+    "standardTime": "Ora standard este în vigoare",
+    "distanceUnit": "Unitatea de măsură pentru distanță",
+    "distanceUnavailable": "Distanța nu este disponibilă",
+    "locatingDistance": "Se determină locația…",
+    "online": "online",
+    "viewerOnline": "vizitator conectat",
+    "viewersOnline": "vizitatori conectați",
+    "anonymousViewer": "Vizitator anonim · locație aproximativă",
+    "presenceConnecting": "Se restabilește conexiunea în timp real…",
+    "presenceHidden": "Nu ești afișat pe hartă.",
+    "presencePrivacy": "Apari anonim. Sunt vizibile doar orașul aproximativ și fusul orar. Numele și adresa IP nu sunt afișate.",
+    "presenceUnknown": "Nu ești afișat pe hartă dacă orașul nu poate fi determinat.",
+    "hideMyDot": "Ascunde-mă de pe hartă",
+    "showMyDot": "Afișează-mă pe hartă",
+    "mapLabels": {
+      "North America": "America de Nord",
+      "South America": "America de Sud",
+      "Europe": "Europa",
+      "Africa": "Africa",
+      "Asia": "Asia",
+      "Australia": "Australia",
+      "Antarctica": "Antarctica",
+      "Pacific Ocean": "Oceanul Pacific",
+      "Atlantic Ocean": "Oceanul Atlantic",
+      "Indian Ocean": "Oceanul Indian",
+      "Arctic Ocean": "Oceanul Arctic",
+      "Southern Ocean": "Oceanul Antarctic"
+    },
+    "cityNames": {
+      "Bucharest": "București",
+      "London": "Londra",
+      "Moscow": "Moscova",
+      "Rome": "Roma",
+      "Vienna": "Viena",
+      "Athens": "Atena",
+      "Copenhagen": "Copenhaga",
+      "Warsaw": "Varșovia",
+      "Prague": "Praga",
+      "Lisbon": "Lisabona",
+      "Brussels": "Bruxelles"
+    }
+  },
+  "privacy": {
+    "presenceTitle": "Prezență anonimă pe glob",
+    "presenceText": "Cât timp site-ul este deschis, o conexiune în timp real poate afișa pe glob orașul tău aproximativ și fusul orar. Cloudflare estimează locația pe baza conexiunii la internet. Coordonatele sunt rotunjite la pași de jumătate de grad, iar vizitatorii din același oraș sunt grupați. Harta nu afișează nume sau adrese IP, nu folosește localizarea precisă a dispozitivului și nu păstrează un istoric al vizitelor. Datele conexiunii sunt eliminate la deconectare. Poți alege «Ascunde-mă de pe hartă»; această preferință este salvată în browser. Numărul afișat reprezintă conexiuni deschise, nu persoane distincte verificate.",
+    "distanceTitle": "Estimarea distanțelor între orașe",
+    "distanceText": "Distanțele sunt estimări în linie dreaptă, nu distanțe rutiere. Browserul primește de la Cloudflare o locație aproximativă, care nu este păstrată în memoria cache. Dacă aceasta nu este disponibilă, site-ul poate căuta prin Open-Meteo orașul reprezentativ al fusului orar din browser. Estimarea nu determină locația ta exactă sau orașul în care locuiești. Ascunderea de pe harta publică nu dezactivează estimările private de distanță. Unitatea de măsură preferată poate fi salvată în browser.",
+    "intro": "Acest site te ajută să compari ore din întreaga lume. Îl poți folosi fără cont.",
+    "localTitle": "Ora și preferințele",
+    "localText": "Browserul furnizează fusul orar pentru a afișa ora locală. Conversia are loc în browser. Preferințele de limbă și aspect pot fi păstrate în browser sau în adresa paginii.",
+    "servicesTitle": "Servicii terțe",
+    "servicesText": "Browserul solicită date despre vreme și locație de la Open-Meteo, informații și imagini de la Wikipedia și Wikimedia și steaguri de la FlagCDN. Acești furnizori primesc solicitarea și date de rețea, precum adresa IP, conform propriilor politici de confidențialitate.",
+    "sharingTitle": "Partajare și calendar",
+    "sharingText": "Butoanele de copiere scriu ora selectată în clipboard doar la apăsare. Google Calendar deschide o schiță cu ora selectată; Google gestionează datele pe care alegi să le salvezi.",
+    "contactTitle": "Funcționarea site-ului și contact",
+    "contactText": "Furnizorii de găzduire și securitate pot prelucra date despre solicitări, inclusiv adrese IP, pentru livrarea și protejarea site-ului. Pentru întrebări despre confidențialitate, scrie la"
+  }
+}

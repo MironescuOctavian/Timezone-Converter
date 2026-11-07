@@ -1,0 +1,204 @@
+/* Site-only color adjustments: keep the shared Rimelight palette unchanged. */
+:root {
+  --site-accent-ink: var(--rl-primary-500);
+  --site-background-ink: var(--rl-primary-500);
+  --site-map-country-label: #fff;
+  --site-map-land-label: #fffaf0;
+  --site-map-ocean-label: #e7ce86;
+  --site-map-label-outline: #16120b;
+  --site-map-selected-outline: #fff;
+  --site-shadow: 0 12px 32px #0002;
+}
+:root[data-theme="light"] {
+  --site-accent-ink: #805000;
+  --site-background-ink: #99742a;
+  --site-map-country-label: #402600;
+  --site-map-land-label: #402600;
+  --site-map-ocean-label: #6b511e;
+  --site-map-label-outline: #fff8e5;
+  --site-map-selected-outline: #805000;
+  --site-shadow: 0 8px 24px #8050000d;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --site-accent-ink: #805000;
+    --site-background-ink: #99742a;
+    --site-map-country-label: #402600;
+    --site-map-land-label: #402600;
+    --site-map-ocean-label: #6b511e;
+    --site-map-label-outline: #fff8e5;
+    --site-map-selected-outline: #805000;
+    --site-shadow: 0 8px 24px #8050000d;
+  }
+}
+.site-shell .text-primary-500,
+.site-shell .text-primary-400,
+.site-shell .text-primary-300 {
+  color: var(--site-accent-ink);
+}
+.site-shell [class*="hover:text-primary-"]:hover {
+  color: var(--site-accent-ink);
+}
+/* Photo controls always sit on dark translucent overlays, including in light mode. */
+.site-shell .photo-overlay-control {
+  color: #ffbf00;
+}
+.site-shell .hero-clock-menu :is(a, p),
+.site-shell .hero-clock-meta,
+.site-shell .timezone-mode-switch > button:not([aria-pressed="true"]) {
+  color: var(--site-accent-ink);
+}
+.site-shell .hero-clock-hour,
+.site-shell .hero-clock-second,
+.site-shell .hero-clock-tick,
+.site-shell .hero-clock-center {
+  background: var(--site-accent-ink);
+}
+.site-shell .hero-clock-face {
+  border-color: color-mix(in srgb, var(--site-accent-ink) 65%, transparent);
+}
+.site-shell :is(.country-card, .clock-card, .globe-panel) {
+  box-shadow: var(--site-shadow);
+}
+.site-setting-picker {
+  position: relative;
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid color-mix(in srgb, var(--site-accent-ink) 25%, transparent);
+  border-radius: 0.75rem;
+  background: var(--rl-neutral-50);
+  color: var(--site-accent-ink);
+  transition:
+    background-color 180ms,
+    box-shadow 180ms;
+}
+.site-setting-picker > span {
+  pointer-events: none;
+}
+.site-setting-picker {
+  cursor: pointer;
+}
+.site-setting-picker:hover {
+  background: color-mix(in srgb, var(--site-accent-ink) 8%, var(--rl-neutral-50));
+}
+.site-setting-picker:focus-within {
+  outline: 2px solid var(--site-accent-ink);
+  outline-offset: 3px;
+}
+.site-setting-picker[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--site-accent-ink) 10%, var(--rl-neutral-50));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--site-accent-ink) 8%, transparent);
+}
+.site-settings-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: 272px;
+  max-height: 65vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--site-accent-ink) 25%, transparent);
+  border-radius: 1.1rem;
+  background: var(--rl-neutral-50);
+  color: var(--rl-neutral-950);
+  box-shadow:
+    0 16px 48px #0002,
+    inset 0 1px 0 color-mix(in srgb, var(--site-accent-ink) 10%, transparent);
+  font: inherit;
+}
+.site-settings-menu:popover-open {
+  display: grid;
+  gap: 0.2rem;
+  animation: settings-reveal 160ms ease-out;
+}
+.site-settings-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.3rem;
+  padding: 0.6rem 0.55rem 0.8rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--site-accent-ink) 15%, transparent);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--site-accent-ink);
+}
+.site-settings-menu > button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.5rem 0.65rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: transparent;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background 160ms,
+    color 160ms;
+}
+.site-settings-menu > button:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--site-accent-ink) 7%, transparent);
+}
+.site-settings-menu > button:focus-visible {
+  outline: 2px solid var(--site-accent-ink);
+  outline-offset: -2px;
+}
+.site-settings-menu > button[aria-checked="true"] {
+  color: var(--site-accent-ink);
+  background: color-mix(in srgb, var(--site-accent-ink) 10%, transparent);
+  box-shadow: inset 2px 0 0 var(--site-accent-ink);
+}
+.site-settings-item-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--site-accent-ink) 7%, transparent);
+  color: var(--site-accent-ink);
+}
+.site-settings-item-icon img {
+  border-radius: 3px;
+  object-fit: cover;
+}
+.site-settings-item-copy {
+  display: grid;
+  gap: 0.15rem;
+  flex: 1;
+}
+.site-settings-item-copy strong {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.site-settings-item-copy small {
+  font-size: 0.65rem;
+  opacity: 0.6;
+}
+@keyframes settings-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-settings-menu:popover-open {
+    animation: none;
+  }
+  .site-settings-menu > button {
+    transition: none;
+  }
+}

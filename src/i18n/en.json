@@ -1,0 +1,626 @@
+{
+  "page": {
+    "contact": {
+      "meta": {
+        "title": "Contact Us",
+        "description": "Get in touch with Mironescu Octavian directly."
+      },
+      "hero": {
+        "title": "Get in Touch",
+        "description": "Have a question, proposal, or want to collaborate? Send a message directly."
+      },
+      "form": {
+        "name": {
+          "label": "Your Name *"
+        },
+        "email": {
+          "label": "Email Address *"
+        },
+        "subject": {
+          "label": "Subject (Optional)"
+        },
+        "message": {
+          "label": "Message *"
+        },
+        "send": {
+          "button": "Send Message"
+        },
+        "placeholder": {
+          "name": "Jane Doe",
+          "email": "jane@example.com",
+          "subject": "How can I help you?",
+          "message": "Write your message here..."
+        }
+      }
+    },
+    "resume": {
+      "meta": {
+        "title": "Resume",
+        "description": "Resume of Mironescu Octavian, Java & Web Software Developer."
+      },
+      "hero": {
+        "title": "Hey! I'm Mironescu Octavian",
+        "description": "I'm a Java & Web Software Developer.",
+        "action": {
+          "hire": "Hire me"
+        }
+      },
+      "sidebar": {
+        "name": "Mironescu Octavian",
+        "title": "Software Developer",
+        "location": "Bucharest, Romania"
+      },
+      "aria": {
+        "sidebar": {
+          "profile": "Profile"
+        },
+        "social": {
+          "linkedin": "LinkedIn",
+          "github": "GitHub"
+        }
+      },
+      "about": {
+        "heading": "About Me",
+        "gender": {
+          "label": "Gender",
+          "value": "Male"
+        },
+        "pronouns": {
+          "label": "Pronouns",
+          "value": "He/Him"
+        },
+        "nationality": {
+          "label": "Nationality",
+          "value": "Romanian"
+        },
+        "age": {
+          "label": "Age",
+          "value": "years old"
+        },
+        "location": {
+          "label": "Location"
+        }
+      },
+      "languages": {
+        "heading": "Languages"
+      },
+      "lang": {
+        "english": "English",
+        "romanian": "Romanian",
+        "german": "German"
+      },
+      "level": {
+        "fluent": "Fluent",
+        "basic": "Basic"
+      },
+      "skills": {
+        "heading": "Skills",
+        "java": {
+          "title": "Java Software Developer",
+          "description": "Designing, building, and maintaining enterprise-level applications and backend services using the Java programming language and its vast ecosystem."
+        },
+        "web": {
+          "title": "Web Software Developer",
+          "description": "Building fast, responsive, and secure web applications using modern standard architectures, framework integration, and performance optimization techniques."
+        },
+        "design": {
+          "title": "Design Philosophies",
+          "description": "Focusing on accessible user experiences, interface detail, smooth interactive feedback loops, and visually consistent modular systems."
+        }
+      },
+      "tech": {
+        "heading": "Technologies & Tools",
+        "group": {
+          "web-dev": "Languages & Tools"
+        },
+        "cat": {
+          "languages": "Languages & Frameworks",
+          "environment": "Development Environment",
+          "build": "Build & Package",
+          "deployment": "Deployment"
+        }
+      },
+      "experience": {
+        "heading": "Experience"
+      },
+      "exp": {
+        "summary": {
+          "label": "Summary"
+        },
+        "responsibilities": {
+          "label": "Responsibilities"
+        }
+      },
+      "experiences": [
+        {
+          "company": "Property Pass",
+          "period": "June 2022 - November 2022",
+          "tags": ["Kotlin", "Java", "Spring Boot", "MongoDB", "GraphQL"],
+          "role": "Junior Programmer",
+          "location": "Utrecht, Netherlands - Remote",
+          "summary": "Developed, built and maintained the application behind the company's website that handled real estate passports for commercial real estate owners.",
+          "responsibilities": [
+            "Development of a Spring Boot based application written in Kotlin related to real estate commerce.",
+            "Creating and managing data in a MongoDB cluster.",
+            "Writing aggregation pipelines for MongoDB data for analytics breakdowns for stakeholders.",
+            "Refactoring project documentation."
+          ]
+        },
+        {
+          "company": "CoruScript",
+          "period": "May 2023 - January 2024",
+          "tags": ["Java", "Spring Boot", "Amazon Web Services", "PostgreSQL"],
+          "role": "Junior Programmer",
+          "location": "Bucharest, Romania - On-site/Remote",
+          "summary": "Developed the backend part of the website of a platform that offers services for building applications based on the clients' needs.",
+          "responsibilities": [
+            "Developed, tested and maintained the company's website application built with Java and Spring.",
+            "Maintained and wrote pipelines for the cloud architecture using AWS."
+          ]
+        },
+        {
+          "role": "Freelancing",
+          "period": "February 2024 - Present",
+          "location": "Bucharest, Romania - On-site/Remote",
+          "summary": "Wrote, tested, and maintained software and websites for various clients on a contract basis."
+        }
+      ],
+      "education": [
+        {
+          "degree": "Bachelor's Degree in Computer Science",
+          "school": "OVID - Universitatea Ovidius Constanța",
+          "period": "2018 - 2021"
+        },
+        {
+          "degree": "Master's Degree in Computer Science",
+          "school": "OVID - Universitatea Ovidius Constanța",
+          "period": "2021 - 2023"
+        }
+      ],
+      "headings": {
+        "education": "Education",
+        "projects": "Projects",
+        "certifications": "Certifications"
+      },
+      "projects": [
+        {
+          "name": "Discord Automation Bot",
+          "role": "Developer & Maintainer",
+          "period": "2024",
+          "tags": ["Java", "Discord Developer Portal"]
+        }
+      ],
+      "project": {
+        "view": {
+          "button": "View"
+        }
+      },
+      "period": {
+        "present": "Present"
+      },
+      "certifications": [],
+      "labels": {
+        "credential-id": "ID"
+      }
+    },
+    "legal": {
+      "meta": {
+        "title": "Legal Documents",
+        "description": "Policies and agreements."
+      },
+      "empty": "No legal documents yet."
+    },
+    "blog": {
+      "meta": {
+        "title": "Mironescu Octavian",
+        "description": "Personal website of Mironescu Octavian"
+      },
+      "categories": {
+        "aria-label": "Categories"
+      },
+      "empty": "No blog posts available yet."
+    },
+    "branding": {
+      "heading": "Branding"
+    },
+    "other-documents": {
+      "heading": "Other Documents"
+    },
+    "privacy-policy": {
+      "heading": "Privacy Policy"
+    }
+  },
+  "app": {
+    "header": {
+      "nav": {
+        "home": "Home",
+        "blog": "Blog",
+        "legal": "Legal",
+        "about": "About",
+        "resume": "Resume",
+        "contact": "Contact"
+      },
+      "menu": {
+        "title": "Menu",
+        "open": "Open menu"
+      },
+      "actions": {
+        "title": "Links",
+        "open": "Open links"
+      }
+    },
+    "loading": {
+      "page": "Loading.",
+      "post": "Loading post...",
+      "document": "Loading document..."
+    },
+    "footer": {
+      "home-aria": "Home",
+      "tagline": "Never stop searching.",
+      "theme-selector": "Theme selector",
+      "language-selector": "Language selector"
+    },
+    "text": {
+      "resources": "Resources",
+      "branding": "Branding",
+      "legal": "Legal",
+      "privacy-policy": "Privacy Policy",
+      "other-documents": "Other Documents",
+      "blog-stuff": "Blog stuff",
+      "information-about-myself": "Information about myself",
+      "legal-stuff": "Legal Stuff",
+      "information-about-the-website": "Information about the website",
+      "get-in-touch": "Get in touch",
+      "page-has-not-been-found": "Page has not been found.",
+      "about": "About",
+      "about-this-website": "About this website",
+      "branding-guidelines-and-assets": "Branding guidelines and assets",
+      "octavian-mironescu": "Mironescu Octavian",
+      "personal-website-of-octavian-mironescu": "Personal website of Mironescu Octavian",
+      "additional-legal-documents-and-resources": "Additional legal documents and resources",
+      "privacy-policy-for-octavianmironescu-com": "Privacy Policy for octavianmironescu.com",
+      "java": "Java",
+      "spring-boot": "Spring Boot",
+      "intellij": "IntelliJ",
+      "visual-studio-code": "Visual Studio Code",
+      "gradle": "Gradle",
+      "docker": "Docker",
+      "system": "System",
+      "white": "White",
+      "dark": "Dark",
+      "web-development": "Web Development",
+      "software-development": "Software Development",
+      "devops-cloud-infrastructure": "DevOps & Cloud Infrastructure",
+      "backend-api-service": "Backend API Service",
+      "full-stack-platform": "Full-stack Platform",
+      "developer-automation-tools": "Developer Automation Tools",
+      "github": "GitHub",
+      "typescript": "TypeScript",
+      "vue": "Vue",
+      "solidjs": "SolidJS",
+      "unocss": "UnoCSS",
+      "webstorm": "WebStorm",
+      "vite-plus": "Vite-plus",
+      "cloudflare": "Cloudflare"
+    }
+  },
+  "home": {
+    "hero": {
+      "greeting": "Hi, I'm Mironescu Octavian",
+      "title": "Software Developer"
+    },
+    "skills": {
+      "label": "My skills",
+      "heading": "What I do?"
+    },
+    "github": {
+      "heading": "GitHub Activity",
+      "calendar-alt": "MironescuOctavian GitHub contribution calendar"
+    },
+    "projects": {
+      "label": "My work",
+      "heading": "Projects",
+      "github-aria": "GitHub Repository",
+      "preview-aria": "Live Preview",
+      "more": "More projects on GitHub"
+    },
+    "contact": {
+      "label": "Let's talk",
+      "heading": "Contact",
+      "country": "Romania"
+    },
+    "sections": {
+      "hero": {
+        "eyebrow": "SOFTWARE DEVELOPER · BUCHAREST, ROMANIA",
+        "title": "Hi, I’m Mironescu Octavian.",
+        "description": "Transforming ideas into interactive and seamless digital experiences with cutting-edge frontend and backend development.",
+        "explore": "Explore my work",
+        "download": "Download CV"
+      },
+      "about": {
+        "eyebrow": "A LITTLE ABOUT ME",
+        "title": "Thoughtful software,",
+        "titleTail": "built to last.",
+        "paragraph1": "I’m a software developer based in Bucharest, working across backend systems and modern web experiences. I enjoy turning real problems into clear, dependable products.",
+        "paragraph2": "Since 2022, I’ve worked with teams to design, build, and ship software—from Java and Spring Boot services to polished interfaces and the infrastructure that supports them.",
+        "approach": "My approach: understand the problem, keep the solution practical, and care about the details people actually use."
+      },
+      "services": {
+        "eyebrow": "WHAT I DO",
+        "title": "From solid foundations",
+        "titleTail": "to the final details.",
+        "web": {
+          "title": "Web development",
+          "description": "Responsive, accessible interfaces that make complex products feel straightforward.",
+          "points": [
+            "Responsive layouts for phones, tablets, and desktops",
+            "Interactive interfaces built with TypeScript and modern frameworks",
+            "Accessible navigation, clear forms, and reusable components",
+            "Performance and usability improvements across the experience"
+          ]
+        },
+        "backend": {
+          "title": "Backend engineering",
+          "description": "APIs, data models, and reliable services built for real business needs.",
+          "points": [
+            "API design and implementation with Java, Kotlin, and Spring Boot",
+            "Data modeling and integration with SQL and NoSQL databases",
+            "Authentication, validation, and practical error handling",
+            "Maintainable business logic and integrations with external services"
+          ]
+        },
+        "delivery": {
+          "title": "Delivery & infrastructure",
+          "description": "Practical build, container, and cloud workflows that keep software moving.",
+          "points": [
+            "Containerized applications and repeatable build workflows",
+            "Deployment to cloud and edge platforms",
+            "Configuration, environment management, and release preparation",
+            "Troubleshooting and improvements after deployment"
+          ]
+        }
+      },
+      "technologies": {
+        "title": "Technologies I use",
+        "description": "The tools I reach for to build, ship, and maintain software.",
+        "stack": "Technology stack",
+        "categories": "Technology categories",
+        "display": "Technology display",
+        "grid": "Grid view",
+        "graph": "Graph view",
+        "all": "All",
+        "toolCount": "tools",
+        "labels": {
+          "languages": "Languages",
+          "frameworks": "Frameworks & UI",
+          "data": "Data & APIs",
+          "tools": "Tools & Delivery"
+        },
+        "graphTitle": "How the tools fit together",
+        "graphExplanation": "Each dot is a technology. Follow its line to a numbered circle to see which category it belongs to. The number in the middle is the total number of tools. The legend below names each category and shows its tool count.",
+        "descriptions": {
+          "languages": "Languages used to write software and work with data.",
+          "frameworks": "Frameworks and tools for building web interfaces and applications.",
+          "data": "Databases and APIs used to store and exchange information.",
+          "tools": "Tools for development, packaging, deployment, and infrastructure."
+        }
+      },
+      "work": {
+        "eyebrow": "SELECTED WORK",
+        "title": "Projects",
+        "description": "A few things I’ve built and the next ones taking shape.",
+        "repositories": "All repositories",
+        "portfolioDescription": "My personal site and portfolio, built with SolidJS and the Rimelight stack.",
+        "comingDescription": "Project details and preview will be added here.",
+        "view": "View project",
+        "labels": {
+          "portfolio": "Personal portfolio",
+          "live": "Live",
+          "backendTitle": "Backend API Service",
+          "backend": "Backend systems",
+          "comingSoon": "Coming soon",
+          "platformTitle": "Full-stack Platform",
+          "application": "Web application"
+        },
+        "preview": "Preview"
+      },
+      "packages": {
+        "eyebrow": "MY WORK · NPM",
+        "title": "Packages I made.",
+        "description": "Rimelight packages for UI, localization, SEO, authentication, security, and content.",
+        "explore": "Explore on npm"
+      },
+      "blog": {
+        "eyebrow": "DEVELOPER BLOG",
+        "title": "From the development desk.",
+        "description": "Articles about building software, technical decisions, and lessons learned along the way.",
+        "firstPost": "The first post is taking shape.",
+        "empty": "There are no articles here yet. When I have something worth sharing, this is where it will live.",
+        "visit": "Visit the blog"
+      },
+      "activity": {
+        "eyebrow": "OPEN SOURCE",
+        "title": "GitHub activity",
+        "description": "Recent contributions and experiments.",
+        "calendarAlt": "Mironescu Octavian GitHub contribution calendar"
+      },
+      "contact": {
+        "eyebrow": "LET’S CONNECT",
+        "title": "Let’s build something useful.",
+        "description": "Have a project, a question, or just want to say hello? I’d be glad to hear from you.",
+        "action": "Get in touch"
+      },
+      "highlights": {
+        "title": "Highlights",
+        "projects": "Projects",
+        "projectsNote": "A growing body of work",
+        "certificates": "Certificates",
+        "certificatesNote": "Professional learning",
+        "badges": "Badges",
+        "badgesNote": "Skills in progress",
+        "years": "Years experience",
+        "yearsNote": "Building since 2022"
+      }
+    }
+  },
+  "timezone": {
+    "localTime": "Your local time",
+    "heroTitle": "Every time zone.",
+    "heroTail": "Let’s find yours.",
+    "heroDescription": "See the world at a glance, find a time that works, and share it with anyone.",
+    "convertTime": "Convert a time",
+    "liveWorldClocks": "Live clocks around the world",
+    "navHome": "Home",
+    "navHomeDetail": "Start here",
+    "navGlobe": "Globe",
+    "navGlobeDetail": "Explore places",
+    "navClocks": "World clocks",
+    "navClocksDetail": "Time right now",
+    "navConverter": "Converter",
+    "navConverterDetail": "Find a time",
+    "pageSections": "Page sections",
+    "allCountries": "All countries",
+    "distinctGaps": "Distinct time gaps",
+    "exploreCountry": "Explore a country or city",
+    "searchCities": "Search cities or countries",
+    "searchPlaceholder": "Search for a country or city",
+    "exploreEvery": "Explore every mapped country.",
+    "gapExplanation": "One highlighted country per current time difference from you. Dimmed countries share a time gap.",
+    "bandExplanation": "The 24 longitude bands show approximate hourly zones; local time boundaries can differ.",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "rotateLeft": "Rotate globe left",
+    "rotateRight": "Rotate globe right",
+    "dragRotate": "Drag to rotate",
+    "tapExplore": "Tap to explore",
+    "selectedCountry": "Selected country",
+    "hoveredCountry": "Hovered country",
+    "convertThis": "Convert to this time",
+    "compareCountries": "Compare countries",
+    "selectCountry": "Select a country on the globe to compare it with another.",
+    "compareTimes": "Compare these times",
+    "representative": "One representative city per country. Countries may span several timezones.",
+    "countryData": "Country data · ODbL",
+    "detectingTimezone": "Detecting your timezone…",
+    "aroundWorld": "AROUND THE WORLD",
+    "everywhere": "Right now, everywhere.",
+    "liveUpdated": "Live, updated every second",
+    "locating": "Locating you…",
+    "together": "TIME, TOGETHER",
+    "findCommon": "Find your common time",
+    "chooseTime": "Choose a date and time to see it anywhere in the world.",
+    "setTime": "Set your time",
+    "choosePlaces": "Choose the time and places you want to compare.",
+    "dateTime": "Date and time",
+    "fromTimezone": "From timezone",
+    "toTimezone": "To timezone",
+    "yourTimezone": "Your timezone",
+    "selectedGlobe": "Selected from globe",
+    "convertedTime": "YOUR CONVERTED TIME",
+    "invalidTime": "This local time cannot be converted.",
+    "chooseDate": "Choose a date and time",
+    "exploreDestination": "Explore your destination",
+    "currentConditions": "Current conditions from Open-Meteo. City information and images from Wikipedia and Wikimedia.",
+    "copied": "Copied to clipboard!",
+    "copyFailed": "Could not copy. Please check clipboard permissions.",
+    "checkingWeather": "Checking current weather…",
+    "weatherUnavailable": "Current weather unavailable",
+    "currentWeather": "Current weather",
+    "photoCredits": "Photo and credits · Wikimedia",
+    "aboutCity": "A little about",
+    "readMore": "Read more on Wikipedia",
+    "cityUnavailable": "City details and photo are unavailable for this location.",
+    "sameTime": "Same time as you",
+    "ahead": "ahead of you",
+    "behind": "behind you",
+    "contact": "Contact",
+    "pageTitle": "Timezone Converter",
+    "clear": "Clear sky",
+    "cloudy": "Partly cloudy",
+    "fog": "Foggy",
+    "rain": "Rain",
+    "snow": "Snow",
+    "rainShowers": "Rain showers",
+    "snowShowers": "Snow showers",
+    "thunderstorms": "Thunderstorms",
+    "getInTouch": "Get in touch",
+    "privacyPolicy": "Privacy policy",
+    "legal": "Legal",
+    "tagline": "Never stop searching.",
+    "noAds": "No ads. Always free to use.",
+    "worldClock": "World Clock",
+    "copyClipboard": "Copy to clipboard",
+    "addCalendar": "Add to Google Calendar",
+    "addLocation": "Add a location",
+    "worldClockIntro": "Explore local time, weather and daylight in cities around the world.",
+    "weatherDaylight": "Weather & daylight",
+    "timeZoneLabel": "Time zone",
+    "dstStarted": "DST started",
+    "dstEnded": "DST ended",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+    "dayLength": "Day length",
+    "railHeading": "Explore the page",
+    "railDescription": "Find the right time, anywhere",
+    "coordinates": "Coordinates",
+    "elevation": "Elevation",
+    "globeGuide": "Explore the globe",
+    "conversionEyebrow": "World Clock Conversion",
+    "conversionHeading": "Find the timezone you want.",
+    "conversionDescription": "Choose the time and places you want to convert.",
+    "dateLabel": "Date",
+    "timeLabel": "Time",
+    "conversionMode": "Conversion mode",
+    "regularConversion": "Regular conversion",
+    "discordHeading": "Discord timestamps",
+    "discordDescription": "Choose a time, then copy a format. Discord displays it in each reader’s local timezone.",
+    "discordFormats": "Choose a format",
+    "discordPreviewNote": "Preview shown in your local timezone",
+    "shortTime": "Short time",
+    "longTime": "Time with seconds",
+    "shortDate": "Short date",
+    "longDate": "Long date",
+    "dateTimeShort": "Date and time",
+    "dateTimeFull": "Full date and time",
+    "numericDateTime": "Numeric date and time",
+    "numericDateTimeSeconds": "Numeric date and time with seconds",
+    "relativeTime": "Relative time",
+    "copy": "Copy",
+    "regularMode": "Regular",
+    "searchTimezones": "Search countries, cities or timezones",
+    "currentCityTime": "Current local time",
+    "continentAfrica": "Africa",
+    "continentAsia": "Asia",
+    "continentEurope": "Europe",
+    "continentNorthAmerica": "North America",
+    "continentSouthAmerica": "South America",
+    "continentOceania": "Oceania",
+    "continentPolar": "Polar regions",
+    "continentOther": "Other territories",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "applyDateTime": "Apply date and time",
+    "globeEyebrow": "WORLD EXPLORER",
+    "globeHeading": "Explore time around the world.",
+    "globeDescription": "Explore the globe, discover local times, and compare places around the world.",
+    "openPhotos": "Open city photos",
+    "closePhotos": "Close photos",
+    "previousPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
+    "loadingPhotos": "Loading more photos…"
+  },
+  "privacy": {
+    "intro": "This site helps you compare times around the world. You can use it without creating an account.",
+    "localTitle": "Time and preferences",
+    "localText": "Your browser supplies its timezone so the site can show local time. Time conversion happens in your browser. Language and appearance preferences may be stored in your browser or represented in the page address.",
+    "servicesTitle": "Third-party services",
+    "servicesText": "Your browser requests weather and location data from Open-Meteo, city information and images from Wikipedia and Wikimedia, and flags from FlagCDN. These providers receive the request and network information such as your IP address under their own privacy policies.",
+    "sharingTitle": "Sharing and calendar",
+    "sharingText": "Copy buttons write the selected time to your clipboard only when clicked. Google Calendar opens a draft containing the selected time; Google handles information you choose to save there.",
+    "contactTitle": "Site operations and contact",
+    "contactText": "Our hosting and security providers may process request information, including IP addresses, to deliver and protect the site. For privacy questions, email"
+  }
+}

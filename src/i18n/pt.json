@@ -1,0 +1,706 @@
+{
+  "page": {
+    "contact": {
+      "meta": {
+        "title": "Entre em contato",
+        "description": "Entre em contato com Mironescu Octavian diretamente."
+      },
+      "hero": {
+        "description": "Tem uma pergunta, proposta ou quer colaborar? Envie uma mensagem diretamente.",
+        "title": "Entre em contato"
+      },
+      "form": {
+        "email": {
+          "label": "Endereço de e-mail *"
+        },
+        "message": {
+          "label": "Mensagem *"
+        },
+        "name": {
+          "label": "Seu nome *"
+        },
+        "placeholder": {
+          "email": "joao@exemplo.com",
+          "message": "Escreva sua mensagem aqui...",
+          "name": "João Silva",
+          "subject": "Como posso ajudar?"
+        },
+        "send": {
+          "button": "Enviar mensagem"
+        },
+        "subject": {
+          "label": "Assunto (opcional)"
+        }
+      }
+    },
+    "resume": {
+      "meta": {
+        "title": "Currículo",
+        "description": "Currículo de Mironescu Octavian, desenvolvedor de software Java e web."
+      },
+      "hero": {
+        "title": "Olá! Eu sou Mironescu Octavian",
+        "description": "Sou desenvolvedor de software Java e web.",
+        "action": {
+          "hire": "Contrate-me"
+        }
+      },
+      "sidebar": {
+        "name": "Mironescu Octavian",
+        "title": "Desenvolvedor de software",
+        "location": "Bucareste, Romênia"
+      },
+      "aria": {
+        "sidebar": {
+          "profile": "Perfil"
+        },
+        "social": {
+          "linkedin": "LinkedIn",
+          "github": "GitHub"
+        }
+      },
+      "about": {
+        "heading": "Sobre mim",
+        "gender": {
+          "label": "Gênero",
+          "value": "Masculino"
+        },
+        "pronouns": {
+          "label": "Pronomes",
+          "value": "Ele/Dele"
+        },
+        "nationality": {
+          "label": "Nacionalidade",
+          "value": "Romeno"
+        },
+        "age": {
+          "label": "Idade",
+          "value": "anos"
+        },
+        "location": {
+          "label": "Localização"
+        }
+      },
+      "languages": {
+        "heading": "Idiomas"
+      },
+      "lang": {
+        "english": "Inglês",
+        "romanian": "Romeno",
+        "german": "Alemão"
+      },
+      "level": {
+        "fluent": "Fluente",
+        "basic": "Básico"
+      },
+      "skills": {
+        "heading": "Habilidades",
+        "java": {
+          "title": "Desenvolvedor de software Java",
+          "description": "Projeto, construo e mantenho aplicações corporativas e serviços de backend usando a linguagem Java e seu vasto ecossistema."
+        },
+        "web": {
+          "title": "Desenvolvedor de software web",
+          "description": "Construo aplicações web rápidas, responsivas e seguras usando arquiteturas modernas, integração de frameworks e técnicas de otimização de desempenho."
+        },
+        "design": {
+          "title": "Filosofias de design",
+          "description": "Foco em experiências acessíveis, detalhes de interface, feedback interativo fluido e sistemas modulares visualmente consistentes."
+        }
+      },
+      "tech": {
+        "heading": "Tecnologias e ferramentas",
+        "group": {
+          "web-dev": "Linguagens e ferramentas"
+        },
+        "cat": {
+          "languages": "Linguagens e frameworks",
+          "environment": "Ambiente de desenvolvimento",
+          "build": "Build e pacotes",
+          "deployment": "Deploy"
+        }
+      },
+      "experience": {
+        "heading": "Experiência"
+      },
+      "exp": {
+        "summary": {
+          "label": "Resumo"
+        },
+        "responsibilities": {
+          "label": "Responsabilidades"
+        }
+      },
+      "experiences": [
+        {
+          "company": "Property Pass",
+          "period": "Junho 2022 - Novembro 2022",
+          "tags": ["Kotlin", "Java", "Spring Boot", "MongoDB", "GraphQL"],
+          "role": "Programador júnior",
+          "location": "Utrecht, Países Baixos - Remoto",
+          "summary": "Desenvolvi, construí e mantive a aplicação por trás do site da empresa, que gerenciava passaportes imobiliários para proprietários de imóveis comerciais.",
+          "responsibilities": [
+            "Desenvolvimento de uma aplicação Spring Boot escrita em Kotlin, voltada ao comércio imobiliário.",
+            "Criação e gestão de dados em um cluster MongoDB.",
+            "Escrita de pipelines de agregação no MongoDB para análises destinadas aos stakeholders.",
+            "Refatoração da documentação do projeto."
+          ]
+        },
+        {
+          "company": "CoruScript",
+          "period": "Maio 2023 - Janeiro 2024",
+          "tags": ["Java", "Spring Boot", "Amazon Web Services", "PostgreSQL"],
+          "role": "Programador júnior",
+          "location": "Bucareste, Romênia - Presencial/Remoto",
+          "summary": "Desenvolvi a parte de backend do site de uma plataforma que oferece serviços de construção de aplicações conforme as necessidades dos clientes.",
+          "responsibilities": [
+            "Desenvolvi, testei e mantive a aplicação do site da empresa, construída com Java e Spring.",
+            "Mantive e escrevi pipelines para a arquitetura em nuvem usando AWS."
+          ]
+        },
+        {
+          "role": "Freelancer",
+          "period": "Fevereiro 2024 - Presente",
+          "location": "Bucareste, Romênia - Presencial/Remoto",
+          "summary": "Escrevi, testei e mantive software e sites para diversos clientes sob contrato."
+        }
+      ],
+      "education": [
+        {
+          "degree": "Bacharelado em Ciência da Computação",
+          "school": "OVID - Universitatea Ovidius Constanța",
+          "period": "2018 - 2021"
+        },
+        {
+          "degree": "Mestrado em Ciência da Computação",
+          "school": "OVID - Universitatea Ovidius Constanța",
+          "period": "2021 - 2023"
+        }
+      ],
+      "headings": {
+        "education": "Educação",
+        "projects": "Projetos",
+        "certifications": "Certificações"
+      },
+      "projects": [
+        {
+          "name": "Bot de automação para Discord",
+          "role": "Desenvolvedor e mantenedor",
+          "period": "2024",
+          "tags": ["Java", "Discord Developer Portal"]
+        }
+      ],
+      "project": {
+        "view": {
+          "button": "Ver"
+        }
+      },
+      "period": {
+        "present": "Presente"
+      },
+      "certifications": [],
+      "labels": {
+        "credential-id": "ID"
+      }
+    },
+    "legal": {
+      "meta": {
+        "title": "Documentos legais",
+        "description": "Políticas e acordos."
+      },
+      "empty": "Ainda não há documentos legais."
+    },
+    "blog": {
+      "meta": {
+        "title": "Mironescu Octavian",
+        "description": "Site pessoal de Mironescu Octavian"
+      },
+      "categories": {
+        "aria-label": "Categorias"
+      },
+      "empty": "Nenhuma publicação disponível ainda."
+    },
+    "branding": {
+      "heading": "Identidade Visual"
+    },
+    "other-documents": {
+      "heading": "Outros Documentos"
+    },
+    "privacy-policy": {
+      "heading": "Política de Privacidade"
+    },
+    "home": {
+      "hero": {
+        "greeting": "Oi, eu sou Mironescu Octavian",
+        "title": "Desenvolvedor de Software"
+      },
+      "skills": {
+        "label": "Minhas habilidades",
+        "heading": "O que eu faço?"
+      },
+      "github": {
+        "heading": "Atividade no GitHub",
+        "calendar-alt": "Calendário de contribuições no GitHub de MironescuOctavian"
+      },
+      "projects": {
+        "label": "Meu trabalho",
+        "heading": "Projetos",
+        "github-aria": "Repositório no GitHub",
+        "preview-aria": "Pré-visualização",
+        "more": "Mais projetos no GitHub"
+      },
+      "contact": {
+        "label": "Vamos conversar",
+        "heading": "Contato",
+        "country": "Romênia"
+      },
+      "sections": {
+        "hero": {
+          "eyebrow": "DESENVOLVEDOR DE SOFTWARE · BUCARESTE, ROMÉNIA",
+          "title": "Olá, sou Mironescu Octavian.",
+          "description": "Transformo ideias em experiências digitais interativas e fluidas com tecnologias modernas de frontend e backend.",
+          "explore": "Explore meu trabalho",
+          "download": "Baixar CV"
+        },
+        "about": {
+          "eyebrow": "UM POUCO SOBRE MIM",
+          "title": "Software feito com cuidado,",
+          "titleTail": "para durar.",
+          "paragraph1": "Sou desenvolvedor de software em Bucareste e trabalho com sistemas backend e experiências web modernas. Gosto de transformar problemas reais em produtos claros e confiáveis."
+        },
+        "services": {
+          "eyebrow": "O QUE FAÇO",
+          "title": "De bases sólidas",
+          "titleTail": "aos detalhes finais.",
+          "web": {
+            "title": "Desenvolvimento web",
+            "description": "Interfaces responsivas e acessíveis que tornam produtos complexos simples de usar.",
+            "points": [
+              "Layouts para celulares, tablets e computadores",
+              "Interfaces interativas com TypeScript e frameworks modernos",
+              "Navegação acessível, formulários claros e componentes reutilizáveis",
+              "Melhorias de desempenho e usabilidade"
+            ]
+          },
+          "backend": {
+            "title": "Engenharia backend",
+            "description": "APIs, modelos de dados e serviços confiáveis para necessidades reais.",
+            "points": [
+              "Criação e implementação de APIs com Java, Kotlin e Spring Boot",
+              "Modelagem de dados e integração com bancos SQL e NoSQL",
+              "Autenticação, validação e tratamento de erros",
+              "Lógica de negócio sustentável e integrações externas"
+            ]
+          },
+          "delivery": {
+            "title": "Entrega e infraestrutura",
+            "description": "Fluxos práticos de build, contêineres e cloud para manter o software em movimento.",
+            "points": [
+              "Aplicações em contêineres e builds reproduzíveis",
+              "Implantação em plataformas cloud e edge",
+              "Configuração, gestão de ambientes e preparação de versões",
+              "Diagnóstico e melhorias após a implantação"
+            ]
+          }
+        },
+        "technologies": {
+          "title": "Tecnologias que uso",
+          "description": "As ferramentas que uso para criar, entregar e manter software."
+        }
+      }
+    }
+  },
+  "app": {
+    "header": {
+      "nav": {
+        "home": "Início",
+        "blog": "Blog",
+        "legal": "Aviso legal",
+        "about": "Sobre",
+        "resume": "Currículo",
+        "contact": "Contato"
+      },
+      "menu": {
+        "title": "Menu",
+        "open": "Abrir menu"
+      },
+      "actions": {
+        "title": "Links",
+        "open": "Abrir links"
+      }
+    },
+    "loading": {
+      "page": "Carregando.",
+      "post": "Carregando publicação...",
+      "document": "Carregando documento..."
+    },
+    "footer": {
+      "home-aria": "Início",
+      "tagline": "Nunca pare de buscar.",
+      "theme-selector": "Seletor de tema",
+      "language-selector": "Seletor de idioma"
+    },
+    "text": {
+      "resources": "Recursos",
+      "branding": "Identidade de marca",
+      "legal": "Jurídico",
+      "privacy-policy": "Política de Privacidade",
+      "other-documents": "Outros documentos",
+      "blog-stuff": "Assuntos do blog",
+      "information-about-myself": "Informações sobre mim",
+      "legal-stuff": "Assuntos jurídicos",
+      "information-about-the-website": "Informações sobre o site",
+      "get-in-touch": "Entre em contato",
+      "page-has-not-been-found": "Página não encontrada.",
+      "about": "Sobre",
+      "about-this-website": "Sobre este site",
+      "branding-guidelines-and-assets": "Diretrizes de marca e recursos visuais",
+      "octavian-mironescu": "Mironescu Octavian",
+      "personal-website-of-octavian-mironescu": "Site pessoal de Mironescu Octavian",
+      "additional-legal-documents-and-resources": "Documentos jurídicos e recursos adicionais",
+      "privacy-policy-for-octavianmironescu-com": "Política de Privacidade do octavianmironescu.com",
+      "java": "Java",
+      "spring-boot": "Spring Boot",
+      "intellij": "IntelliJ",
+      "visual-studio-code": "Visual Studio Code",
+      "gradle": "Gradle",
+      "docker": "Docker",
+      "system": "Sistema",
+      "white": "Claro",
+      "dark": "Escuro",
+      "web-development": "Desenvolvimento Web",
+      "software-development": "Desenvolvimento de Software",
+      "devops-cloud-infrastructure": "DevOps e Infraestrutura em Nuvem",
+      "backend-api-service": "Serviço de API de Backend",
+      "full-stack-platform": "Plataforma Full-stack",
+      "developer-automation-tools": "Ferramentas de Automação para Desenvolvedores",
+      "github": "GitHub",
+      "typescript": "TypeScript",
+      "vue": "Vue",
+      "solidjs": "SolidJS",
+      "unocss": "UnoCSS",
+      "webstorm": "WebStorm",
+      "vite-plus": "Vite-plus",
+      "cloudflare": "Cloudflare"
+    }
+  },
+  "home": {
+    "hero": {
+      "greeting": "Oi, eu sou Mironescu Octavian",
+      "title": "Desenvolvedor de Software"
+    },
+    "skills": {
+      "label": "Minhas habilidades",
+      "heading": "O que eu faço?"
+    },
+    "github": {
+      "heading": "Atividade no GitHub",
+      "calendar-alt": "Calendário de contribuições no GitHub de MironescuOctavian"
+    },
+    "projects": {
+      "label": "Meu trabalho",
+      "heading": "Projetos",
+      "github-aria": "Repositório no GitHub",
+      "preview-aria": "Pré-visualização",
+      "more": "Mais projetos no GitHub"
+    },
+    "contact": {
+      "label": "Vamos conversar",
+      "heading": "Contato",
+      "country": "Romênia"
+    },
+    "sections": {
+      "hero": {
+        "eyebrow": "DESENVOLVEDOR DE SOFTWARE · BUCARESTE, ROMÉNIA",
+        "title": "Olá, sou Mironescu Octavian.",
+        "description": "Transformo ideias em experiências digitais interativas e fluidas com tecnologias modernas de frontend e backend.",
+        "explore": "Explore meu trabalho",
+        "download": "Baixar CV"
+      },
+      "about": {
+        "eyebrow": "UM POUCO SOBRE MIM",
+        "title": "Software feito com cuidado,",
+        "titleTail": "para durar.",
+        "paragraph1": "Sou desenvolvedor de software em Bucareste e trabalho com sistemas backend e experiências web modernas. Gosto de transformar problemas reais em produtos claros e confiáveis.",
+        "paragraph2": "Desde 2022, trabalho com equipes para projetar e entregar software, de serviços Java e Spring Boot a interfaces e à infraestrutura que as sustenta.",
+        "approach": "Minha abordagem: entender o problema, escolher uma solução prática e cuidar dos detalhes que as pessoas usam."
+      },
+      "services": {
+        "eyebrow": "O QUE FAÇO",
+        "title": "De bases sólidas",
+        "titleTail": "aos detalhes finais.",
+        "web": {
+          "title": "Desenvolvimento web",
+          "description": "Interfaces responsivas e acessíveis que tornam produtos complexos simples de usar.",
+          "points": [
+            "Layouts para celulares, tablets e computadores",
+            "Interfaces interativas com TypeScript e frameworks modernos",
+            "Navegação acessível, formulários claros e componentes reutilizáveis",
+            "Melhorias de desempenho e usabilidade"
+          ]
+        },
+        "backend": {
+          "title": "Engenharia backend",
+          "description": "APIs, modelos de dados e serviços confiáveis para necessidades reais.",
+          "points": [
+            "Criação e implementação de APIs com Java, Kotlin e Spring Boot",
+            "Modelagem de dados e integração com bancos SQL e NoSQL",
+            "Autenticação, validação e tratamento de erros",
+            "Lógica de negócio sustentável e integrações externas"
+          ]
+        },
+        "delivery": {
+          "title": "Entrega e infraestrutura",
+          "description": "Fluxos práticos de build, contêineres e cloud para manter o software em movimento.",
+          "points": [
+            "Aplicações em contêineres e builds reproduzíveis",
+            "Implantação em plataformas cloud e edge",
+            "Configuração, gestão de ambientes e preparação de versões",
+            "Diagnóstico e melhorias após a implantação"
+          ]
+        }
+      },
+      "technologies": {
+        "title": "Tecnologias que uso",
+        "description": "As ferramentas que uso para criar, entregar e manter software.",
+        "stack": "Tecnologias",
+        "categories": "Categorias de tecnologias",
+        "display": "Visualização de tecnologias",
+        "grid": "Visualização em grade",
+        "graph": "Visualização em gráfico",
+        "all": "Todos",
+        "toolCount": "ferramentas",
+        "labels": {
+          "languages": "Linguagens",
+          "frameworks": "Frameworks e interface",
+          "data": "Dados e APIs",
+          "tools": "Ferramentas e entrega"
+        },
+        "graphTitle": "Como as ferramentas se agrupam",
+        "graphExplanation": "Cada ponto representa uma tecnologia. Siga a linha até um círculo numerado para descobrir sua categoria. O número no centro é o total de ferramentas. A legenda mostra cada categoria e sua quantidade.",
+        "descriptions": {
+          "languages": "Linguagens para escrever software e trabalhar com dados.",
+          "frameworks": "Frameworks e ferramentas para criar interfaces e aplicações web.",
+          "data": "Bancos de dados e APIs para armazenar e trocar informações.",
+          "tools": "Ferramentas para desenvolvimento, pacotes, implantação e infraestrutura."
+        }
+      },
+      "work": {
+        "eyebrow": "TRABALHOS SELECIONADOS",
+        "title": "Projetos",
+        "description": "Alguns trabalhos que criei e os próximos projetos.",
+        "repositories": "Todos os repositórios",
+        "portfolioDescription": "Meu site pessoal e portfólio, criado com SolidJS e Rimelight.",
+        "comingDescription": "Os detalhes e a prévia do projeto serão adicionados aqui.",
+        "view": "Ver projeto",
+        "labels": {
+          "portfolio": "Portfólio pessoal",
+          "live": "No ar",
+          "backendTitle": "Serviço de API backend",
+          "backend": "Sistemas backend",
+          "comingSoon": "Em breve",
+          "platformTitle": "Plataforma full-stack",
+          "application": "Aplicação web"
+        },
+        "preview": "Prévia"
+      },
+      "packages": {
+        "eyebrow": "MEU TRABALHO · NPM",
+        "title": "Pacotes que criei.",
+        "description": "Pacotes Rimelight para interface, localização, SEO, autenticação, segurança e conteúdo.",
+        "explore": "Explorar no npm"
+      },
+      "blog": {
+        "eyebrow": "BLOG DE DESENVOLVIMENTO",
+        "title": "Da mesa de desenvolvimento.",
+        "description": "Artigos sobre desenvolvimento de software, decisões técnicas e lições aprendidas.",
+        "firstPost": "O primeiro artigo está tomando forma.",
+        "empty": "Ainda não há artigos. Quando eu tiver algo para compartilhar, estará aqui.",
+        "visit": "Visitar o blog"
+      },
+      "activity": {
+        "eyebrow": "CÓDIGO ABERTO",
+        "title": "Atividade no GitHub",
+        "description": "Contribuições e experimentos recentes.",
+        "calendarAlt": "Calendário de contribuições de Mironescu Octavian no GitHub"
+      },
+      "contact": {
+        "eyebrow": "VAMOS CONVERSAR",
+        "title": "Vamos criar algo útil.",
+        "description": "Tem um projeto, uma pergunta ou quer apenas dizer olá? Ficarei feliz em ouvir você.",
+        "action": "Entre em contato"
+      },
+      "highlights": {
+        "title": "Destaques",
+        "projects": "Projetos",
+        "projectsNote": "Um portfólio em crescimento",
+        "certificates": "Certificados",
+        "certificatesNote": "Aprendizado profissional",
+        "badges": "Insígnias",
+        "badgesNote": "Habilidades em desenvolvimento",
+        "years": "Anos de experiência",
+        "yearsNote": "Criando desde 2022"
+      }
+    }
+  },
+  "timezone": {
+    "localTime": "Sua hora local",
+    "heroTitle": "Cada fuso horário.",
+    "heroTail": "Vamos encontrar o seu.",
+    "heroDescription": "Veja o mundo rapidamente, encontre um horário que funcione e compartilhe-o com qualquer pessoa.",
+    "convertTime": "Converter um horário",
+    "liveWorldClocks": "Relógios ao vivo em todo o mundo",
+    "navHome": "Página inicial",
+    "navHomeDetail": "Comece aqui",
+    "navGlobe": "Globo",
+    "navGlobeDetail": "Explorar lugares",
+    "navClocks": "Relógios mundiais",
+    "navClocksDetail": "Hora agora",
+    "navConverter": "Conversor",
+    "navConverterDetail": "Encontre um horário",
+    "pageSections": "Seções da página",
+    "allCountries": "Todos os países",
+    "distinctGaps": "Intervalos de tempo distintos",
+    "exploreCountry": "Explore um país ou cidade",
+    "searchCities": "Pesquise cidades ou países",
+    "searchPlaceholder": "Pesquise um país ou cidade",
+    "exploreEvery": "Explore todos os países mapeados.",
+    "gapExplanation": "Um país destacado por diferença de horário atual em relação ao seu. Os países escurecidos partilham um intervalo de tempo.",
+    "bandExplanation": "As 24 faixas de longitude mostram zonas horárias aproximadas; os limites de horário local podem ser diferentes.",
+    "zoomIn": "Ampliar",
+    "zoomOut": "Diminuir zoom",
+    "rotateLeft": "Girar o globo para a esquerda",
+    "rotateRight": "Girar o globo para a direita",
+    "dragRotate": "Arraste para girar",
+    "tapExplore": "Toque para explorar",
+    "selectedCountry": "País selecionado",
+    "hoveredCountry": "País pairado",
+    "convertThis": "Converta para este momento",
+    "compareCountries": "Comparar países",
+    "selectCountry": "Selecione um país no globo para compará-lo com outro.",
+    "compareTimes": "Compare esses tempos",
+    "representative": "Uma cidade representativa por país. Os países podem abranger vários fusos horários.",
+    "countryData": "Dados do país · ODbL",
+    "detectingTimezone": "Detectando seu fuso horário…",
+    "aroundWorld": "EM TODO O MUNDO",
+    "everywhere": "Agora mesmo, em todos os lugares.",
+    "liveUpdated": "Ao vivo, atualizado a cada segundo",
+    "locating": "Localizando você…",
+    "together": "TEMPO, JUNTOS",
+    "findCommon": "Encontre o seu tempo comum",
+    "chooseTime": "Escolha uma data e hora para vê-lo em qualquer lugar do mundo.",
+    "setTime": "Defina seu horário",
+    "choosePlaces": "Escolha a hora e os locais que deseja comparar.",
+    "dateTime": "Data e hora",
+    "fromTimezone": "Do fuso horário",
+    "toTimezone": "Para o fuso horário",
+    "yourTimezone": "Seu fuso horário",
+    "selectedGlobe": "Selecionado do globo",
+    "convertedTime": "SEU TEMPO CONVERTIDO",
+    "invalidTime": "Esta hora local não pode ser convertida.",
+    "chooseDate": "Escolha uma data e hora",
+    "exploreDestination": "Explore seu destino",
+    "currentConditions": "Condições atuais do Open-Meteo. Informações e imagens da cidade da Wikipedia e Wikimedia.",
+    "copied": "Copiado para a área de transferência!",
+    "copyFailed": "Não foi possível copiar. Verifique as permissões da área de transferência.",
+    "checkingWeather": "Verificando o clima atual…",
+    "weatherUnavailable": "Tempo atual indisponível",
+    "currentWeather": "Clima atual",
+    "photoCredits": "Foto e créditos · Wikimedia",
+    "aboutCity": "Um pouco sobre",
+    "readMore": "Leia mais na Wikipédia",
+    "cityUnavailable": "Os detalhes e a foto da cidade não estão disponíveis para este local.",
+    "sameTime": "Ao mesmo tempo que você",
+    "ahead": "à sua frente",
+    "behind": "atrás de você",
+    "contact": "Contato",
+    "pageTitle": "Conversor de fuso horário",
+    "clear": "Céu claro",
+    "cloudy": "Parcialmente nublado",
+    "fog": "Nevoeiro",
+    "rain": "Chuva",
+    "snow": "Neve",
+    "rainShowers": "Pancadas de chuva",
+    "snowShowers": "Chuvas de neve",
+    "thunderstorms": "Tempestades",
+    "getInTouch": "Entre em contato",
+    "privacyPolicy": "Política de privacidade",
+    "legal": "Jurídico",
+    "tagline": "Nunca pare de pesquisar.",
+    "noAds": "Grátis. Sem anúncios. Para sempre.",
+    "worldClock": "Relógio mundial",
+    "copyClipboard": "Copiar para a área de transferência",
+    "addCalendar": "Adicionar ao Google Calendar",
+    "addLocation": "Adicionar um local",
+    "worldClockIntro": "Explore a hora local, o tempo e a luz do dia em cidades de todo o mundo.",
+    "weatherDaylight": "Tempo e luz do dia",
+    "timeZoneLabel": "Fuso horário",
+    "dstStarted": "Horário de verão começou",
+    "dstEnded": "Horário de verão terminou",
+    "sunrise": "Nascer do sol",
+    "sunset": "Pôr do sol",
+    "dayLength": "Duração do dia",
+    "railHeading": "Explore a página",
+    "railDescription": "Encontre a hora certa em qualquer lugar",
+    "coordinates": "Coordenadas",
+    "elevation": "Altitude",
+    "globeGuide": "Explore o globo",
+    "conversionEyebrow": "Conversão de horário mundial",
+    "conversionHeading": "Encontre o fuso horário desejado.",
+    "conversionDescription": "Escolha a hora e os locais que deseja converter.",
+    "dateLabel": "Data",
+    "timeLabel": "Hora",
+    "conversionMode": "Modo de conversão",
+    "regularConversion": "Conversão normal",
+    "discordHeading": "Datas do Discord",
+    "discordDescription": "Escolha um horário e copie um formato. O Discord o mostra no fuso horário local de cada pessoa.",
+    "discordFormats": "Escolha um formato",
+    "discordPreviewNote": "Prévia no seu fuso horário",
+    "shortTime": "Hora curta",
+    "longTime": "Hora com segundos",
+    "shortDate": "Data curta",
+    "longDate": "Data longa",
+    "dateTimeShort": "Data e hora",
+    "dateTimeFull": "Data e hora completas",
+    "numericDateTime": "Data e hora numéricas",
+    "numericDateTimeSeconds": "Data e hora numéricas com segundos",
+    "relativeTime": "Tempo relativo",
+    "copy": "Copiar",
+    "regularMode": "Normal",
+    "searchTimezones": "Pesquisar países, cidades ou fusos horários",
+    "currentCityTime": "Hora local atual",
+    "continentAfrica": "África",
+    "continentAsia": "Ásia",
+    "continentEurope": "Europa",
+    "continentNorthAmerica": "América do Norte",
+    "continentSouthAmerica": "América do Sul",
+    "continentOceania": "Oceania",
+    "continentPolar": "Regiões polares",
+    "continentOther": "Outros territórios",
+    "previousMonth": "Mês anterior",
+    "nextMonth": "Próximo mês",
+    "hours": "Horas",
+    "minutes": "Minutos",
+    "seconds": "Segundos",
+    "applyDateTime": "Aplicar data e hora",
+    "globeEyebrow": "EXPLORADOR MUNDIAL",
+    "globeHeading": "Encontre seu lugar no tempo.",
+    "globeDescription": "Explore o globo, descubra horários locais e compare lugares pelo mundo.",
+    "openPhotos": "Abrir fotos da cidade",
+    "closePhotos": "Fechar fotos",
+    "previousPhoto": "Foto anterior",
+    "nextPhoto": "Próxima foto",
+    "loadingPhotos": "Carregando mais fotos…"
+  },
+  "privacy": {
+    "intro": "Este site ajuda a comparar horários no mundo todo. Você pode usá-lo sem criar uma conta.",
+    "localTitle": "Horário e preferências",
+    "localText": "Seu navegador informa o fuso horário para mostrar a hora local. A conversão ocorre no navegador. Preferências de idioma e aparência podem ser armazenadas no navegador ou indicadas no endereço da página.",
+    "servicesTitle": "Serviços de terceiros",
+    "servicesText": "Seu navegador solicita dados de clima e localização ao Open-Meteo, informações e imagens ao Wikipedia e Wikimedia e bandeiras ao FlagCDN. Esses provedores recebem a solicitação e dados de rede, como seu endereço IP, conforme suas políticas de privacidade.",
+    "sharingTitle": "Compartilhamento e calendário",
+    "sharingText": "Os botões copiam o horário selecionado apenas quando clicados. O Google Calendar abre um rascunho com esse horário; o Google trata as informações que você escolher salvar.",
+    "contactTitle": "Operação do site e contato",
+    "contactText": "Nossos provedores de hospedagem e segurança podem processar dados de solicitações, inclusive endereços IP, para fornecer e proteger o site. Para dúvidas sobre privacidade, escreva para"
+  }
+}

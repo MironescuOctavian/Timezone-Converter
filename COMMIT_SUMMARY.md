@@ -1,4 +1,4 @@
-<!-- Collects a human-readable summary of project changes for preparing a Git commit. -->
+<!-- Collects a human-readable summary of timezone-converter changes for preparing a Git commit. -->
 
 # Suggested commit
 

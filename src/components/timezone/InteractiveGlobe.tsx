@@ -264,7 +264,7 @@ export default function InteractiveGlobe(props: {
             pendingLongitude += movement.dx * 0.6;
             pendingLatitude -= movement.dy * 0.6;
             if ("zoom" in movement) pendingZoom = movement.zoom;
-            // Pointer events can outpace refresh rate; project once per frame.
+            // Pointer events can outpace refresh rate; timezone-converter once per frame.
             if (!rotationFrame) rotationFrame = requestAnimationFrame(flushRotation);
           }}
           onPointerUp={(event) => endGesture(event)}

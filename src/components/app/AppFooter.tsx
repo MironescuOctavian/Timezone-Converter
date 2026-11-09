@@ -1,4 +1,4 @@
-/** @file Renders the localized, responsive footer with project links, contact details, and settings. */
+/** @file Renders the localized, responsive footer with timezone-converter links, contact details, and settings. */
 
 import { getLocaleUrl, t } from "@rimelight/i18n";
 import { useParams } from "@solidjs/router";
